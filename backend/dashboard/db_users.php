@@ -6,6 +6,7 @@ $foto = $_SESSION['foto'];
 $query = "SELECT 
     u.id AS user_id,
     m.nama_lengkap,
+    u.id,
     u.email,
     u.password,
     u.role
@@ -189,11 +190,11 @@ $result = mysqli_query($koneksi, $query);
                             <td class="px-6 py-2 whitespace-nowrap text-xs"><?= md5($row['password']); ?></td>
                             <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['role']; ?></td>
                             <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500">
-                                <a href="../crud/edit.php?tabel=users&id=<?= $row['user_id']; ?>">
+                                <a href="../crud/edit.php?tabel=users&id=<?= $row['id']; ?>">
 <button class="text-blue-600 hover:text-blue-900 mr-3 text-xs">Edit</button>
                                 </a>
                                 
-                                <a href="../crud/hapus.php?tabel=users&id=<?= $row['user_id']; ?>">
+                                <a href="../crud/hapus.php?tabel=users&id=<?= $row['id']; ?>">
 <button class="text-red-600 hover:text-red-900 text-xs">Delete</button>
                                 </a>
                             </td>

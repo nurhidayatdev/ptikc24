@@ -10,50 +10,31 @@ if (!isset($_SESSION['user_id'])) {
 
 $nama_panggilan = $_SESSION['nama_panggilan'];
 $foto = $_SESSION['foto'];
+// ambil semua mahasiswa
+$mhs = mysqli_query($koneksi, "
+    SELECT id, nim, nama_lengkap
+    FROM mahasiswa
+    ORDER BY nim ASC
+");
 
-$query_matkul = "
-SELECT DISTINCT
-    mk.id AS matkul_id,
-    mk.nama_matkul
-FROM krs k
-JOIN mata_kuliah mk ON k.matkul_id = mk.id
-ORDER BY mk.nama_matkul ASC
-";
+// simpan/update kas
+if (isset($_POST['simpan'])) {
+    $minggu = (int) $_POST['minggu'];
 
-$matkul = mysqli_query($koneksi, $query_matkul);
+    foreach ($_POST['status'] as $mahasiswa_id => $status) {
 
-if (!$matkul) {
-    die('Query matkul error: ' . mysqli_error($koneksi));
-}
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $tanggal = ($status === 'lunas') ? date('Y-m-d') : NULL;
 
-    $matkul_id = $_POST['matkul_id'];
-    $pertemuan = $_POST['pertemuan'];
-    $status    = $_POST['status'];
-
-    foreach ($status as $mahasiswa_id => $st) {
-
-        $query = "
-        INSERT INTO absensi (mahasiswa_id, matkul_id, pertemuan, status)
-        VALUES (?, ?, ?, ?)
-        ON DUPLICATE KEY UPDATE status = ?
-        ";
-
-        $stmt = mysqli_prepare($koneksi, $query);
-        mysqli_stmt_bind_param(
-            $stmt,
-            "iiiss",
-            $mahasiswa_id,
-            $matkul_id,
-            $pertemuan,
-            $st,
-            $st
-        );
-        mysqli_stmt_execute($stmt);
+        mysqli_query($koneksi, "
+            INSERT INTO kas (mahasiswa_id, minggu_ke, status, tanggal_bayar)
+            VALUES ($mahasiswa_id, $minggu, '$status', " . ($tanggal ? "'$tanggal'" : "NULL") . ")
+            ON DUPLICATE KEY UPDATE
+                status='$status',
+                tanggal_bayar=" . ($tanggal ? "'$tanggal'" : "NULL") . "
+        ");
     }
 
-    // redirect agar tidak double submit
-    header("Location: absensi.php?matkul_id=$matkul_id&pertemuan=$pertemuan");
+    header("Location: kas.php?minggu=$minggu");
     exit;
 }
 ?>
@@ -185,108 +166,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <main class="ml-0 md:ml-64 pt-20 p-6">
         <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow">
 
-            <h1 class="text-2xl font-bold mb-6">Absensi Kelas</h1>
+            <h1 class="text-2xl font-bold mb-6">💰 Kas Kelas PTIK C</h1>
 
-            <!-- Pilih Matkul & Pertemuan -->
-            <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-
-                <select name="matkul_id" class="border p-2 rounded-lg" required>
-                    <option value="">-- Pilih Mata Kuliah --</option>
-                    <?php while ($m = mysqli_fetch_assoc($matkul)): ?>
-                        <option value="<?= $m['matkul_id'] ?>"
-                            <?= (isset($_GET['matkul_id']) && $_GET['matkul_id'] == $m['matkul_id']) ? 'selected' : '' ?>>
-                            <?= $m['nama_matkul'] ?>
-                        </option>
-                    <?php endwhile; ?>
-                </select>
-
-
-                <select name="pertemuan" class="border p-2 rounded-lg" required>
-                    <option value="">-- Pertemuan --</option>
-                    <?php for ($i = 1; $i <= 16; $i++): ?>
-                        <option value="<?= $i ?>"
-                            <?= ($_GET['pertemuan'] ?? '') == $i ? 'selected' : '' ?>>
-                            Pertemuan <?= $i ?>
-                        </option>
-                    <?php endfor; ?>
-                </select>
+            <form method="GET" class="mb-6 flex items-end gap-4">
+                <div>
+                    <select name="minggu" class="border rounded px-3 py-2" required>
+                        <option value="">-- Pilih Minggu --</option>
+                        <?php for ($i = 1; $i <= 16; $i++): ?>
+                            <option value="<?= $i ?>" <?= ($_GET['minggu'] ?? '') == $i ? 'selected' : '' ?>>
+                                Minggu <?= $i ?>
+                            </option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
 
                 <button type="submit"
                     class="bg-blue-700 text-white rounded-lg px-4 py-2">
-                    Tampilkan
+                    🔍 Tampilkan
                 </button>
             </form>
+            <?php if (isset($_GET['minggu'])): ?>
 
-            <?php
-            if (isset($_GET['matkul_id'], $_GET['pertemuan'])):
-
-                $matkul_id = $_GET['matkul_id'];
-                $pertemuan = $_GET['pertemuan'];
-
-                // ambil mahasiswa dari KRS
-                $query = "
-        SELECT DISTINCT
-            m.id AS mahasiswa_id,
-            m.nim,
-            m.nama_lengkap,
-            a.status
-        FROM krs k
-        JOIN mahasiswa m ON k.mahasiswa_id = m.id
-        LEFT JOIN absensi a 
-            ON a.mahasiswa_id = m.id
-            AND a.matkul_id = k.matkul_id
-            AND a.pertemuan = ?
-        WHERE k.matkul_id = ?
-        ORDER BY m.nama_lengkap ASC
-        ";
-
-                $stmt = mysqli_prepare($koneksi, $query);
-                mysqli_stmt_bind_param($stmt, "ii", $pertemuan, $matkul_id);
-                mysqli_stmt_execute($stmt);
-                $result = mysqli_stmt_get_result($stmt);
-
-
-            ?>
-
-                <!-- Tabel Absensi -->
                 <form method="POST">
-                    <input type="hidden" name="matkul_id" value="<?= $matkul_id ?>">
-                    <input type="hidden" name="pertemuan" value="<?= $pertemuan ?>">
 
-                    <table class="w-full border">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="border px-3 py-2">No</th>
-                                <th class="border px-3 py-2">NIM</th>
-                                <th class="border px-3 py-2">Nama</th>
-                                <th class="border px-3 py-2">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php $no = 1;
-                            while ($row = mysqli_fetch_assoc($result)): ?>
+                    <input type="hidden" name="minggu" value="<?= $_GET['minggu'] ?>">
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full border">
+                            <thead class="bg-gray-200">
                                 <tr>
-                                    <td class="border px-3 py-2 text-center"><?= $no++ ?></td>
-                                    <td class="border px-3 py-2"><?= $row['nim'] ?></td>
-                                    <td class="border px-3 py-2"><?= $row['nama_lengkap'] ?></td>
-                                    <td class="border px-3 py-2 text-center">
-                                        <select name="status[<?= $row['mahasiswa_id'] ?>]"
-                                            class="border p-1 rounded">
-                                            <option value="Hadir" <?= $row['status'] == 'Hadir' ? 'selected' : '' ?>>Hadir</option>
-                                            <option value="Izin" <?= $row['status'] == 'Izin' ? 'selected' : '' ?>>Izin</option>
-                                            <option value="Sakit" <?= $row['status'] == 'Sakit' ? 'selected' : '' ?>>Sakit</option>
-                                            <option value="Alpha" <?= $row['status'] == 'Alpha' ? 'selected' : '' ?>>Alpha</option>
-                                        </select>
-                                    </td>
+                                    <th class="border p-2">No</th>
+                                    <th class="border p-2">NIM</th>
+                                    <th class="border p-2">Nama</th>
+                                    <th class="border p-2">Status</th>
                                 </tr>
-                            <?php endwhile; ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
 
-                    <button type="submit"
-                        class="mt-4 px-4 py-2 bg-green-600 text-white rounded-lg">
-                        Simpan Absensi
-                    </button>
+                                <?php
+                                $no = 1;
+                                $minggu_aktif = $_GET['minggu'];
+
+                                $mhs = mysqli_query($koneksi, "
+    SELECT id, nim, nama_lengkap
+    FROM mahasiswa
+    ORDER BY nim ASC
+");
+
+                                while ($row = mysqli_fetch_assoc($mhs)) {
+
+                                    $cek = mysqli_query($koneksi, "
+        SELECT status
+        FROM kas
+        WHERE mahasiswa_id = {$row['id']}
+        AND minggu_ke = $minggu_aktif
+    ");
+
+                                    $kas = mysqli_fetch_assoc($cek);
+                                    $status = $kas['status'] ?? 'belum';
+                                ?>
+                                    <tr>
+                                        <td class="border p-2 text-center"><?= $no++ ?></td>
+                                        <td class="border p-2"><?= $row['nim'] ?></td>
+                                        <td class="border p-2"><?= $row['nama_lengkap'] ?></td>
+                                        <td class="border p-2 text-center">
+                                            <select name="status[<?= $row['id'] ?>]"
+                                                class="border rounded px-2 py-1">
+                                                <option value="Belum" <?= $status == 'Belum' ? 'selected' : '' ?>>Belum</option>
+                                                <option value="Lunas" <?= $status == 'Lunas' ? 'selected' : '' ?>>Lunas</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-6">
+                        <button type="submit" name="simpan"
+                            class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
+                            💾 Simpan Kas Mingguan
+                        </button>
+                    </div>
+
                 </form>
 
             <?php endif; ?>

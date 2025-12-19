@@ -104,6 +104,8 @@ $result = mysqli_query($koneksi, $query);
 
                             <a href="db_matkul.php"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Daftar Mata Kuliah</a>
+                                <a href="db_jadwal_mk.php"
+                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Jadwal Mata Kuliah</a>
 
                             <a href="db_users.php"
                                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Daftar Users</a>
@@ -121,6 +123,20 @@ $result = mysqli_query($koneksi, $query);
                                 </svg>
                                 <a href="db_absensi.php">
                                     <span>Absensi</span>
+                                </a>
+
+                            </div>
+
+                        </button>
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                                <a href="db_kas.php">
+                                    <span>Kas Mingguan</span>
                                 </a>
 
                             </div>

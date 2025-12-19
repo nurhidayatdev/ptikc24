@@ -4,6 +4,9 @@ include '../../koneksi.php';
 
 $nama_panggilan = $_SESSION['nama_panggilan'];
 $foto = $_SESSION['foto'];
+
+
+
 $query_matkul = "
 SELECT DISTINCT
     mk.id AS matkul_id,
@@ -214,7 +217,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
 
                 <button type="submit"
-                    class="bg-black text-white rounded-lg px-4 py-2">
+                    class="bg-blue-700 text-white rounded-lg px-4 py-2">
                     Tampilkan
                 </button>
             </form>
@@ -266,12 +269,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
                             <?php $no = 1;
+                          
                             while ($row = mysqli_fetch_assoc($result)): ?>
                                 <tr>
                                     <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $no++ ?></td>
                                     <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['nim'] ?></td>
                                     <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['nama_lengkap'] ?></td>
-                                    <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['status'] ?></td>
+                                    <td class="px-6 py-2 whitespace-nowrap text-xs">
+                                 <?= $row['status'] ?></td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>

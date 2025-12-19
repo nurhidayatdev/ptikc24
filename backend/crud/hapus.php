@@ -53,7 +53,7 @@ if (isset($_GET['tabel']) && isset($_GET['id']) && isset($_GET['confirm'])) {
     $tabel = $_GET['tabel'];
     $id = intval($_GET['id']);
 
-    $tabel_diizinkan = ['mahasiswa', 'mata_kuliah', 'users'];
+    $tabel_diizinkan = ['mahasiswa', 'mata_kuliah','jadwal_matkul', 'users'];
 
     if (!in_array($tabel, $tabel_diizinkan)) {
         echo "Tabel tidak diizinkan!";
@@ -70,6 +70,9 @@ if (isset($_GET['tabel']) && isset($_GET['id']) && isset($_GET['confirm'])) {
 
             case 'mata_kuliah':
             $redirect = '../dashboard/db_matkul.php';
+            break;
+            case 'jadwal_matkul':
+            $redirect = '../dashboard/db_jadwal_mk.php';
             break;
 
             case 'users':
