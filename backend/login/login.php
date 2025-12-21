@@ -62,39 +62,31 @@ $_SESSION['foto']          = $data['foto'];
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<body class="bg-slate-100 min-h-screen flex items-center justify-center">
     <div class="max-w-md w-full mx-4">
         <div class="bg-white rounded-lg shadow-lg p-8">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold">Login</h2>
-                <p class="text-gray-600">Welcome back! Please login to your account.</p>
+                <p class="text-slate-600">Welcome back! Please login to your account.</p>
             </div>
             <form method="POST" id="loginForm" novalidate>
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Email</label>
+                        <label class="block text-sm font-medium text-slate-700">Email</label>
                         <input type="email" name="email"
-                            class="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            class="mt-1 block w-full rounded-md border border-slate-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-slate-400">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700">Password</label>
+                        <label class="block text-sm font-medium text-slate-700">Password</label>
                         <input type="password" name="password"
-                            class="mt-1 block w-full rounded-md border border-gray-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-gray-400">
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <div class="flex items-center">
-                            <input type="checkbox" class="rounded border-gray-300">
-                            <label class="ml-2 text-sm text-gray-600">Remember me</label>
-                        </div>
-                        <a href="#" class="text-sm text-gray-600 hover:text-gray-800">Forgot password?</a>
+                            class="mt-1 block w-full rounded-md border border-slate-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-slate-400">
                     </div>
                     <button type="submit"
-                        class="w-full bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700">Login</button>
+                        class="w-full bg-slate-800 text-white py-2 px-4 rounded-md hover:bg-slate-700">Login</button>
                 </div>
             </form>
-            <p class="text-center mt-4 text-sm text-gray-600">
-                Don't have an account?
-                <a href="register.html" class="text-gray-800 hover:underline">Register</a>
+            <p class="text-center mt-4 text-sm text-slate-600">
+                © 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.
             </p>
         </div>
     </div>

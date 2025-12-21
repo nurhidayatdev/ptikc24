@@ -2,6 +2,11 @@
 session_start();
 include '../../koneksi.php';
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login/login.php");
+    exit;
+}
+
 $nama_panggilan = $_SESSION['nama_panggilan'];
 $foto = $_SESSION['foto'];
 
@@ -185,9 +190,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h3 class="text-xl font-bold">Data Tables</h3>
                 <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <input type="text" placeholder="Search..."
-                        class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                        class="w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
                     <a href="absensi.php">
-<button class="w-full sm:w-auto bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-500">Absensi</button>
+<button class="w-full sm:w-auto bg-blue-700 text-white px-4 py-2 rounded-lg hover:bg-blue-500 text-xs">Absensi</button>
                         </a>
                 </div>
             </div>
@@ -195,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <!-- Pilih Matkul & Pertemuan -->
             <form method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
-                <select name="matkul_id" class="border p-2 rounded-lg" required>
+                <select name="matkul_id" class="border p-2 rounded-lg text-xs" required>
                     <option value="">-- Pilih Mata Kuliah --</option>
                     <?php while ($m = mysqli_fetch_assoc($matkul)): ?>
                         <option value="<?= $m['matkul_id'] ?>"
@@ -206,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
 
 
-                <select name="pertemuan" class="border p-2 rounded-lg" required>
+                <select name="pertemuan" class="border p-2 rounded-lg text-xs" required>
                     <option value="">-- Pertemuan --</option>
                     <?php for ($i = 1; $i <= 16; $i++): ?>
                         <option value="<?= $i ?>"
@@ -217,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </select>
 
                 <button type="submit"
-                    class="bg-blue-700 text-white rounded-lg px-4 py-2">
+                    class="bg-blue-700 text-white rounded-lg px-4 py-2 text-xs">
                     Tampilkan
                 </button>
             </form>
@@ -257,8 +262,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form method="POST">
                     <input type="hidden" name="matkul_id" value="<?= $matkul_id ?>">
                     <input type="hidden" name="pertemuan" value="<?= $pertemuan ?>">
-
-                    <table class="min-w-full divide-y divide-gray-200">
+<div class="overflow-x-auto">
+<table class="min-w-full divide-y divide-gray-200">
                         <thead>
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
@@ -281,6 +286,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php endwhile; ?>
                         </tbody>
                     </table>
+</div>
+                    
 
                     
                 </form>

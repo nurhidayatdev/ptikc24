@@ -2,11 +2,11 @@
 session_start();
 include '../../koneksi.php';
 
-// proteksi login
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    header("Location: ../login/login.php");
     exit;
 }
+
 $nama_panggilan = $_SESSION['nama_panggilan'];
 $user_id = $_SESSION['user_id'];
 $foto = $_SESSION['foto'];
@@ -76,6 +76,9 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
     <title>Kelas PTIK C 2024 - Teknik Informatika dan Komputer</title>
     <link href="../../frontend/tailwind/src/output.css" rel="stylesheet">
     <link href="../../frontend/tailwind/src/input.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <style>
         .rotate-180 {
             transform: rotate(180deg);
@@ -90,7 +93,7 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
     </style>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-slate-100">
     <!-- Header dengan z-index lebih tinggi -->
     <header class="bg-gradient-to-r from-blue-700 to-blue-800  fixed w-full top-0 z-50">
         <div class="flex justify-between items-center px-6 py-3">
@@ -98,20 +101,21 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
                 <span class="text-xl font-bold text-white">Dashboard PTIK C</span>
             </div>
             <!-- Mobile Menu Button dengan z-index yang sesuai -->
-            <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-slate-100">
+                <svg class="w-6 h-6 " fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
             <div class="hidden md:flex items-center space-x-4">
                 <div class="relative">
                     <button id="profile-button" class="flex items-center space-x-2">
-                        <img src="../img/profile/<?= htmlspecialchars($foto) ?>" alt="Profile" class="w-8 h-8 rounded-full">
                         <span class="text-white"><?= htmlspecialchars($nama_panggilan) ?></span>
+                        <img src="../img/profile/<?= htmlspecialchars($foto) ?>" alt="Profile" class="w-8 h-8 rounded-full">
+                        
                     </button>
                     <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
-                        <a href="profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
-                        <a href="../login/login.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Logout</a>
+                        <a href="profile.php" class="block px-4 py-2 text-sm hover:bg-slate-100">Profile</a>
+                        <a href="../login/login.php" class="block px-4 py-2 text-sm hover:bg-slate-100">Logout</a>
                     </div>
                 </div>
             </div>
@@ -126,7 +130,7 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
             <nav class="mt-6">
                 <div class="px-4 space-y-2">
                     <!-- Dashboard Menu -->
-                    <a href="../index.html" class="flex items-center px-4 py-2 text-gray-700  rounded-lg">
+                    <a href="../index.html" class="flex items-center px-4 py-2 text-slate-700  rounded-lg">
                         <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -137,7 +141,7 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
                     <!-- Components Menu -->
                     <div class="space-y-2">
                         <button
-                            class="submenu-button flex items-center justify-between w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            class="submenu-button flex items-center justify-between w-full px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg">
                             <div class="flex items-center">
                                 <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -153,20 +157,20 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
                         </button>
                         <div class="submenu pl-8 space-y-1 hidden overflow-y-auto max-h-52">
                             <a href="db_mahasiswa.php"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Daftar Mahasiswa</a>
+                                class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded-lg">Daftar Mahasiswa</a>
 
                             <a href="db_matkul.php"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Daftar Mata Kuliah</a>
+                                class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded-lg">Daftar Mata Kuliah</a>
 
                             <a href="db_users.php"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Daftar Users</a>
+                                class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-100 rounded-lg">Daftar Users</a>
 
 
 
 
                         </div>
                         <button
-                            class="flex items-center justify-between w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-700 hover:bg-slate-100 rounded-lg">
                             <div class="flex items-center">
                                 <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -188,12 +192,12 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
     </aside>
 
     <main class="ml-0 md:ml-64 pt-20 p-6">
-        <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <div class="bg-white rounded-lg border border-slate-200 p-6">
             <div class="flex justify-between items-center mb-6">
-                <h1 class="text-2xl font-bold">User Profile</h1>
-                <a href="../crud/edit_profile.php?<?= $data['user_id']; ?>" id="edit-profile" class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700">
-                                Edit Profile
-                        </a>
+                <h1 class="text-2xl font- text-slate-800">User Profile</h1>
+                <a href="../crud/edit_profile.php?<?= $data['user_id']; ?>" id="edit-profile" class="px-4 py-2 bg-indigo-900 text-white rounded-lg hover:bg-indigo-800 text-xs">
+                    Edit Profile
+                </a>
 
             </div>
 
@@ -202,8 +206,8 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
                 <div class="md:col-span-1 flex flex-col items-center">
                     <img src="../img/profile/<?= htmlspecialchars($data['foto']) ?>" alt="Profile Picture"
                         class="w-32 h-32 rounded-full mb-4">
-                    <h2 class="text-xl font-semibold mb-2"><?= htmlspecialchars($data['nama_lengkap']) ?></h2>
-                    <p class="text-gray-600"><?= htmlspecialchars($data['role']) ?></p>
+                    <h2 class="text-xl font-semibold mb-2 text-slate-800"><?= htmlspecialchars($data['nama_lengkap']) ?></h2>
+                    <p class="text-slate-600"><?= htmlspecialchars($data['role']) ?></p>
                 </div>
 
                 <!-- Profile Details Section -->
@@ -212,61 +216,63 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
                     <form method="POST" class="space-y-4">
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Email</label>
                                 <input type="email" name="email" value="<?= htmlspecialchars($data['email']) ?>"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-400 text-xs"
                                     disabled>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                                <input type="text" name="password" value="<?= htmlspecialchars($data['password']) ?>"
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                                <input type="password" name="password" value="<?= htmlspecialchars($data['password']) ?>"
+                                    class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-400 text-xs"
                                     disabled>
                             </div>
                         </div>
                         <!-- Bio Section -->
                         <div class="mt-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Bio</label>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Bio</label>
                             <input type="text" name="password" value="<?= htmlspecialchars($data['bio']) ?>"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400"
+                                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-slate-400 text-xs"
                                 disabled>
                         </div>
                         <hr class="my-6">
 
-                        <h2 class="text-xl font-bold mb-4">Kartu Rencana Studi (KRS)</h2>
-                        <a href="krs.php" id="edit-profile" class="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700">
-                            
-                                Edit KRS
-                            
+                        <h2 class="text-xl font-bold mb-4 text-slate-800">Kartu Rencana Studi (KRS)</h2>
+                        <a href="krs.php" id="edit-profile" class="px-4 py-2 bg-indigo-900 text-white rounded-lg hover:bg-indigo-800 text-xs">
+
+                            Edit KRS
+
                         </a>
                         <br>
                         <br>
                         <?php if (mysqli_num_rows($result_krs) > 0): ?>
                             <div class="overflow-x-auto">
-                                <table class="w-full border rounded-lg">
-                                    <thead class="bg-gray-100">
+                                <table class="min-w-full divide-y divide-slate-200">
+                                    <thead>
                                         <tr>
-                                            <th class="px-4 py-2 border">No</th>
-                                            <th class="px-4 py-2 border">Kode</th>
-                                            <th class="px-4 py-2 border">Mata Kuliah</th>
-                                            <th class="px-4 py-2 border">SKS</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">No</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">Kode</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">Mata Kuliah</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">SKS</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <?php $no = 1; ?>
-                                        <?php while ($krs = mysqli_fetch_assoc($result_krs)) : ?>
-                                            <tr class="text-center">
-                                                <td class="px-4 py-2 border"><?= $no++ ?></td>
-                                                <td class="px-4 py-2 border"><?= $krs['kode_matkul'] ?></td>
-                                                <td class="px-4 py-2 border text-left"><?= $krs['nama_matkul'] ?></td>
-                                                <td class="px-4 py-2 border"><?= $krs['sks'] ?></td>
+                                    <tbody class="bg-white divide-y divide-slate-200">
+                                        <?php
+                                        $no = 1;
+                                        $id = 1;
+                                        while ($krs = mysqli_fetch_assoc($result_krs)) : ?>
+                                            <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
+                                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++ ?></td>
+                                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $krs['kode_matkul'] ?></td>
+                                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $krs['nama_matkul'] ?></td>
+                                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $krs['sks'] ?></td>
                                             </tr>
                                         <?php endwhile; ?>
                                     </tbody>
                                 </table>
                             </div>
                         <?php else: ?>
-                            <p class="text-gray-500 italic">Belum ada mata kuliah yang diambil.</p>
+                            <p class="text-slate-500 italic">Belum ada mata kuliah yang diambil.</p>
                         <?php endif; ?>
 
 

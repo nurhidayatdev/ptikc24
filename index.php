@@ -1,3 +1,6 @@
+<?php
+include 'koneksi.php';
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -60,6 +63,7 @@
         <li><a href="jadwal-matkul/jadwal-matkul.html" class="hover:text-blue-200 transition">Jadwal Kuliah</a></li>
         <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-blue-200 transition">Daftar Mahasiswa</a></li>
         <li><a href="daftar-tugas/daftar-tugas.html" class="hover:text-blue-200 transition">Daftar Tugas</a></li>
+        <li><a href="backend/login/login.php" class="hover:text-blue-200 transition">Login</a></li>
       </ul>
     </nav>
   </div>

@@ -2,6 +2,11 @@
 session_start();
 include '../../koneksi.php';
 
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login/login.php");
+    exit;
+}
+
 $nama_panggilan = $_SESSION['nama_panggilan'];
 $foto = $_SESSION['foto'];
 $query = "SELECT 
