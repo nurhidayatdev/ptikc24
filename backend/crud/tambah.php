@@ -13,66 +13,64 @@ $tabel = $_GET['tabel'] ?? '';
 $file = $_GET['file'] ?? '';
 
 if (isset($_POST['tambah'])) {
-  $redirect = "";
-  switch ($tabel) {
-    case 'mahasiswa':
-      $nama_lengkap = $_POST['nama_lengkap'];
-      $nama_panggilan = $_POST['nama_panggilan'];
-      $email = $_POST['email'];
-      $nim = $_POST['nim'];
-      $bio = $_POST['bio'];
-      $foto = '';
-      if (!empty($_FILES['foto']['name'])) {
-        $target_dir = "../img/profile/";
-        $foto = time() . "_" . basename($_FILES["foto"]["name"]);
-        $target_file = $target_dir . $foto;
-        move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file);
-      }
-      mysqli_query($koneksi, "INSERT INTO mahasiswa (nama_lengkap, nama_panggilan, email, nim, bio, foto)
+    $redirect = "";
+    switch ($tabel) {
+        case 'mahasiswa':
+            $nama_lengkap = $_POST['nama_lengkap'];
+            $nama_panggilan = $_POST['nama_panggilan'];
+            $email = $_POST['email'];
+            $nim = $_POST['nim'];
+            $bio = $_POST['bio'];
+            $foto = '';
+            if (!empty($_FILES['foto']['name'])) {
+                $target_dir = "../img/profile/";
+                $foto = time() . "_" . basename($_FILES["foto"]["name"]);
+                $target_file = $target_dir . $foto;
+                move_uploaded_file($_FILES["foto"]["tmp_name"], $target_file);
+            }
+            mysqli_query($koneksi, "INSERT INTO mahasiswa (nama_lengkap, nama_panggilan, email, nim, bio, foto)
                 VALUES ('$nama_lengkap','$nama_panggilan','$email','$nim','$bio','$foto')");
-      $redirect = "../dashboard/db_mahasiswa.php";
+            $redirect = "../dashboard/db_mahasiswa.php";
 
-      break;
+            break;
 
-      case 'mata_kuliah':
-      $kode_matkul = $_POST['kode_matkul'];
-      $nama_matkul = $_POST['nama_matkul'];
-      $semester = $_POST['semester'];
-      $sks = $_POST['sks'];
-      mysqli_query($koneksi, "INSERT INTO mata_kuliah (kode_matkul, nama_matkul, semester, sks)
+        case 'mata_kuliah':
+            $kode_matkul = $_POST['kode_matkul'];
+            $nama_matkul = $_POST['nama_matkul'];
+            $semester = $_POST['semester'];
+            $sks = $_POST['sks'];
+            mysqli_query($koneksi, "INSERT INTO mata_kuliah (kode_matkul, nama_matkul, semester, sks)
                 VALUES ('$kode_matkul','$nama_matkul','$semester','$sks')");
-      $redirect = "../dashboard/db_matkul.php";
+            $redirect = "../dashboard/db_matkul.php";
 
-      break;
+            break;
 
-      case 'jadwal_matkul':
-      $matkul_id = $_POST['matkul_id'];
-      $hari = $_POST['hari'];
-      $jam_ke = $_POST['jam_ke'];
-      $jam_mulai = $_POST['jam_mulai'];
-      $jam_selesai = $_POST['jam_selesai'];
-      $ruangan = $_POST['ruangan'];
-      $dosen_pengampu = $_POST['dosen_pengampu'];
-      $dosen_mitra = $_POST['dosen_mitra'];
-      mysqli_query($koneksi, "INSERT INTO jadwal_matkul (matkul_id, hari, jam_ke, jam_mulai, jam_selesai, ruangan, dosen_pengampu, dosen_mitra)
-                VALUES ('$matkul_id', '$hari', '$jam_ke', '$jam_mulai', '$jam_selesai', '$ruangan', '$dosen_pengampu', '$dosen_mitra')");
-      $redirect = "../dashboard/db_jadwal_mk.php";
+        case 'jadwal_matkul':
+            $matkul_id = $_POST['matkul_id'];
+            $hari = $_POST['hari'];
+            $jam_ke = $_POST['jam_ke'];
+            $jam_mulai = $_POST['jam_mulai'];
+            $jam_selesai = $_POST['jam_selesai'];
+            $ruangan = $_POST['ruangan'];
+            $dosen_pengampu_id = $_POST['dosen_pengampu_id'];
+            $dosen_mitra_id = $_POST['dosen_mitra_id'];
+            mysqli_query($koneksi, "INSERT INTO jadwal_matkul (matkul_id, hari, jam_ke, jam_mulai, jam_selesai, ruangan, dosen_pengampu_id, dosen_mitra_id)
+                VALUES ('$matkul_id', '$hari', '$jam_ke', '$jam_mulai', '$jam_selesai', '$ruangan', '$dosen_pengampu_id', '$dosen_mitra_id')");
+            $redirect = "../dashboard/db_jadwal_mk.php";
 
-      break;
+            break;
 
-      case 'users':
-      $id = $_POST['id'];
-      $password = $_POST['password'];
-      $role = $_POST['role'];
-      mysqli_query($koneksi, "INSERT INTO users (id, password, role)
+        case 'users':
+            $id = $_POST['id'];
+            $password = $_POST['password'];
+            $role = $_POST['role'];
+            mysqli_query($koneksi, "INSERT INTO users (id, password, role)
                 VALUES ('$id','$password','$role')");
-      $redirect = "../dashboard/db_users.php";
+            $redirect = "../dashboard/db_users.php";
 
-      break;
-
-  
-  }
-  echo "
+            break;
+    }
+    echo "
     <!DOCTYPE html>
     <html>
     <head>
@@ -104,7 +102,7 @@ if (isset($_POST['tambah'])) {
 
     </body>
     </html>";
-  exit;
+    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -231,166 +229,180 @@ if (isset($_POST['tambah'])) {
 
     <main class="ml-0 md:ml-64 pt-20 p-6">
         <div class="bg-white rounded-lg border border-gray-200 p-6">
-            
+
 
             <form class="space-y-6" method="POST" enctype="multipart/form-data">
                 <div class="border-b border-gray-200 pb-6">
                     <?php if ($tabel === 'mahasiswa'): ?>
-                    <h3 class="text-xl font-bold mb-6">Mahasiswa</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                            <input type="text" name="nama_lengkap"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                        <h3 class="text-xl font-bold mb-6">Mahasiswa</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                                <input type="text" name="nama_lengkap"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Panggilan</label>
+                                <input type="text" name="nama_panggilan"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                                <input type="email" name="email"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">NIM</label>
+                                <input type="number" name="nim"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Biodata</label>
+                                <input type="text" name="bio"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Foto</label>
+                                <input type="file" name="foto" accept="image/*"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Panggilan</label>
-                            <input type="text" name="nama_panggilan"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                            <input type="email" name="email"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">NIM</label>
-                            <input type="number" name="nim"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Biodata</label>
-                            <input type="text" name="bio"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Foto</label>
-                            <input type="file" name="foto" accept="image/*"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                    </div>
 
                     <?php elseif ($tabel === 'mata_kuliah'): ?>
-                    <h3 class="text-xl font-bold mb-6">Mata Kuliah</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Kode Mata Kuliah</label>
-                            <input type="text" name="kode_matkul"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                        <h3 class="text-xl font-bold mb-6">Mata Kuliah</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kode Mata Kuliah</label>
+                                <input type="text" name="kode_matkul"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nama Mata Kuliah</label>
+                                <input type="text" name="nama_matkul"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
+                                <input type="number" name="semester"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">SKS</label>
+                                <input type="number" name="sks"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Mata Kuliah</label>
-                            <input type="text" name="nama_matkul"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Semester</label>
-                            <input type="number" name="semester"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">SKS</label>
-                            <input type="number" name="sks"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                    </div>
 
                     <?php elseif ($tabel === 'jadwal_matkul'): ?>
-                    <h3 class="text-xl font-bold mb-6">Jadwal Mata Kuliah</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Mata Kuliah</label>
-                            <select name="matkul_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400" required>
-                <option value="">-- Pilih Mata Kuliah --</option>
-                <?php
-                $query_mk = mysqli_query($koneksi, "SELECT DISTINCT
-    mk.id AS matkul_id,
-    mk.nama_matkul
-FROM krs k
-JOIN mata_kuliah mk ON k.matkul_id = mk.id
-ORDER BY mk.nama_matkul ASC");
-                while ($mk = mysqli_fetch_assoc($query_mk)) {
-                  echo "<option value='{$mk['matkul_id']}'>{$mk['nama_matkul']}</option>";
-                }
-                ?>
-              </select>
+                        <h3 class="text-xl font-bold mb-6">Jadwal Mata Kuliah</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Mata Kuliah</label>
+                                <select name="matkul_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400" required>
+                                    <option value="">-- Pilih Mata Kuliah --</option>
+                                    <?php
+                                    $query_mk = mysqli_query($koneksi, "SELECT DISTINCT
+                                        mk.id AS matkul_id,
+                                        mk.nama_matkul
+                                        FROM krs k
+                                        JOIN mata_kuliah mk ON k.matkul_id = mk.id
+                                        ORDER BY mk.nama_matkul ASC");
+                                    while ($mk = mysqli_fetch_assoc($query_mk)) {
+                                        echo "<option value='{$mk['matkul_id']}'>{$mk['nama_matkul']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Hari</label>
+                                <select name="hari" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400" required>
+                                    <option value="">-- Pilih Hari --</option>
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Ruangan</label>
+                                <input type="text" name="ruangan"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jam Ke</label>
+                                <input type="text" name="jam_ke"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jam Mulai</label>
+                                <input type="text" name="jam_mulai"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Jam Selesai</label>
+                                <input type="text" name="jam_selesai"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Dosen Pengampu</label>
+                                <select name="dosen_pengampu_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400" required>
+                                    <option value="">-- Pilih Dosen Pengampu --</option>
+                                    <?php
+                                    $query_dp = mysqli_query($koneksi, "SELECT * FROM dosen ORDER BY nama_dosen ASC");
+                                    while ($dp = mysqli_fetch_assoc($query_dp)) {
+                                        echo "<option value='{$dp['id']}'>{$dp['nama_dosen']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Dosen Mitra</label>
+                                <select name="dosen_mitra_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400" required>
+                                    <option value="">-- Pilih Dosen Mitra --</option>
+                                    <?php
+                                    $query_dm = mysqli_query($koneksi, "SELECT * FROM dosen ORDER BY nama_dosen ASC");
+                                    while ($dm = mysqli_fetch_assoc($query_dm)) {
+                                        echo "<option value='{$dm['id']}'>{$dm['nama_dosen']}</option>";
+                                    }
+                                    ?>
+                                    </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Hari</label>
-                            <select name="hari" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400" required>
-                <option value="">-- Pilih Hari --</option>
-                <option value="Senin">Senin</option>
-                <option value="Selasa">Selasa</option>
-                <option value="Rabu">Rabu</option>
-                <option value="Kamis">Kamis</option>
-                <option value="Jumat">Jumat</option>
-              </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Ruangan</label>
-                            <input type="text" name="ruangan"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Jam Ke</label>
-                            <input type="text" name="jam_ke"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Jam Mulai</label>
-                            <input type="text" name="jam_mulai"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Jam Selesai</label>
-                            <input type="text" name="jam_selesai"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Dosen Pengampu</label>
-                            <input type="text" name="dosen_pengampu"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Dosen Mitra</label>
-                            <input type="text" name="dosen_mitra"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                    </div>
 
                     <?php elseif ($tabel === 'users'): ?>
-                    <h3 class="text-xl font-bold mb-6">Users</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Kode Mata Kuliah</label>
-                            <select name="id" class="form-select" required>
-                <option value="">-- Pilih Mahasiswa --</option>
-                <?php
-                $query_mhs = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
-                while ($mhs = mysqli_fetch_assoc($query_mhs)) {
-                  echo "<option value='{$mhs['user_id']}'>{$mhs['nama_lengkap']}</option>";
-                }
-                ?>
-              </select>
+                        <h3 class="text-xl font-bold mb-6">Users</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Kode Mata Kuliah</label>
+                                <select name="id" class="form-select" required>
+                                    <option value="">-- Pilih Mahasiswa --</option>
+                                    <?php
+                                    $query_mhs = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
+                                    while ($mhs = mysqli_fetch_assoc($query_mhs)) {
+                                        echo "<option value='{$mhs['user_id']}'>{$mhs['nama_lengkap']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                                <input type="password" name="password"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
+                                <select name="role" class="form-control" required>
+                                    <option value="">-- Pilih Role/Peran --</option>
+                                    <option value="Administrator Utama">Administrator Utama</option>
+                                    <option value="Ketua Tingkat">Ketua Tingkat</option>
+                                    <option value="Sekretaris">Sekretaris</option>
+                                    <option value="Bendahara">Bendahara</option>
+                                    <option value="Mahasiswa">Mahasiswa</option>
+                                </select>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
-                            <input type="password" name="password"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Role</label>
-                            <select name="role" class="form-control" required>
-                <option value="">-- Pilih Role/Peran --</option>
-                <option value="Administrator Utama">Administrator Utama</option>
-                <option value="Ketua Tingkat">Ketua Tingkat</option>
-                <option value="Sekretaris">Sekretaris</option>
-                <option value="Bendahara">Bendahara</option>
-                <option value="Mahasiswa">Mahasiswa</option>
-              </select>
-                        </div>
-                    </div>
                     <?php endif; ?>
                 </div>
 

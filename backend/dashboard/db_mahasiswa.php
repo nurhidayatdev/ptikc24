@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
-$nama_panggilan = $_SESSION['nama_panggilan'];
+$nama_lengkap = $_SESSION['nama_lengkap'];
 $foto = $_SESSION['foto'];
 
 $search = $_GET['search'] ?? '';
@@ -68,15 +68,15 @@ if (!empty($search)) {
                 <span class="text-xl font-bold text-white">Dashboard PTIK C</span>
             </div>
             <!-- Mobile Menu Button dengan z-index yang sesuai -->
-            <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-900 md:hidden p-2 rounded-lg hover:bg-gray-100">
+            <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
-            <div class="hidden md:flex items-center space-x-4">
+            <div class="hidden lg:flex items-center space-x-4">
                 <div class="relative">
                     <button id="profile-button" class="flex items-center space-x-2">
-                        <span class="text-white"><?= htmlspecialchars($nama_panggilan) ?></span>
+                        <span class="text-white"><?= htmlspecialchars($nama_lengkap) ?></span>
                         <img src="../img/profile/<?= htmlspecialchars($foto) ?>" alt="Profile" class="w-8 h-8 rounded-full">
                     </button>
                     <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
@@ -90,7 +90,7 @@ if (!empty($search)) {
 
     <!-- Sidebar dengan z-index di bawah header -->
     <aside id="sidebar"
-        class="fixed left-0 top-0 h-screen w-48 bg-white transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out z-40">
+        class="fixed left-0 top-0 h-screen w-48 bg-white transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-40">
         <!-- Tambahan padding top agar tidak tertutup header -->
         <div class="pt-16">
             <nav class="mt-6">
@@ -169,7 +169,7 @@ if (!empty($search)) {
         </div>
     </aside>
 
-    <main class="ml-0 md:ml-48 pt-20 p-6">
+    <main class="ml-0 lg:ml-48 pt-20 p-6">
         <div class="bg-white rounded-lg border border-slate-200 p-6">
             <!-- Modified this section for better mobile responsiveness -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
@@ -186,15 +186,15 @@ if (!empty($search)) {
 
                             <button
                                 type="submit"
-                                class="bg-indigo-900 text-white px-4 py-2 rounded-lg hover:bg-indigo-800 text-xs">
-                                Search
+                                class="bg-indigo-900 text-white px-4 py-2 rounded-lg hover:bg-indigo-800 text-xs ">
+                                Cari
                             </button>
                         </div>
 
 
                         <a href="../crud/tambah.php?tabel=mahasiswa" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-800 text-center text-xs">
                             <button type="button">
-                                Tambah Data
+                                Tambah
                             </button>
                         </a>
                     </form>
@@ -206,22 +206,21 @@ if (!empty($search)) {
             <!-- Rest of the content remains the same -->
             <div class="overflow-x-auto">
                 <table class="min-w-full divide-y divide-slate-200">
-                    <thead>
+                    <thead class="bg-indigo-900">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">
-                                ID</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                No</th>
+                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
                                 Foto</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
                                 NIM</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
                                 Nama Lengkap</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
                                 Nama Panggilan</th>
-
-                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
                                 Bio</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-indigo-900 uppercase tracking-wider">
+                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
                                 Actions</th>
                         </tr>
                     </thead>
@@ -232,8 +231,8 @@ if (!empty($search)) {
                         while ($row = mysqli_fetch_assoc($result)) : ?>
                             <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
 
-                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
-                                <td class="px-6 py-2 whitespace-nowrap text-xs">
+                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-xs">
                                     <?php if (!empty($row['foto'])): ?>
                                         <img src="../img/profile/<?php echo htmlspecialchars($row['foto']); ?>"
                                             class="img-fluid rounded"
@@ -242,19 +241,19 @@ if (!empty($search)) {
                                         <span class="text-muted">Belum ada gambar</span>
                                     <?php endif; ?>
                                 </td>
-                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nim']; ?></td>
-                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_lengkap']; ?></td>
-                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_panggilan']; ?></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nim']; ?></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_lengkap']; ?></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_panggilan']; ?></td>
 
-                                <td class="px-6 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['bio']; ?></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['bio']; ?></td>
 
-                                <td class="px-6 py-2 whitespace-nowrap text-sm text-slate-500">
+                                <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">
                                     <a href="../crud/edit.php?tabel=mahasiswa&id=<?= $row['id']; ?>">
                                         <button class="text-blue-600 hover:text-blue-900 mr-3 text-xs">Edit</button>
                                     </a>
 
                                     <a href="../crud/hapus.php?tabel=mahasiswa&id=<?= $row['id']; ?>">
-                                        <button class="text-red-600 hover:text-red-900 text-xs">Delete</button>
+                                        <button class="text-red-600 hover:text-red-900 text-xs">Hapus</button>
                                     </a>
 
                                 </td>

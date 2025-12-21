@@ -10,9 +10,14 @@ if (!isset($_SESSION['user_id'])) {
 $nama_panggilan = $_SESSION['nama_panggilan'];
 $foto = $_SESSION['foto'];
 $query = "SELECT 
-    jm.id, jm.matkul_id, jm.hari, jm.jam_ke, jm.jam_mulai, jm.jam_selesai, jm.ruangan, jm.dosen_pengampu, jm.dosen_mitra, mk.nama_matkul, mk.sks
+    jm.id, jm.matkul_id, jm.hari, jm.jam_ke, jm.jam_mulai, jm.jam_selesai, jm.ruangan, mk.nama_matkul, mk.sks,
+    dp.nama_dosen AS dosen_pengampu,
+    dm.nama_dosen AS dosen_mitra
 FROM jadwal_matkul jm
-JOIN mata_kuliah mk ON jm.matkul_id = mk.id";
+JOIN mata_kuliah mk ON jm.matkul_id = mk.id
+LEFT JOIN dosen dp ON jm.dosen_pengampu_id = dp.id
+LEFT JOIN dosen dm ON jm.dosen_mitra_id = dm.id
+";
 $result = mysqli_query($koneksi, $query);
 ?>
 <!DOCTYPE html>
@@ -192,7 +197,7 @@ $result = mysqli_query($koneksi, $query);
 
                                 <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $no++; ?></td>
                                 <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['hari']; ?></td>
-                                                                <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['jam_ke']; ?></td>
+                                <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['jam_ke']; ?></td>
                                 <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['jam_mulai']; ?></td>
                                 <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['jam_selesai']; ?></td>
                                 <td class="px-6 py-2 whitespace-nowrap text-xs"><?= $row['ruangan']; ?></td>
