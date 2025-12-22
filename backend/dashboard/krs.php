@@ -53,10 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 /* =====================
    AMBIL MATKUL PTIK
    ===================== */
-$matkul = mysqli_query($koneksi, "
-    SELECT * FROM mata_kuliah
-    ORDER BY semester, nama_matkul
-");
+$res_matkul = mysqli_query($koneksi, "SELECT * FROM mata_kuliah ORDER BY semester, nama_matkul");
+
+$matkul_rows = [];
+while ($r = mysqli_fetch_assoc($res_matkul)) {
+    $matkul_rows[] = $r;
+}
 
 /* =====================
    MATKUL YANG SUDAH DIAMBIL
@@ -209,33 +211,39 @@ while ($row = mysqli_fetch_assoc($krs)) {
 
     <form method="POST">
 
-        <table class="w-full border">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="p-2">Ambil</th>
-                    <th class="p-2">Kode</th>
-                    <th class="p-2">Nama Mata Kuliah</th>
-                    <th class="p-2">SKS</th>
-                    <th class="p-2">Semester</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php while ($m = mysqli_fetch_assoc($matkul)): ?>
-                <tr class="border-t">
-                    <td class="text-center">
-                        <input type="checkbox"
-                               name="matkul[]"
-                               value="<?= $m['id'] ?>"
-                               <?= in_array($m['id'], $diambil) ? 'checked' : '' ?>>
-                    </td>
-                    <td class="p-2"><?= $m['kode_matkul'] ?></td>
-                    <td class="p-2"><?= $m['nama_matkul'] ?></td>
-                    <td class="p-2 text-center"><?= $m['sks'] ?></td>
-                    <td class="p-2 text-center"><?= $m['semester'] ?></td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
+        <?php for ($s = 1; $s <= 8; $s++): ?>
+            <h2 class="text-lg font-semibold mt-4 mb-2">Semester <?= $s ?></h2>
+            <table class="w-full border mb-4">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="p-2">Ambil</th>
+                        <th class="p-2">Kode</th>
+                        <th class="p-2">Nama Mata Kuliah</th>
+                        <th class="p-2">SKS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $found = false;
+                    foreach ($matkul_rows as $m) {
+                        if ((int)$m['semester'] !== $s) continue;
+                        $found = true;
+                    ?>
+                    <tr class="border-t">
+                        <td class="text-center">
+                            <input type="checkbox" name="matkul[]" value="<?= $m['id'] ?>" <?= in_array($m['id'], $diambil) ? 'checked' : '' ?>>
+                        </td>
+                        <td class="p-2"><?= htmlspecialchars($m['kode_matkul']) ?></td>
+                        <td class="p-2"><?= htmlspecialchars($m['nama_matkul']) ?></td>
+                        <td class="p-2 text-center"><?= htmlspecialchars($m['sks']) ?></td>
+                    </tr>
+                    <?php } ?>
+                    <?php if (!$found): ?>
+                        <tr><td class="p-2" colspan="4">Tidak ada mata kuliah untuk semester ini.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        <?php endfor; ?>
 
         <button type="submit"
                 class="mt-4 px-6 py-2 bg-black text-white rounded hover:bg-gray-800">

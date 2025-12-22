@@ -56,7 +56,7 @@ if (isset($_POST['tambah'])) {
             $dosen_mitra_id = $_POST['dosen_mitra_id'];
             mysqli_query($koneksi, "INSERT INTO jadwal_matkul (matkul_id, hari, jam_ke, jam_mulai, jam_selesai, ruangan, dosen_pengampu_id, dosen_mitra_id)
                 VALUES ('$matkul_id', '$hari', '$jam_ke', '$jam_mulai', '$jam_selesai', '$ruangan', '$dosen_pengampu_id', '$dosen_mitra_id')");
-            $redirect = "../dashboard/db_jadwal_mk.php";
+            $redirect = "../dashboard/db_jadwal.php";
 
             break;
 
@@ -336,12 +336,12 @@ if (isset($_POST['tambah'])) {
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Jam Mulai</label>
-                                <input type="text" name="jam_mulai"
+                                <input type="time" name="jam_mulai"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-1">Jam Selesai</label>
-                                <input type="text" name="jam_selesai"
+                                <input type="time" name="jam_selesai"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400">
                             </div>
 

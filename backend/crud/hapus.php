@@ -72,7 +72,7 @@ if (isset($_GET['tabel']) && isset($_GET['id']) && isset($_GET['confirm'])) {
             $redirect = '../dashboard/db_matkul.php';
             break;
             case 'jadwal_matkul':
-            $redirect = '../dashboard/db_jadwal_mk.php';
+            $redirect = '../dashboard/db_jadwal.php';
             break;
 
             case 'users':

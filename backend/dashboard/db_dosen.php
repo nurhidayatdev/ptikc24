@@ -16,36 +16,17 @@ $search = $_GET['search'] ?? '';
 if (!empty($search)) {
     $stmt = mysqli_prepare(
         $koneksi,
-        "SELECT 
-    u.id AS user_id,
-    m.nama_lengkap,
-    u.id,
-    u.email,
-    u.password,
-    u.role
-FROM users u
-JOIN mahasiswa m ON m.user_id = u.id 
-         WHERE m.nama_lengkap LIKE ? 
-         OR u.email LIKE ? 
-         OR u.role LIKE ?
-         ORDER BY u.email"
+        "SELECT * FROM dosen 
+         WHERE nama_dosen LIKE ?
+         ORDER BY nama_dosen ASC"
     );
 
     $like = "%$search%";
-    mysqli_stmt_bind_param($stmt, "sss", $like, $like, $like);
+    mysqli_stmt_bind_param($stmt, "s", $like);
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
-    $result = mysqli_query($koneksi, "SELECT 
-    u.id AS user_id,
-    m.nama_lengkap,
-    u.id,
-    u.email,
-    u.password,
-    u.role
-FROM users u
-JOIN mahasiswa m ON m.user_id = u.id
-ORDER BY u.email");
+    $result = mysqli_query($koneksi, "SELECT * FROM dosen ORDER BY nama_dosen ASC");
 }
 
 ?>
@@ -191,7 +172,7 @@ ORDER BY u.email");
         <div class="bg-white rounded-lg border border-slate-200 p-6">
             <!-- Modified this section for better mobile responsiveness -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <h3 class="text-xl font-bold text-slate-800">Data Mahasiswa</h3>
+                <h3 class="text-xl font-bold text-slate-800">Data Dosen</h3>
                 <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <form method="GET" class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                         <div class="grid grid-cols-2 gap-4">
@@ -199,7 +180,7 @@ ORDER BY u.email");
                                 type="text"
                                 name="search"
                                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                                placeholder="Cari NIM / Nama..."
+                                placeholder="Cari Nama..."
                                 class="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
 
                             <button
@@ -210,7 +191,7 @@ ORDER BY u.email");
                         </div>
 
 
-                        <a href="../crud/tambah.php?tabel=users" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-800 text-center text-xs">
+                        <a href="../crud/tambah.php?tabel=dosen" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-800 text-center text-xs">
                             <button type="button">
                                 Tambah
                             </button>
@@ -229,13 +210,9 @@ ORDER BY u.email");
                             <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
                                 No</th>
                             <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                Nama Lengkap</th>
+                                Nama Dosen</th>
                             <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                Email</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                Password</th>
-                                <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                Role</th>
+                                No HP</th>
                             <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
                                 Actions</th>
                         </tr>
@@ -249,18 +226,16 @@ ORDER BY u.email");
 
                                 <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
                                 
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_lengkap']; ?></td>
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['email']; ?></td>
-
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">**********</td>
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['role']; ?></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_dosen']; ?></td>
+                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['no_hp']; ?></td>
+                                
 
                                 <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">
-                                    <a href="../crud/edit.php?tabel=users&id=<?= $row['id']; ?>">
+                                    <a href="../crud/edit.php?tabel=dosen&id=<?= $row['id']; ?>">
                                         <button class="text-blue-600 hover:text-blue-900 mr-3 text-xs">Edit</button>
                                     </a>
 
-                                    <a href="../crud/hapus.php?tabel=users&id=<?= $row['id']; ?>">
+                                    <a href="../crud/hapus.php?tabel=dosen&id=<?= $row['id']; ?>">
                                         <button class="text-red-600 hover:text-red-900 text-xs">Hapus</button>
                                     </a>
 

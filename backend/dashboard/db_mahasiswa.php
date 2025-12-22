@@ -19,7 +19,8 @@ if (!empty($search)) {
         "SELECT * FROM mahasiswa 
          WHERE nim LIKE ? 
          OR nama_lengkap LIKE ? 
-         OR nama_panggilan LIKE ?"
+         OR nama_panggilan LIKE ?
+         ORDER BY nim ASC"
     );
 
     $like = "%$search%";
@@ -27,7 +28,7 @@ if (!empty($search)) {
     mysqli_stmt_execute($stmt);
     $result = mysqli_stmt_get_result($stmt);
 } else {
-    $result = mysqli_query($koneksi, "SELECT * FROM mahasiswa");
+    $result = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
 }
 
 ?>
@@ -144,7 +145,7 @@ if (!empty($search)) {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
-                                <a href="db_absensi.php">
+                                <a href="db_absensi.php?matkul_id=33&pertemuan=1">
                                     <span class="text-xs">Absensi</span>
                                 </a>
                             </div>
@@ -157,7 +158,7 @@ if (!empty($search)) {
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
-                                <a href="db_kas.php">
+                                <a href="db_kas.php?minggu_ke=1">
                                     <span class="text-xs">Kas Mingguan</span>
                                 </a>
                             </div>

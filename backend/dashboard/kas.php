@@ -7,35 +7,62 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$nama_panggilan = $_SESSION['nama_panggilan'];
+$user_id = $_SESSION['user_id'];
+$nama_lengkap = $_SESSION['nama_lengkap'];
 $foto = $_SESSION['foto'];
-// ambil semua mahasiswa
-$mhs = mysqli_query($koneksi, "
-    SELECT id, nim, nama_lengkap
-    FROM mahasiswa
-    ORDER BY nim ASC
-");
 
-// simpan/update kas
-if (isset($_POST['simpan'])) {
-    $minggu = (int) $_POST['minggu'];
+if (isset($_POST['simpan_kas'])) {
+    $minggu = $_POST['minggu_ke'];
 
-    foreach ($_POST['status'] as $mahasiswa_id => $status) {
+    if (!empty($_POST['status']) && is_array($_POST['status'])) {
+        foreach ($_POST['status'] as $mahasiswa_id => $status) {
+            $mahasiswa_id = mysqli_real_escape_string($koneksi, $mahasiswa_id);
+            $status_safe = mysqli_real_escape_string($koneksi, $status);
+            $minggu_safe = mysqli_real_escape_string($koneksi, $minggu);
 
-        $tanggal = ($status === 'lunas') ? date('Y-m-d') : NULL;
+            // get posted tanggal for this mahasiswa (may be empty)
+            $posted_tanggal = '';
+            if (!empty($_POST['tanggal']) && isset($_POST['tanggal'][$mahasiswa_id])) {
+                $posted_tanggal = $_POST['tanggal'][$mahasiswa_id];
+            }
 
-        mysqli_query($koneksi, "
-            INSERT INTO kas (mahasiswa_id, minggu_ke, status, tanggal_bayar)
-            VALUES ($mahasiswa_id, $minggu, '$status', " . ($tanggal ? "'$tanggal'" : "NULL") . ")
-            ON DUPLICATE KEY UPDATE
-                status='$status',
-                tanggal_bayar=" . ($tanggal ? "'$tanggal'" : "NULL") . "
-        ");
+            // fetch existing kas row if any
+            $res = mysqli_query($koneksi, "SELECT status, tanggal_bayar FROM kas WHERE mahasiswa_id='$mahasiswa_id' AND minggu_ke='$minggu_safe'");
+            $exists = mysqli_num_rows($res) > 0;
+            $existing = $exists ? mysqli_fetch_assoc($res) : null;
+
+            // Determine tanggal to save: if posted non-empty use it, else keep existing if exists, else NULL
+            $tanggal_to_save = null;
+            if ($posted_tanggal !== '') {
+                $tanggal_to_save = mysqli_real_escape_string($koneksi, $posted_tanggal);
+            } elseif ($exists && !empty($existing['tanggal_bayar'])) {
+                $tanggal_to_save = $existing['tanggal_bayar'];
+            } else {
+                $tanggal_to_save = null;
+            }
+
+            if ($exists) {
+                // Update: only set tanggal_bayar if not null, otherwise set NULL
+                if ($tanggal_to_save !== null) {
+                    mysqli_query($koneksi, "UPDATE kas SET status='$status_safe', tanggal_bayar='$tanggal_to_save' WHERE mahasiswa_id='$mahasiswa_id' AND minggu_ke='$minggu_safe'");
+                } else {
+                    mysqli_query($koneksi, "UPDATE kas SET status='$status_safe', tanggal_bayar=NULL WHERE mahasiswa_id='$mahasiswa_id' AND minggu_ke='$minggu_safe'");
+                }
+            } else {
+                // Insert new row
+                if ($tanggal_to_save !== null) {
+                    mysqli_query($koneksi, "INSERT INTO kas (mahasiswa_id, minggu_ke, status, tanggal_bayar) VALUES ('$mahasiswa_id', '$minggu_safe', '$status_safe', '$tanggal_to_save')");
+                } else {
+                    mysqli_query($koneksi, "INSERT INTO kas (mahasiswa_id, minggu_ke, status) VALUES ('$mahasiswa_id', '$minggu_safe', '$status_safe')");
+                }
+            }
+        }
     }
 
-    header("Location: kas.php?minggu=$minggu");
+    header("Location: db_kas.php?minggu_ke=$minggu&success=1");
     exit;
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -65,24 +92,25 @@ if (isset($_POST['simpan'])) {
     </style>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-slate-100">
     <!-- Header dengan z-index lebih tinggi -->
-    <header class="bg-gradient-to-r from-blue-700 to-blue-800  fixed w-full top-0 z-50">
-        <div class="flex justify-between items-center px-6 py-3">
+    <header class="bg-indigo-950  fixed w-full top-0 z-50">
+        <div class="flex justify-between items-center px-6 py-2">
             <div class="flex items-center">
+                <img src="../../img/logo.png" alt="Logo Universitas Negeri Makassar" class="h-10 w-10 mr-3">
                 <span class="text-xl font-bold text-white">Dashboard PTIK C</span>
             </div>
             <!-- Mobile Menu Button dengan z-index yang sesuai -->
-            <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg hover:bg-gray-100">
+            <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
-            <div class="hidden md:flex items-center space-x-4">
+            <div class="hidden lg:flex items-center space-x-4">
                 <div class="relative">
                     <button id="profile-button" class="flex items-center space-x-2">
+                        <span class="text-white"><?= htmlspecialchars($nama_lengkap) ?></span>
                         <img src="../img/profile/<?= htmlspecialchars($foto) ?>" alt="Profile" class="w-8 h-8 rounded-full">
-                        <span class="text-white"><?= htmlspecialchars($nama_panggilan) ?></span>
                     </button>
                     <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
                         <a href="profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
@@ -95,30 +123,31 @@ if (isset($_POST['simpan'])) {
 
     <!-- Sidebar dengan z-index di bawah header -->
     <aside id="sidebar"
-        class="fixed left-0 top-0 h-screen w-64 bg-white transform -translate-x-full md:translate-x-0 transition-transform duration-200 ease-in-out z-40">
+        class="fixed left-0 top-0 h-screen w-48 bg-white transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-40">
         <!-- Tambahan padding top agar tidak tertutup header -->
         <div class="pt-16">
             <nav class="mt-6">
                 <div class="px-4 space-y-2">
                     <!-- Dashboard Menu -->
-                    <a href="../index.html" class="flex items-center px-4 py-2 text-gray-700  rounded-lg">
-                        <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <a href="../index.html" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
+                        <svg class="w-4 h-4 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                         </svg>
-                        <span>Beranda</span>
+                        <span class="text-xs">Beranda</span>
                     </a>
 
                     <!-- Components Menu -->
                     <div class="space-y-2">
+
                         <button
-                            class="submenu-button flex items-center justify-between w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            class="submenu-button flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-slate-100 rounded-lg">
                             <div class="flex items-center">
                                 <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
-                                <span>Akademik</span>
+                                <span class="text-xs">Akademik</span>
                             </div>
                             <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor"
                                 viewBox="0 0 24 24">
@@ -126,134 +155,173 @@ if (isset($_POST['simpan'])) {
                                     d="M19 9l-7 7-7-7" />
                             </svg>
                         </button>
+
                         <div class="submenu pl-8 space-y-1 hidden overflow-y-auto max-h-52">
                             <a href="db_mahasiswa.php"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Daftar Mahasiswa</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Mahasiswa</a>
 
                             <a href="db_matkul.php"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Daftar Mata Kuliah</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Mata Kuliah</a>
+
+                            <a href="db_jadwal_mk.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal Mata Kuliah</a>
 
                             <a href="db_users.php"
-                                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg">Daftar Users</a>
-
-
-
-
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Users</a>
                         </div>
+
                         <button
-                            class="flex items-center justify-between w-full px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg">
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
                                 <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M4 6h16M4 12h16M4 18h16" />
                                 </svg>
                                 <a href="db_absensi.php">
-                                    <span>Absensi</span>
+                                    <span class="text-xs">Absensi</span>
                                 </a>
-
                             </div>
-
                         </button>
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                                <a href="db_kas.php">
+                                    <span class="text-xs">Kas Mingguan</span>
+                                </a>
+                            </div>
+                        </button>
+
                     </div>
-
-
                 </div>
             </nav>
         </div>
     </aside>
 
-    <main class="ml-0 md:ml-64 pt-20 p-6">
-        <div class="max-w-5xl mx-auto bg-white p-6 rounded-lg shadow">
+    <main class="ml-0 lg:ml-48 pt-20 p-6">
+        <div class="bg-white rounded-lg border border-slate-200 p-6">
+            <!-- Modified this section for better mobile responsiveness -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h3 class="text-xl font-bold text-slate-800">Data Absensi</h3>
+                
+            </div>
+            <form method="GET" class="flex items-center gap-3 mb-6">
+                <label class="text-xs text-slate-700">Minggu:</label>
+                <select name="minggu_ke" required onchange="this.form.submit()" class="border rounded px-2 py-1 text-xs">
+                    <option value="">-- Pilih Minggu --</option>
+                    <?php for ($i = 1; $i <= 16; $i++): ?>
+                        <option value="<?= $i ?>" <?= ($_GET['minggu_ke'] ?? '') == $i ? 'selected' : '' ?>>Minggu <?= $i ?></option>
+                    <?php endfor; ?>
+                </select>
 
-            <h1 class="text-2xl font-bold mb-6">💰 Kas Kelas PTIK C</h1>
+                <label class="sr-only">Filter</label>
+                <select name="filter" onchange="this.form.submit()" class="border rounded px-2 py-1 text-xs">
+                    <option value="all" <?= ($_GET['filter'] ?? 'all') == 'all' ? 'selected' : '' ?>>Semua</option>
+                    <option value="Lunas" <?= ($_GET['filter'] ?? '') == 'Lunas' ? 'selected' : '' ?>>Lunas</option>
+                    <option value="Belum" <?= ($_GET['filter'] ?? '') == 'Belum' ? 'selected' : '' ?>>Belum</option>
+                </select>
 
-            <form method="GET" class="mb-6 flex items-end gap-4">
-                <div>
-                    <select name="minggu" class="border rounded px-3 py-2" required>
-                        <option value="">-- Pilih Minggu --</option>
-                        <?php for ($i = 1; $i <= 16; $i++): ?>
-                            <option value="<?= $i ?>" <?= ($_GET['minggu'] ?? '') == $i ? 'selected' : '' ?>>
-                                Minggu <?= $i ?>
-                            </option>
-                        <?php endfor; ?>
-                    </select>
-                </div>
-
-                <button type="submit"
-                    class="bg-blue-700 text-white rounded-lg px-4 py-2">
-                    🔍 Tampilkan
-                </button>
+                <a href="db_kas.php?minggu_ke=<?= $_GET['minggu_ke'] ?? '' ?>" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs">Kembali</a>
             </form>
-            <?php if (isset($_GET['minggu'])): ?>
 
-                <form method="POST">
+            <!-- filter links removed; filter dropdown will be next to save button -->
 
-                    <input type="hidden" name="minggu" value="<?= $_GET['minggu'] ?>">
+            <?php if (isset($_GET['minggu_ke'])): ?>
+                <?php $minggu = $_GET['minggu_ke']; ?>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full border">
-                            <thead class="bg-gray-200">
+
+
+
+                <!-- Rest of the content remains the same --><form method="POST">
+                <div class="overflow-x-auto">
+                    
+                                <input type="hidden" name="minggu_ke" value="<?= $minggu ?>">
+                                <div class="flex items-center justify-end mb-4">
+                                    <button type="submit" name="simpan_kas" class="bg-indigo-900 hover:bg-indigo-800 text-white rounded-lg px-4 py-2 text-xs">
+                                        Simpan Absensi
+                                    </button>
+                                </div>
+                        <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-indigo-900">
                                 <tr>
-                                    <th class="border p-2">No</th>
-                                    <th class="border p-2">NIM</th>
-                                    <th class="border p-2">Nama</th>
-                                    <th class="border p-2">Status</th>
+                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        No</th>
+                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        NIM</th>
+                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        Nama Lengkap</th>
+                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        Status</th>
+                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+                                        Tanggal Bayar</th>
                                 </tr>
                             </thead>
-                            <tbody>
-
+                            <tbody class="bg-white divide-y divide-slate-200">
                                 <?php
                                 $no = 1;
-                                $minggu_aktif = $_GET['minggu'];
+                                $id = 1;
+                                $minggu = $_GET['minggu_ke'];
+
+                                $filter = $_GET['filter'] ?? 'all';
+                                $filter = in_array($filter, ['all', 'Lunas', 'Belum']) ? $filter : 'all';
+
+                                $where_clause = '';
+                                if ($filter === 'Lunas') {
+                                    $where_clause = "WHERE k.status = 'Lunas'";
+                                } elseif ($filter === 'Belum') {
+                                    $where_clause = "WHERE (k.status IS NULL OR k.status != 'Lunas')";
+                                }
 
                                 $mhs = mysqli_query($koneksi, "
-    SELECT id, nim, nama_lengkap
-    FROM mahasiswa
-    ORDER BY nim ASC
-");
-
-                                while ($row = mysqli_fetch_assoc($mhs)) {
-
-                                    $cek = mysqli_query($koneksi, "
-        SELECT status
-        FROM kas
-        WHERE mahasiswa_id = {$row['id']}
-        AND minggu_ke = $minggu_aktif
+    SELECT
+        m.id AS mahasiswa_id,
+        m.nim,
+        m.nama_lengkap,
+        k.minggu_ke,
+        k.status,
+        k.tanggal_bayar
+    FROM mahasiswa m
+    LEFT JOIN kas k ON k.mahasiswa_id = m.id AND k.minggu_ke = '$minggu'
+    $where_clause
+    ORDER BY m.nim ASC
     ");
+                                while ($row = mysqli_fetch_assoc($mhs)) : ?>
+                                    <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
 
-                                    $kas = mysqli_fetch_assoc($cek);
-                                    $status = $kas['status'] ?? 'belum';
-                                ?>
-                                    <tr>
-                                        <td class="border p-2 text-center"><?= $no++ ?></td>
-                                        <td class="border p-2"><?= $row['nim'] ?></td>
-                                        <td class="border p-2"><?= $row['nama_lengkap'] ?></td>
-                                        <td class="border p-2 text-center">
-                                            <select name="status[<?= $row['id'] ?>]"
-                                                class="border rounded px-2 py-1">
-                                                <option value="Belum" <?= $status == 'Belum' ? 'selected' : '' ?>>Belum</option>
-                                                <option value="Lunas" <?= $status == 'Lunas' ? 'selected' : '' ?>>Lunas</option>
-                                            </select>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nim']; ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_lengkap']; ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">
+                                            <?php $status_current = $row['status'] ?? 'Belum'; ?>
+                                            <select name="status[<?= $row['mahasiswa_id'] ?>]"
+                                                class="border p-1 rounded">
+                                                    <option value="Lunas" <?= $status_current == 'Lunas' ? 'selected' : '' ?>>Lunas</option>
+                                                    <option value="Belum" <?= $status_current == 'Belum' ? 'selected' : '' ?>>Belum</option>
+                                                </select>
                                         </td>
+
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">
+                                            <?php $tanggal_current = $row['tanggal_bayar'] ?? ''; ?>
+                                            <input type="date" name="tanggal[<?= $row['mahasiswa_id'] ?>]" value="<?= htmlspecialchars($tanggal_current) ?>" class="border p-1 rounded text-xs">
+                                        </td>
+
+
                                     </tr>
-                                <?php } ?>
-
+                                <?php endwhile; ?>
                             </tbody>
+
                         </table>
-                    </div>
-
-                    <div class="mt-6">
-                        <button type="submit" name="simpan"
-                            class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700">
-                            💾 Simpan Kas Mingguan
-                        </button>
-                    </div>
-
-                </form>
-
+                    </form>
+                </div>
             <?php endif; ?>
-
         </div>
+        <footer class="text-xs text-indigo-900 text-center mb-0 pb-0 mt-6">
+            © 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.
+        </footer>
     </main>
     <script>
         // Mobile menu toggle dengan perbaikan
@@ -305,6 +373,8 @@ if (isset($_POST['simpan'])) {
                 }
             });
         }
+
+        // no-op: filter handled by GET form onchange submit
     </script>
 </body>
 
