@@ -11,16 +11,22 @@ $user_id = $_SESSION['user_id'];
 $nama_lengkap = $_SESSION['nama_lengkap'] ?? '';
 $foto = $_SESSION['foto'] ?? '';
 
-// ensure arus_kas table exists
-$create_sql = "CREATE TABLE IF NOT EXISTS arus_kas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    tipe ENUM('masuk','keluar') NOT NULL,
-    deskripsi VARCHAR(255) DEFAULT NULL,
-    jumlah DECIMAL(12,2) NOT NULL,
-    tanggal DATE DEFAULT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4";
-mysqli_query($koneksi, $create_sql);
+// handle add entry
+// handle update entry
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['edit_arus'])) {
+    $id = (int)($_POST['id'] ?? 0);
+    $tipe = $_POST['tipe'] === 'keluar' ? 'keluar' : 'masuk';
+    $deskripsi = mysqli_real_escape_string($koneksi, $_POST['deskripsi'] ?? '');
+    $jumlah = str_replace(',', '.', $_POST['jumlah'] ?? '0');
+    $jumlah = (float)$jumlah;
+    $tanggal = $_POST['tanggal'] ?? date('Y-m-d');
+
+    $stmt = mysqli_prepare($koneksi, "UPDATE arus_kas SET tipe=?, deskripsi=?, jumlah=?, tanggal=? WHERE id=?");
+    mysqli_stmt_bind_param($stmt, 'ssdsi', $tipe, $deskripsi, $jumlah, $tanggal, $id);
+    mysqli_stmt_execute($stmt);
+    header("Location: arus_kas.php");
+    exit;
+}
 
 // handle add entry
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tambah_arus'])) {
@@ -31,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tambah_arus'])) {
     $tanggal = $_POST['tanggal'] ?? date('Y-m-d');
 
     $stmt = mysqli_prepare($koneksi, "INSERT INTO arus_kas (tipe, deskripsi, jumlah, tanggal) VALUES (?, ?, ?, ?)");
-    mysqli_stmt_bind_param($stmt, 'sdds', $tipe, $deskripsi, $jumlah, $tanggal);
+    mysqli_stmt_bind_param($stmt, 'ssds', $tipe, $deskripsi, $jumlah, $tanggal);
     mysqli_stmt_execute($stmt);
     header("Location: arus_kas.php");
     exit;
@@ -60,8 +66,57 @@ $res_out = mysqli_query($koneksi, "SELECT COALESCE(SUM(jumlah),0) AS total_kelua
 $total_keluar = ($res_out && $r = mysqli_fetch_assoc($res_out)) ? $r['total_keluar'] : 0;
 $saldo = $total_masuk - $total_keluar;
 
+// optional edit fetch
+$editing = false;
+$form_tipe = 'masuk';
+$form_deskripsi = '';
+$form_jumlah = '';
+$form_tanggal = date('Y-m-d');
+if (isset($_GET['action']) && $_GET['action'] === 'edit' && isset($_GET['id'])) {
+    $eid = (int)$_GET['id'];
+    $res_edit = mysqli_query($koneksi, "SELECT * FROM arus_kas WHERE id={$eid} LIMIT 1");
+    if ($res_edit && $row_edit = mysqli_fetch_assoc($res_edit)) {
+        $editing = true;
+        $form_tipe = $row_edit['tipe'];
+        $form_deskripsi = $row_edit['deskripsi'];
+        $form_jumlah = $row_edit['jumlah'];
+        $form_tanggal = !empty($row_edit['tanggal']) ? $row_edit['tanggal'] : $form_tanggal;
+    }
+}
+
 // list entries
 $entries = mysqli_query($koneksi, "SELECT * FROM arus_kas ORDER BY tanggal DESC, created_at DESC");
+
+// handle export to CSV
+if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
+    // send headers to force download
+    header('Content-Type: text/csv; charset=utf-8');
+    header('Content-Disposition: attachment; filename=arus_kas_' . date('Ymd_His') . '.csv');
+
+    $output = fopen('php://output', 'w');
+    // header row (omit created_at)
+    fputcsv($output, ['ID', 'Tipe', 'Deskripsi', 'Jumlah', 'Tanggal']);
+
+    $q = mysqli_query($koneksi, "SELECT * FROM arus_kas ORDER BY tanggal DESC, created_at DESC");
+    while ($r = mysqli_fetch_assoc($q)) {
+        // format tanggal as dd/mm/YYYY to be more friendly for Excel
+        $tgl = '';
+        if (!empty($r['tanggal']) && strtotime($r['tanggal']) !== false) {
+            $tgl = date('d/m/Y', strtotime($r['tanggal']));
+        }
+
+        fputcsv($output, [
+            $r['id'],
+            $r['tipe'],
+            $r['deskripsi'],
+            $r['jumlah'],
+            $tgl
+        ]);
+    }
+
+    fclose($output);
+    exit;
+}
 
 ?>
 <!DOCTYPE html>
@@ -120,20 +175,29 @@ $entries = mysqli_query($koneksi, "SELECT * FROM arus_kas ORDER BY tanggal DESC,
                 <h2 class="text-lg font-semibold mb-2">Tambah Pemasukan / Pengeluaran</h2>
                 <form method="POST" class="grid grid-cols-1 sm:grid-cols-4 gap-2">
                     <select name="tipe" class="border rounded px-2 py-1 text-xs" required>
-                        <option value="masuk">Pemasukan</option>
-                        <option value="keluar">Pengeluaran</option>
+                        <option value="masuk" <?= $form_tipe === 'masuk' ? 'selected' : '' ?>>Pemasukan</option>
+                        <option value="keluar" <?= $form_tipe === 'keluar' ? 'selected' : '' ?>>Pengeluaran</option>
                     </select>
-                    <input type="text" name="deskripsi" placeholder="Deskripsi" class="border rounded px-2 py-1 text-xs">
-                    <input type="number" step="0.01" name="jumlah" placeholder="Jumlah (Rp)" class="border rounded px-2 py-1 text-xs" required>
-                    <input type="date" name="tanggal" value="<?= date('Y-m-d') ?>" class="border rounded px-2 py-1 text-xs">
+                    <input type="text" name="deskripsi" placeholder="Deskripsi" value="<?= htmlspecialchars($form_deskripsi) ?>" class="border rounded px-2 py-1 text-xs">
+                    <input type="number" step="0.01" name="jumlah" placeholder="Jumlah (Rp)" value="<?= htmlspecialchars($form_jumlah) ?>" class="border rounded px-2 py-1 text-xs" required>
+                    <input type="date" name="tanggal" value="<?= htmlspecialchars($form_tanggal) ?>" class="border rounded px-2 py-1 text-xs">
                     <div class="sm:col-span-4">
-                        <button type="submit" name="tambah_arus" class="mt-2 bg-indigo-900 text-white px-4 py-2 rounded text-xs">Tambah</button>
+                        <?php if ($editing): ?>
+                            <input type="hidden" name="id" value="<?= (int)$eid ?>">
+                            <button type="submit" name="edit_arus" class="mt-2 bg-yellow-600 text-white px-4 py-2 rounded text-xs">Simpan Perubahan</button>
+                            <a href="arus_kas.php" class="ml-2 mt-2 inline-block text-xs text-slate-600">Batal</a>
+                        <?php else: ?>
+                            <button type="submit" name="tambah_arus" class="mt-2 bg-indigo-900 text-white px-4 py-2 rounded text-xs">Tambah</button>
+                        <?php endif; ?>
                     </div>
                 </form>
             </div>
 
             <div class="bg-white p-4 rounded shadow border">
-                <h2 class="text-lg font-semibold mb-2">Riwayat Arus Kas</h2>
+                <div class="flex justify-between items-center mb-2">
+                    <h2 class="text-lg font-semibold">Riwayat Arus Kas</h2>
+                    <a href="arus_kas.php?action=export_csv" class="bg-green-600 text-white px-3 py-1 rounded text-xs">Export CSV</a>
+                </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-200 text-xs">
                         <thead class="bg-indigo-900 text-white">
@@ -154,7 +218,10 @@ $entries = mysqli_query($koneksi, "SELECT * FROM arus_kas ORDER BY tanggal DESC,
                                     <td class="px-3 py-2"><?= htmlspecialchars($row['deskripsi']) ?></td>
                                     <td class="px-3 py-2 text-right">Rp <?= number_format($row['jumlah'],0,',','.') ?></td>
                                     <td class="px-3 py-2"><?= !empty($row['tanggal']) ? date('d/m/Y', strtotime($row['tanggal'])) : '-' ?></td>
-                                    <td class="px-3 py-2"><a href="arus_kas.php?action=delete&id=<?= $row['id'] ?>" class="text-red-600">Hapus</a></td>
+                                    <td class="px-3 py-2">
+                                        <a href="arus_kas.php?action=edit&id=<?= $row['id'] ?>" class="text-indigo-600 mr-3">Edit</a>
+                                        <a href="arus_kas.php?action=delete&id=<?= $row['id'] ?>" class="text-red-600">Hapus</a>
+                                    </td>
                                 </tr>
                             <?php endwhile; ?>
                         </tbody>
