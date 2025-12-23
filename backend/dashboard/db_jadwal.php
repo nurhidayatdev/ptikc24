@@ -45,6 +45,32 @@ LEFT JOIN dosen dm ON jm.dosen_mitra_id = dm.id
 ORDER BY jm.hari, jm.jam_mulai");
 }
 
+// If AJAX live-search request, return table rows only
+if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
+    $no = 1;
+    $id = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rowClass = (($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white') . ' hover:bg-indigo-100';
+        echo '<tr class="' . $rowClass . '">';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . ($no++) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['hari']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['jam_ke']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . date('H.i', strtotime($row['jam_mulai'])) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . date('H.i', strtotime($row['jam_selesai'])) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['ruangan']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['nama_matkul']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['sks']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['dosen_pengampu']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['dosen_mitra']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">';
+        echo '<a href="../crud/edit.php?tabel=jadwal_matkul&id=' . $row['id'] . '" title="Edit"><i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i></a>';
+        echo '<a href="../crud/hapus.php?tabel=jadwal_matkul&id=' . $row['id'] . '" title="Hapus" onclick="return confirm(\'Hapus jadwal ini?\');"><i class="fa fa-trash text-red-600 hover:text-red-900"></i></a>';
+        echo '</td>';
+        echo '</tr>';
+    }
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -60,6 +86,8 @@ ORDER BY jm.hari, jm.jam_mulai");
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .rotate-180 {
             transform: rotate(180deg);
@@ -111,11 +139,8 @@ ORDER BY jm.hari, jm.jam_mulai");
             <nav class="mt-6">
                 <div class="px-4 space-y-2">
                     <!-- Dashboard Menu -->
-                    <a href="../index.html" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
-                        <svg class="w-4 h-4 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
+                    <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
+                                <i class="fa fa-home w-4 h-4 mr-4"></i>
                         <span class="text-xs">Beranda</span>
                     </a>
 
@@ -125,41 +150,37 @@ ORDER BY jm.hari, jm.jam_mulai");
                         <button
                             class="submenu-button flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-slate-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
+                                <i class="fa fa-list w-5 h-5 mr-4"></i>
                                 <span class="text-xs">Akademik</span>
                             </div>
-                            <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
+                            <i class="fa fa-chevron-down submenu-arrow w-4 h-4 transition-transform duration-200"></i>
                         </button>
 
                         <div class="submenu pl-8 space-y-1 hidden overflow-y-auto max-h-52">
                             <a href="db_mahasiswa.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Mahasiswa</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
+
+                                <a href="db_dosen.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
 
                             <a href="db_matkul.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Mata Kuliah</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mata Kuliah</a>
 
-                            <a href="db_jadwal_mk.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal Mata Kuliah</a>
+                            <a href="db_jadwal.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
+
+                                <a href="db_tugas.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
 
                             <a href="db_users.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Users</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Users</a>
                         </div>
 
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                                <a href="db_absensi.php">
+                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <a href="db_absensi.php?matkul_id=33&pertemuan=1">
                                     <span class="text-xs">Absensi</span>
                                 </a>
                             </div>
@@ -168,12 +189,19 @@ ORDER BY jm.hari, jm.jam_mulai");
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                                <a href="db_kas.php">
+                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
+                                <a href="db_kas.php?minggu_ke=1">
                                     <span class="text-xs">Kas Mingguan</span>
+                                </a>
+                            </div>
+                        </button>
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-users w-5 h-5 mr-4"></i>
+                                <a href="db_kelompok.php">
+                                    <span class="text-xs">Kelompok</span>
                                 </a>
                             </div>
                         </button>
@@ -188,33 +216,23 @@ ORDER BY jm.hari, jm.jam_mulai");
         <div class="bg-white rounded-lg border border-slate-200 p-6">
             <!-- Modified this section for better mobile responsiveness -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <h3 class="text-xl font-bold text-slate-800">Data Mahasiswa</h3>
+                <h3 class="text-xl font-bold text-slate-800">Jadwal Mata Kuliah</h3>
                 <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <form method="GET" class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                        <div class="grid grid-cols-2 gap-4">
+                    <form method="GET" class="w-full">
+                        <div class="flex flex-col sm:flex-row gap-2 items-center">
                             <input
+                                id="searchInput"
                                 type="text"
                                 name="search"
                                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                                placeholder="Cari Hari/MataKuliah..."
-                                class="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
+                                placeholder="Cari Hari / Mata Kuliah..."
+                                class="basis-3/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
 
-                            <button
-                                type="submit"
-                                class="bg-indigo-900 text-white px-4 py-2 rounded-lg hover:bg-indigo-800 text-xs ">
-                                Cari
-                            </button>
+                            <a href="../crud/tambah.php?tabel=jadwal_matkul" class="basis-1/5 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-800 text-center text-xs flex items-center justify-center" title="Tambah">
+                                <i class="fa fa-plus"></i>
+                            </a>
                         </div>
-
-
-                        <a href="../crud/tambah.php?tabel=jadwal_matkul" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-800 text-center text-xs">
-                            <button type="button">
-                                Tambah
-                            </button>
-                        </a>
                     </form>
-
-
                 </div>
             </div>
 
@@ -266,13 +284,9 @@ ORDER BY jm.hari, jm.jam_mulai");
                                 <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['dosen_pengampu']; ?></td>
                                 <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['dosen_mitra']; ?></td>
                                 <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">
-                                    <a href="../crud/edit.php?tabel=jadwal_matkul&id=<?= $row['id']; ?>">
-                                        <button class="text-blue-600 hover:text-blue-900 mr-3 text-xs">Edit</button>
-                                    </a>
+                                    <a href="../crud/edit.php?tabel=jadwal_matkul&id=<?= $row['id']; ?>" title="Edit"><i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i></a>
 
-                                    <a href="../crud/hapus.php?tabel=jadwal_matkul&id=<?= $row['id']; ?>">
-                                        <button class="text-red-600 hover:text-red-900 text-xs">Hapus</button>
-                                    </a>
+                                    <a href="../crud/hapus.php?tabel=jadwal_matkul&id=<?= $row['id']; ?>" title="Hapus" onclick="return confirm('Hapus jadwal ini?');"><i class="fa fa-trash text-red-600 hover:text-red-900"></i></a>
 
                                 </td>
                             </tr>
@@ -312,10 +326,10 @@ ORDER BY jm.hari, jm.jam_mulai");
         submenuButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const submenu = button.nextElementSibling;
-                const arrow = button.querySelector('svg:last-child');
+                const arrow = button.querySelector('.submenu-arrow');
 
                 submenu.classList.toggle('hidden');
-                arrow.classList.toggle('rotate-180');
+                if (arrow) arrow.classList.toggle('rotate-180');
             });
         });
 
@@ -335,6 +349,27 @@ ORDER BY jm.hari, jm.jam_mulai");
                 }
             });
         }
+
+        // Live search via AJAX (debounced) - keep focus in input
+        (function(){
+            const input = document.getElementById('searchInput');
+            if (!input) return;
+            let timer = null;
+            input.addEventListener('input', function(){
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    const q = encodeURIComponent(input.value || '');
+                    const url = window.location.pathname + '?search=' + q + '&ajax=1';
+                    fetch(url, { credentials: 'same-origin' })
+                        .then(r => r.text())
+                        .then(html => {
+                            const tbody = document.querySelector('table tbody');
+                            if (tbody) tbody.innerHTML = html || '<tr><td colspan="11" class="px-3 py-2 text-xs text-slate-500">No results</td></tr>';
+                            input.focus();
+                        }).catch(err => console.error(err));
+                }, 250);
+            });
+        })();
     </script>
 </body>
 

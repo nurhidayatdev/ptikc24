@@ -48,6 +48,27 @@ JOIN mahasiswa m ON m.user_id = u.id
 ORDER BY u.email");
 }
 
+// If this is an AJAX live-search request, return only the table rows
+if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
+    $no = 1;
+    $id = 1;
+    while ($row = mysqli_fetch_assoc($result)) {
+        $rowClass = (($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white') . ' hover:bg-indigo-100';
+        echo '<tr class="' . $rowClass . '">';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . ($no++) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['nama_lengkap']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['email']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">**********</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['role']) . '</td>';
+        echo '<td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">';
+        echo '<a href="../crud/edit.php?tabel=users&id=' . $row['id'] . '" title="Edit"><i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i></a>';
+        echo '<a href="../crud/hapus.php?tabel=users&id=' . $row['id'] . '" title="Hapus" onclick="return confirm(\'Hapus user ini?\');"><i class="fa fa-trash text-red-600 hover:text-red-900"></i></a>';
+        echo '</td>';
+        echo '</tr>';
+    }
+    exit;
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -63,6 +84,8 @@ ORDER BY u.email");
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .rotate-180 {
             transform: rotate(180deg);
@@ -87,9 +110,7 @@ ORDER BY u.email");
             </div>
             <!-- Mobile Menu Button dengan z-index yang sesuai -->
             <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+                <i class="fa fa-bars w-6 h-6"></i>
             </button>
             <div class="hidden lg:flex items-center space-x-4">
                 <div class="relative">
@@ -114,11 +135,8 @@ ORDER BY u.email");
             <nav class="mt-6">
                 <div class="px-4 space-y-2">
                     <!-- Dashboard Menu -->
-                    <a href="../index.html" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
-                        <svg class="w-4 h-4 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
+                    <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
+                                <i class="fa fa-home w-4 h-4 mr-4"></i>
                         <span class="text-xs">Beranda</span>
                     </a>
 
@@ -128,41 +146,37 @@ ORDER BY u.email");
                         <button
                             class="submenu-button flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-slate-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
+                                <i class="fa fa-list w-5 h-5 mr-4"></i>
                                 <span class="text-xs">Akademik</span>
                             </div>
-                            <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
+                            <i class="fa fa-chevron-down submenu-arrow w-4 h-4 transition-transform duration-200"></i>
                         </button>
 
                         <div class="submenu pl-8 space-y-1 hidden overflow-y-auto max-h-52">
                             <a href="db_mahasiswa.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Mahasiswa</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
+
+                                <a href="db_dosen.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
 
                             <a href="db_matkul.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Mata Kuliah</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mata Kuliah</a>
 
-                            <a href="db_jadwal_mk.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal Mata Kuliah</a>
+                            <a href="db_jadwal.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
+
+                                <a href="db_tugas.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
 
                             <a href="db_users.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Users</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Users</a>
                         </div>
 
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                                <a href="db_absensi.php">
+                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <a href="db_absensi.php?matkul_id=33&pertemuan=1">
                                     <span class="text-xs">Absensi</span>
                                 </a>
                             </div>
@@ -171,15 +185,22 @@ ORDER BY u.email");
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                                <a href="db_kas.php">
+                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
+                                <a href="db_kas.php?minggu_ke=1">
                                     <span class="text-xs">Kas Mingguan</span>
                                 </a>
                             </div>
                         </button>
+
+                        <button
+							class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+							<div class="flex items-center">
+								<i class="fa fa-users w-5 h-5 mr-4"></i>
+								<a href="db_kelompok.php">
+									<span class="text-xs">Kelompok</span>
+								</a>
+							</div>
+						</button>
 
                     </div>
                 </div>
@@ -190,33 +211,24 @@ ORDER BY u.email");
     <main class="ml-0 lg:ml-48 pt-20 p-6">
         <div class="bg-white rounded-lg border border-slate-200 p-6">
             <!-- Modified this section for better mobile responsiveness -->
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <h3 class="text-xl font-bold text-slate-800">Data Mahasiswa</h3>
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                <h3 class="text-xl font-bold text-slate-800">Data Users</h3>
                 <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                    <form method="GET" class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                        <div class="grid grid-cols-2 gap-4">
+                    <form method="GET" class="w-full">
+                        <div class="flex flex-col sm:flex-row gap-2 items-center">
                             <input
+                                id="searchInput"
                                 type="text"
                                 name="search"
                                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                                placeholder="Cari NIM / Nama..."
-                                class="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
+                                placeholder="Cari Nama / Email..."
+                                class="basis-3/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
 
-                            <button
-                                type="submit"
-                                class="bg-indigo-900 text-white px-4 py-2 rounded-lg hover:bg-indigo-800 text-xs ">
-                                Cari
-                            </button>
+                            <a href="../crud/tambah.php?tabel=users" class="basis-1/5 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-800 text-center text-xs flex items-center justify-center" title="Tambah">
+                                <i class="fa fa-plus"></i>
+                            </a>
                         </div>
-
-
-                        <a href="../crud/tambah.php?tabel=users" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-800 text-center text-xs">
-                            <button type="button">
-                                Tambah
-                            </button>
-                        </a>
                     </form>
-
 
                 </div>
             </div>
@@ -245,27 +257,23 @@ ORDER BY u.email");
                         $no = 1;
                         $id = 1;
                         while ($row = mysqli_fetch_assoc($result)) : ?>
-                            <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
+                                    <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
 
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
                                 
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_lengkap']; ?></td>
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['email']; ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($row['nama_lengkap']); ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($row['email']); ?></td>
 
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">**********</td>
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['role']; ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">**********</td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($row['role']); ?></td>
 
-                                <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">
-                                    <a href="../crud/edit.php?tabel=users&id=<?= $row['id']; ?>">
-                                        <button class="text-blue-600 hover:text-blue-900 mr-3 text-xs">Edit</button>
-                                    </a>
+                                        <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">
+                                            <a href="../crud/edit.php?tabel=users&id=<?= $row['id']; ?>" title="Edit"><i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i></a>
 
-                                    <a href="../crud/hapus.php?tabel=users&id=<?= $row['id']; ?>">
-                                        <button class="text-red-600 hover:text-red-900 text-xs">Hapus</button>
-                                    </a>
+                                            <a href="../crud/hapus.php?tabel=users&id=<?= $row['id']; ?>" title="Hapus" onclick="return confirm('Hapus user ini?');"><i class="fa fa-trash text-red-600 hover:text-red-900"></i></a>
 
-                                </td>
-                            </tr>
+                                        </td>
+                                    </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
@@ -302,12 +310,33 @@ ORDER BY u.email");
         submenuButtons.forEach(button => {
             button.addEventListener('click', () => {
                 const submenu = button.nextElementSibling;
-                const arrow = button.querySelector('svg:last-child');
+                const arrow = button.querySelector('.submenu-arrow');
 
                 submenu.classList.toggle('hidden');
-                arrow.classList.toggle('rotate-180');
+                if (arrow) arrow.classList.toggle('rotate-180');
             });
         });
+
+        // Live search via AJAX (debounced) - keep focus in input
+        (function(){
+            const input = document.getElementById('searchInput');
+            if (!input) return;
+            let timer = null;
+            input.addEventListener('input', function(){
+                clearTimeout(timer);
+                timer = setTimeout(() => {
+                    const q = encodeURIComponent(input.value || '');
+                    const url = window.location.pathname + '?search=' + q + '&ajax=1';
+                    fetch(url, { credentials: 'same-origin' })
+                        .then(r => r.text())
+                        .then(html => {
+                            const tbody = document.querySelector('table tbody');
+                            if (tbody) tbody.innerHTML = html || '<tr><td colspan="6" class="px-3 py-2 text-xs text-slate-500">No results</td></tr>';
+                            input.focus();
+                        }).catch(err => console.error(err));
+                }, 250);
+            });
+        })();
 
         // Profile dropdown
         const profileButton = document.getElementById('profile-button');
