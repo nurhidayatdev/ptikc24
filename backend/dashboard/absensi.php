@@ -76,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .rotate-180 {
             transform: rotate(180deg);
@@ -100,9 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             <!-- Mobile Menu Button dengan z-index yang sesuai -->
             <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+                <i class="fa fa-bars w-6 h-5"></i>
             </button>
             <div class="hidden lg:flex items-center space-x-4">
                 <div class="relative">
@@ -127,11 +126,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <nav class="mt-6">
                 <div class="px-4 space-y-2">
                     <!-- Dashboard Menu -->
-                    <a href="../index.html" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
-                        <svg class="w-4 h-4 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                        </svg>
+                    <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
+                                <i class="fa fa-home w-4 h-4 mr-4"></i>
                         <span class="text-xs">Beranda</span>
                     </a>
 
@@ -141,41 +137,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button
                             class="submenu-button flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-slate-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
+                                <i class="fa fa-list w-5 h-5 mr-4"></i>
                                 <span class="text-xs">Akademik</span>
                             </div>
-                            <svg class="w-4 h-4 transition-transform duration-200" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M19 9l-7 7-7-7" />
-                            </svg>
+                            <i class="fa fa-chevron-down submenu-arrow w-4 h-4 transition-transform duration-200"></i>
                         </button>
 
                         <div class="submenu pl-8 space-y-1 hidden overflow-y-auto max-h-52">
                             <a href="db_mahasiswa.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Mahasiswa</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
+
+                                <a href="db_dosen.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
 
                             <a href="db_matkul.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Mata Kuliah</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mata Kuliah</a>
 
-                            <a href="db_jadwal_mk.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal Mata Kuliah</a>
+                            <a href="db_jadwal.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
+
+                                <a href="db_tugas.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
 
                             <a href="db_users.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Daftar Users</a>
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Users</a>
                         </div>
 
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                                <a href="db_absensi.php">
+                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <a href="db_absensi.php?matkul_id=33&pertemuan=1">
                                     <span class="text-xs">Absensi</span>
                                 </a>
                             </div>
@@ -184,15 +176,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <svg class="w-5 h-5 mr-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                                <a href="db_kas.php">
+                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
+                                <a href="db_kas.php?minggu_ke=1">
                                     <span class="text-xs">Kas Mingguan</span>
                                 </a>
                             </div>
                         </button>
+
+                        <button
+							class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+							<div class="flex items-center">
+								<i class="fa fa-users w-5 h-5 mr-4"></i>
+								<a href="db_kelompok.php">
+									<span class="text-xs">Kelompok</span>
+								</a>
+							</div>
+						</button>
 
                     </div>
                 </div>
@@ -207,20 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <h3 class="text-xl font-bold text-slate-800">Data Absensi</h3>
                 <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <form method="GET" class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-                        <div class="grid grid-cols-2 gap-4">
-                            <input
-                                type="text"
-                                name="search"
-                                value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                                placeholder="Cari NIM / Nama..."
-                                class="w-full sm:w-auto px-4 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
-
-                            <button
-                                type="submit"
-                                class="bg-indigo-900 text-white px-4 py-2 rounded-lg hover:bg-indigo-800 text-xs ">
-                                Cari
-                            </button>
-                        </div>
+                        
 
 
                         <a href="db_absensi.php?matkul_id=<?= $_GET['matkul_id']; ?>&pertemuan=<?= $_GET['pertemuan']; ?>" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-800 text-center text-xs">
@@ -259,16 +245,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </option>
                     <?php endfor; ?>
                 </select>
-                <!-- Tombol Tampilkan dihapus; pilihan otomatis submit -->
+
+                <label class="sr-only">Filter</label>
+            <select name="filter" onchange="this.form.submit()" class="border rounded px-4 py-2 text-xs">
+                <option value="all" <?= ($_GET['filter'] ?? 'all') == 'all' ? 'selected' : '' ?>>Semua</option>
+                <option value="Hadir" <?= ($_GET['filter'] ?? '') == 'Hadir' ? 'selected' : '' ?>>Hadir</option>
+                <option value="Izin" <?= ($_GET['filter'] ?? '') == 'Izin' ? 'selected' : '' ?>>Izin</option>
+                <option value="Sakit" <?= ($_GET['filter'] ?? '') == 'Sakit' ? 'selected' : '' ?>>Sakit</option>
+                <option value="Alpha" <?= ($_GET['filter'] ?? '') == 'Alpha' ? 'selected' : '' ?>>Alpha</option>
+            </select>
+                <!-- tombol Tampilkan dihapus; pilihan akan auto-submit -->
             </form>
 
-           <?php 
-           if (isset($_GET['matkul_id'], $_GET['pertemuan'])) :
+           <?php
+if (isset($_GET['matkul_id'], $_GET['pertemuan'])) :
 
-                $matkul_id = $_GET['matkul_id'];
-                $pertemuan = $_GET['pertemuan'];
+    $matkul_id = (int) $_GET['matkul_id'];
+    $pertemuan = (int) $_GET['pertemuan'];
 
-$query = "
+    $filter = $_GET['filter'] ?? 'all';
+    $filter = in_array($filter, ['all', 'Hadir', 'Izin', 'Sakit', 'Alpha']) ? $filter : 'all';
+
+    $where_clause = '';
+    if ($filter !== 'all') {
+        $where_clause = " AND a.status = '$filter'";
+    }
+
+    $query = "
         SELECT DISTINCT
             m.id AS mahasiswa_id,
             m.nim,
@@ -281,26 +284,22 @@ $query = "
             AND a.matkul_id = k.matkul_id
             AND a.pertemuan = ?
         WHERE k.matkul_id = ?
+        $where_clause
         ORDER BY m.nim ASC
-        ";
+    ";
 
-                $stmt = mysqli_prepare($koneksi, $query);
-                mysqli_stmt_bind_param($stmt, "ii", $pertemuan, $matkul_id);
-                mysqli_stmt_execute($stmt);
-                $result = mysqli_stmt_get_result($stmt);
-
-                
-           ?>
+    $stmt = mysqli_prepare($koneksi, $query);
+    mysqli_stmt_bind_param($stmt, "ii", $pertemuan, $matkul_id);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+?>
 
             <!-- Rest of the content remains the same -->
             <div class="overflow-x-auto">
                 <form method="POST">
                     <input type="hidden" name="matkul_id" value="<?= $matkul_id ?>">
                     <input type="hidden" name="pertemuan" value="<?= $pertemuan ?>">
-                    <button type="submit"
-                        class="bg-indigo-900 hover:bg-indigo-800 text-white rounded-lg px-4 py-2 text-xs mb-4">
-                        Simpan Absensi
-                    </button>
+                    
                     <table class="min-w-full divide-y divide-slate-200">
                         <thead class="bg-indigo-900">
                             <tr>
@@ -340,6 +339,10 @@ $query = "
                         </tbody>
                 
                 </table>
+                <button type="submit"
+                        class="bg-indigo-900 hover:bg-indigo-800 text-white rounded-lg px-4 py-2 text-xs mb-4 mt-4">
+                        Simpan Absensi
+                    </button>
                 </form>
             </div>
 <?php endif; ?>

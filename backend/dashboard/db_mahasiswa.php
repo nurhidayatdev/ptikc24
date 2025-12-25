@@ -160,8 +160,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                                 <a href="db_tugas.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
 
-                            <a href="db_users.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Users</a>
+                            
                         </div>
 
                         <button
@@ -184,12 +183,24 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                             </div>
                         </button>
 
+                        
+
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
                                 <i class="fa fa-users w-5 h-5 mr-4"></i>
                                 <a href="db_kelompok.php">
                                     <span class="text-xs">Kelompok</span>
+                                </a>
+                            </div>
+                        </button>
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-people w-5 h-5 mr-4"></i>
+                                <a href="db_users.php">
+                                    <span class="text-xs">Users</span>
                                 </a>
                             </div>
                         </button>
@@ -214,7 +225,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                                 name="search"
                                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
                                 placeholder="Cari NIM / Nama..."
-                                class="basis-3/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
+                                class="basis-4/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
 
                             <a href="../crud/tambah.php?tabel=mahasiswa" class="basis-1/5 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-800 text-center text-xs flex items-center justify-center" title="Tambah">
                                 <i class="fa fa-plus"></i>
@@ -273,7 +284,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                                         <i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i>
                                     </a>
 
-                                    <a href="../crud/hapus.php?tabel=mahasiswa&id=<?= $row['id']; ?>" title="Hapus" onclick="return confirm('Hapus mahasiswa ini?');">
+                                    <a href="../crud/hapus.php?tabel=mahasiswa&id=<?= $row['id']; ?>" title="Hapus">
                                         <i class="fa fa-trash text-red-600 hover:text-red-900"></i>
                                     </a>
 

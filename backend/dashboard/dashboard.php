@@ -171,55 +171,32 @@ foreach ($tables as $table => $link) {
 			<h1 class="text-2xl font-bold text-slate-800 mb-6">Ringkasan Sistem</h1>
 
 			<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-				<a href="db_mahasiswa.php" class="bg-white p-4 rounded shadow card-hover border">
+				<a href="db_mahasiswa.php" class="bg-white p-4 rounded shadow card-hover ">
 					<div class="text-xs text-slate-500">Mahasiswa</div>
 					<div class="text-2xl font-bold text-indigo-900"><?= $counts['mahasiswa'] ?></div>
 				</a>
 
-				<a href="db_matkul.php" class="bg-white p-4 rounded shadow card-hover border">
+				<a href="db_matkul.php" class="bg-white p-4 rounded shadow card-hover ">
 					<div class="text-xs text-slate-500">Mata Kuliah</div>
 					<div class="text-2xl font-bold text-indigo-900"><?= $counts['mata_kuliah'] ?></div>
 				</a>
 
-				<a href="db_dosen.php" class="bg-white p-4 rounded shadow card-hover border">
+				<a href="db_dosen.php" class="bg-white p-4 rounded shadow card-hover ">
 					<div class="text-xs text-slate-500">Dosen</div>
 					<div class="text-2xl font-bold text-indigo-900"><?= $counts['dosen'] ?></div>
 				</a>
 
-				<a href="db_jadwal.php" class="bg-white p-4 rounded shadow card-hover border">
+				<a href="db_jadwal.php" class="bg-white p-4 rounded shadow card-hover ">
 					<div class="text-xs text-slate-500">Jadwal</div>
 					<div class="text-2xl font-bold text-indigo-900"><?= $counts['jadwal_matkul'] ?></div>
 				</a>
 
-				<a href="db_absensi.php" class="bg-white p-4 rounded shadow card-hover border">
-					<div class="text-xs text-slate-500">Absensi (baris)</div>
-					<div class="text-2xl font-bold text-indigo-900"><?= $counts['absensi'] ?></div>
-				</a>
+				
 
-				<a href="krs.php" class="bg-white p-4 rounded shadow card-hover border">
-					<div class="text-xs text-slate-500">KRS (entri)</div>
-					<div class="text-2xl font-bold text-indigo-900"><?= $counts['krs'] ?></div>
-				</a>
-
-				<a href="db_kas.php" class="bg-white p-4 rounded shadow card-hover border">
-					<div class="text-xs text-slate-500">Kas (entri)</div>
-					<div class="text-2xl font-bold text-indigo-900"><?= $counts['kas'] ?></div>
-				</a>
-
-				<a href="db_users.php" class="bg-white p-4 rounded shadow card-hover border">
-					<div class="text-xs text-slate-500">Users</div>
-					<div class="text-2xl font-bold text-indigo-900"><?= $counts['users'] ?></div>
-				</a>
+				
 			</div>
 
-			<div class="mt-8 bg-white p-4 rounded shadow border">
-				<h2 class="text-lg font-semibold mb-2">Quick Links</h2>
-				<div class="flex flex-wrap gap-2">
-					<?php foreach ($tables as $table => $link): ?>
-						<a href="<?= $link ?>" class="px-3 py-2 bg-indigo-100 text-indigo-900 rounded text-xs hover:bg-indigo-200"><?= ucfirst(str_replace('_',' ', $table)) ?></a>
-					<?php endforeach; ?>
-				</div>
-			</div>
+			
 
 		</div>
 		<footer class="text-xs text-indigo-900 text-center mb-0 pb-0 mt-6">© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</footer>

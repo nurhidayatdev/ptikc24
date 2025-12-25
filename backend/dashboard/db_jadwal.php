@@ -110,11 +110,8 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                 <img src="../../img/logo.png" alt="Logo Universitas Negeri Makassar" class="h-10 w-10 mr-3">
                 <span class="text-xl font-bold text-white">Dashboard PTIK C</span>
             </div>
-            <!-- Mobile Menu Button dengan z-index yang sesuai -->
-            <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+           <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                <i class="fa fa-bars w-6 h-5"></i>
             </button>
             <div class="hidden lg:flex items-center space-x-4">
                 <div class="relative">
@@ -217,16 +214,16 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             <!-- Modified this section for better mobile responsiveness -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
                 <h3 class="text-xl font-bold text-slate-800">Jadwal Mata Kuliah</h3>
-                <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <div class="flex-col sm:flex-row gap-2 w-full sm:w-auto">
                     <form method="GET" class="w-full">
-                        <div class="flex flex-col sm:flex-row gap-2 items-center">
+                        <div class="flex flex-row gap-2 items-center">
                             <input
                                 id="searchInput"
                                 type="text"
                                 name="search"
                                 value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
                                 placeholder="Cari Hari / Mata Kuliah..."
-                                class="basis-3/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
+                                class="basis-4/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
 
                             <a href="../crud/tambah.php?tabel=jadwal_matkul" class="basis-1/5 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-800 text-center text-xs flex items-center justify-center" title="Tambah">
                                 <i class="fa fa-plus"></i>

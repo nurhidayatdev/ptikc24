@@ -1,3 +1,1 @@
 npx @tailwindcss/cli -i frontend/tailwind/src/input.css -o frontend/tailwind/src/output.css --watch
-
-pada halaman ini juga terapkan style atau kerangka yang sama dengan file db_mahasiswa dari navbar, sidebar, button, input, live search, footer, dan lain lain, dan pastikan semua elemenya ada atau sama, yang membedakan cuma tabel dari mysql nya

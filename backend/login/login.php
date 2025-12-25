@@ -100,7 +100,7 @@ $_SESSION['foto']          = $data['foto'];
         timerProgressBar: true,
         showConfirmButton: false
       }).then(() => {
-        window.location.href = "../dashboard/db_mahasiswa.php";
+        window.location.href = "../dashboard/dashboard.php";
       });
     <?php elseif ($login_status === 'error'): ?>
       Swal.fire({

@@ -32,26 +32,7 @@ if (!empty($search)) {
     $result = mysqli_query($koneksi, "SELECT * FROM mata_kuliah ORDER BY semester ASC");
 }
 
-// If AJAX live-search request, return only the table rows
-if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
-    $no = 1;
-    $id = 1;
-    while ($row = mysqli_fetch_assoc($result)) {
-        $rowClass = (($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white') . ' hover:bg-indigo-100';
-        echo '<tr class="' . $rowClass . '">';
-        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . ($no++) . '</td>';
-        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['kode_matkul']) . '</td>';
-        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['nama_matkul']) . '</td>';
-        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['sks']) . '</td>';
-        echo '<td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800">' . htmlspecialchars($row['semester']) . '</td>';
-        echo '<td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">';
-        echo '<a href="../crud/edit.php?tabel=mata_kuliah&id=' . $row['id'] . '" title="Edit"><i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i></a>';
-        echo '<a href="../crud/hapus.php?tabel=mata_kuliah&id=' . $row['id'] . '" title="Hapus" onclick="return confirm(\'Hapus mata kuliah ini?\');"><i class="fa fa-trash text-red-600 hover:text-red-900"></i></a>';
-        echo '</td>';
-        echo '</tr>';
-    }
-    exit;
-}
+
 
 ?>
 <!DOCTYPE html>
@@ -94,9 +75,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             </div>
             <!-- Mobile Menu Button dengan z-index yang sesuai -->
             <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
+                <i class="fa fa-bars w-6 h-5"></i>
             </button>
             <div class="hidden lg:flex items-center space-x-4">
                 <div class="relative">
@@ -198,17 +177,11 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
         <div class="bg-white rounded-lg border border-slate-200 p-6">
             <!-- Modified this section for better mobile responsiveness -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-                <h3 class="text-xl font-bold text-slate-800">Data Mahasiswa</h3>
-                <div class="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <h3 class="text-xl font-bold text-slate-800">Data Mata Kuliah</h3>
+                <div class="flex-col sm:flex-row gap-2 w-full sm:w-auto md:w-auto">
                     <form method="GET" class="w-full">
-                        <div class="flex flex-col sm:flex-row gap-2 items-center">
-                            <input
-                                id="searchInput"
-                                type="text"
-                                name="search"
-                                value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
-                                placeholder="Cari Kode / Nama..."
-                                class="basis-3/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
+                        <div class="flex flex-row gap-2 items-center">
+                            
 
                             <a href="../crud/tambah.php?tabel=mata_kuliah" class="basis-1/5 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-800 text-center text-xs flex items-center justify-center" title="Tambah">
                                 <i class="fa fa-plus"></i>
@@ -218,51 +191,50 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                 </div>
             </div>
 
-            <!-- Rest of the content remains the same -->
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-slate-200">
-                    <thead class="bg-indigo-900">
-                        <tr>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                No</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                Kode Matkul</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                Mata Kuliah</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                SKS</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-                                Semester</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+            <?php for ($s = 1; $s <= 8; $s++): ?>
+                    <h4 class="text-lg font-semibold mt-4 mb-2">Semester <?= $s ?></h4>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-slate-200">
+                            <thead class="bg-indigo-900">
+                                <tr>
+                                    <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">No</th>
+                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Kode</th>
+                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Nama Mata Kuliah</th>
+                                    <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">SKS</th>
+                                    <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">
                                 Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-slate-200">
-                        <?php
-                        $no = 1;
-                        $id = 1;
-                        while ($row = mysqli_fetch_assoc($result)) : ?>
-                            <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-slate-200">
+                                <?php
+                                $no = 1;
+                                $id = 1;
+                                $found = false;
+                                foreach ($result as $m) {
+                                    if ((int)$m['semester'] !== $s) continue;
+                                    $found = true;
+                                ?>
+                                    <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= $no++; ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['kode_matkul']) ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['nama_matkul']) ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= htmlspecialchars($m['sks']) ?></td>
+                                        <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500 text-center">
+                                    <a href="../crud/edit.php?tabel=mata_kuliah&id=<?= $row['id']; ?>" title="Edit">
+                                        <i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i>
+                                    </a>
 
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
-                                
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?php echo htmlspecialchars($row['kode_matkul']); ?></td>
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?php echo htmlspecialchars($row['nama_matkul']); ?></td>
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?php echo htmlspecialchars($row['sks']); ?></td>
-
-                                <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?php echo htmlspecialchars($row['semester']); ?></td>
-
-                                <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500">
-                                    <a href="../crud/edit.php?tabel=mata_kuliah&id=<?php echo $row['id']; ?>" title="Edit"><i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i></a>
-
-                                    <a href="../crud/hapus.php?tabel=mata_kuliah&id=<?php echo $row['id']; ?>" title="Hapus" onclick="return confirm('Hapus mata kuliah ini?');"><i class="fa fa-trash text-red-600 hover:text-red-900"></i></a>
+                                    <a href="../crud/hapus.php?tabel=mata_kuliah&id=<?= $row['id']; ?>" title="Hapus">
+                                        <i class="fa fa-trash text-red-600 hover:text-red-900"></i>
+                                    </a>
 
                                 </td>
-                            </tr>
-                        <?php endwhile; ?>
-                    </tbody>
-                </table>
-            </div>
+                                    </tr>
+                                <?php } ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endfor; ?>
         </div>
         <footer class="text-xs text-indigo-900 text-center mb-0 pb-0 mt-6">
       © 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.
@@ -319,26 +291,7 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
             });
         }
 
-        // Live search via AJAX (debounced) - keep focus in input
-        (function(){
-            const input = document.getElementById('searchInput');
-            if (!input) return;
-            let timer = null;
-            input.addEventListener('input', function(){
-                clearTimeout(timer);
-                timer = setTimeout(() => {
-                    const q = encodeURIComponent(input.value || '');
-                    const url = window.location.pathname + '?search=' + q + '&ajax=1';
-                    fetch(url, { credentials: 'same-origin' })
-                        .then(r => r.text())
-                        .then(html => {
-                            const tbody = document.querySelector('table tbody');
-                            if (tbody) tbody.innerHTML = html || '<tr><td colspan="6" class="px-3 py-2 text-xs text-slate-500">No results</td></tr>';
-                            input.focus();
-                        }).catch(err => console.error(err));
-                }, 250);
-            });
-        })();
+      
     </script>
 </body>
 

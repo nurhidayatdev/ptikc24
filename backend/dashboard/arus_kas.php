@@ -121,66 +121,174 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Arus Kas - PTIK C</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#6c27dc" />
+    <link rel="icon" href="img/icon.png" />
+    <title>Kelas PTIK C 2024 - Teknik Informatika dan Komputer</title>
     <link href="../../frontend/tailwind/src/output.css" rel="stylesheet">
-    <style>.small{font-size:.8rem}</style>
+    <link href="../../frontend/tailwind/src/input.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .rotate-180 {
+            transform: rotate(180deg);
+        }
+
+        /* Tambahan CSS untuk mobile menu */
+        @media (max-width: 768px) {
+            .mobile-menu-open {
+                transform: translateX(0) !important;
+            }
+        }
+
+        /* live-search script removed from style block; see script at document end */
+    </style>
 </head>
+
 <body class="bg-slate-100">
-    <header class="bg-indigo-950 fixed w-full top-0 z-50">
+    <header class="bg-indigo-950  fixed w-full top-0 z-50">
         <div class="flex justify-between items-center px-6 py-2">
             <div class="flex items-center">
-                <img src="../../img/logo.png" class="h-10 w-10 mr-3">
-                <span class="text-xl font-bold text-white">Arus Kas Kelas</span>
+                <img src="../../img/logo.png" alt="Logo Universitas Negeri Makassar" class="h-10 w-10 mr-3">
+                <span class="text-xl font-bold text-white">Dashboard PTIK C</span>
             </div>
-            <div class="hidden lg:flex items-center space-x-3">
-                <span class="text-white"><?= htmlspecialchars($nama_lengkap) ?></span>
-                <img src="../img/profile/<?= htmlspecialchars($foto) ?>" class="w-8 h-8 rounded-full">
+            <!-- Mobile Menu Button dengan z-index yang sesuai -->
+            <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                <i class="fa fa-bars w-6 h-5"></i>
+            </button>
+            <div class="hidden lg:flex items-center space-x-4">
+                <div class="relative">
+                    <button id="profile-button" class="flex items-center space-x-2">
+                        <span class="text-white"><?= htmlspecialchars($nama_lengkap) ?></span>
+                        <img src="../img/profile/<?= htmlspecialchars($foto) ?>" alt="Profile" class="w-8 h-8 rounded-full">
+                    </button>
+                    <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
+                        <a href="profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
+                        <a href="../login/login.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Logout</a>
+                    </div>
+                </div>
             </div>
         </div>
     </header>
 
-    <aside id="sidebar" class="fixed left-0 top-0 h-screen w-48 bg-white pt-16 z-40">
-        <nav class="px-4">
-            <a href="dashboard.php" class="block px-4 py-2 text-slate-700 rounded hover:bg-slate-100">Dashboard</a>
-            <a href="db_kas.php" class="block px-4 py-2 text-slate-700 rounded hover:bg-slate-100">Daftar Kas</a>
-            <a href="arus_kas.php" class="block px-4 py-2 text-slate-700 rounded hover:bg-slate-100">Arus Kas</a>
-        </nav>
+    <!-- Sidebar dengan z-index di bawah header -->
+    <aside id="sidebar"
+        class="fixed left-0 top-0 h-screen w-48 bg-white transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-40">
+        <!-- Tambahan padding top agar tidak tertutup header -->
+        <div class="pt-16">
+            <nav class="mt-6">
+                <div class="px-4 space-y-2">
+                    <!-- Dashboard Menu -->
+                    <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
+                        <i class="fa fa-home w-4 h-4 mr-4"></i>
+                        <span class="text-xs">Beranda</span>
+                    </a>
+
+                    <!-- Components Menu -->
+                    <div class="space-y-2">
+
+                        <button
+                            class="submenu-button flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-slate-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-list w-5 h-5 mr-4"></i>
+                                <span class="text-xs">Akademik</span>
+                            </div>
+                            <i class="fa fa-chevron-down submenu-arrow w-4 h-4 transition-transform duration-200"></i>
+                        </button>
+
+                        <div class="submenu pl-8 space-y-1 hidden overflow-y-auto max-h-52">
+                            <a href="db_mahasiswa.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
+
+                            <a href="db_dosen.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
+
+                            <a href="db_matkul.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mata Kuliah</a>
+
+                            <a href="db_jadwal.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
+
+                            <a href="db_tugas.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
+
+                            <a href="db_users.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Users</a>
+                        </div>
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <a href="db_absensi.php?matkul_id=33&pertemuan=1">
+                                    <span class="text-xs">Absensi</span>
+                                </a>
+                            </div>
+                        </button>
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
+                                <a href="db_kas.php?minggu_ke=1">
+                                    <span class="text-xs">Kas Mingguan</span>
+                                </a>
+                            </div>
+                        </button>
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-users w-5 h-5 mr-4"></i>
+                                <a href="db_kelompok.php">
+                                    <span class="text-xs">Kelompok</span>
+                                </a>
+                            </div>
+                        </button>
+
+                    </div>
+                </div>
+            </nav>
+        </div>
     </aside>
 
     <main class="ml-0 lg:ml-48 pt-20 p-6">
-        <div class="max-w-4xl mx-auto">
+        <div class="max-w-6xl mx-auto">
             <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-                <div class="bg-white p-4 rounded shadow border">
+                <div class="bg-white p-4 rounded shadow">
                     <div class="text-xs text-slate-500">Pemasukan dari Kas (Lunas)</div>
-                    <div class="text-2xl font-bold text-indigo-900">Rp <?= number_format($total_kas,0,',','.') ?></div>
+                    <div class="text-2xl font-bold text-indigo-900">Rp <?= number_format($total_kas, 0, ',', '.') ?></div>
                 </div>
-                <div class="bg-white p-4 rounded shadow border">
+                <div class="bg-white p-4 rounded shadow">
                     <div class="text-xs text-slate-500">Pemasukan Lainnya</div>
-                    <div class="text-2xl font-bold text-green-700">Rp <?= number_format($total_other_masuk,0,',','.') ?></div>
+                    <div class="text-2xl font-bold text-green-700">Rp <?= number_format($total_other_masuk, 0, ',', '.') ?></div>
                 </div>
-                <div class="bg-white p-4 rounded shadow border">
+                <div class="bg-white p-4 rounded shadow">
                     <div class="text-xs text-slate-500">Total Pengeluaran</div>
-                    <div class="text-2xl font-bold text-red-700">Rp <?= number_format($total_keluar,0,',','.') ?></div>
+                    <div class="text-2xl font-bold text-red-700">Rp <?= number_format($total_keluar, 0, ',', '.') ?></div>
                 </div>
-                <div class="bg-white p-4 rounded shadow border">
+                <div class="bg-white p-4 rounded shadow">
                     <div class="text-xs text-slate-500">Saldo</div>
-                    <div class="text-2xl font-bold text-indigo-900">Rp <?= number_format($saldo,0,',','.') ?></div>
+                    <div class="text-2xl font-bold text-indigo-900">Rp <?= number_format($saldo, 0, ',', '.') ?></div>
                 </div>
             </div>
 
-            <div class="bg-white p-4 rounded shadow border mb-6">
+            <div class="bg-white p-4 rounded shadow mb-6">
                 <h2 class="text-lg font-semibold mb-2">Tambah Pemasukan / Pengeluaran</h2>
                 <form method="POST" class="grid grid-cols-1 sm:grid-cols-4 gap-2">
-                    <select name="tipe" class="border rounded px-2 py-1 text-xs" required>
+                    <select name="tipe" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs" required>
                         <option value="masuk" <?= $form_tipe === 'masuk' ? 'selected' : '' ?>>Pemasukan</option>
                         <option value="keluar" <?= $form_tipe === 'keluar' ? 'selected' : '' ?>>Pengeluaran</option>
                     </select>
-                    <input type="text" name="deskripsi" placeholder="Deskripsi" value="<?= htmlspecialchars($form_deskripsi) ?>" class="border rounded px-2 py-1 text-xs">
-                    <input type="number" step="0.01" name="jumlah" placeholder="Jumlah (Rp)" value="<?= htmlspecialchars($form_jumlah) ?>" class="border rounded px-2 py-1 text-xs" required>
-                    <input type="date" name="tanggal" value="<?= htmlspecialchars($form_tanggal) ?>" class="border rounded px-2 py-1 text-xs">
+                    <input type="text" name="deskripsi" placeholder="Deskripsi" value="<?= htmlspecialchars($form_deskripsi) ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                    <input type="number" step="0.01" name="jumlah" placeholder="Jumlah (Rp)" value="<?= htmlspecialchars($form_jumlah) ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs" required>
+                    <input type="date" name="tanggal" value="<?= htmlspecialchars($form_tanggal) ?>" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
                     <div class="sm:col-span-4">
                         <?php if ($editing): ?>
                             <input type="hidden" name="id" value="<?= (int)$eid ?>">
@@ -193,16 +301,16 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
                 </form>
             </div>
 
-            <div class="bg-white p-4 rounded shadow border">
+            <div class="bg-white p-4 rounded shadow">
                 <div class="flex justify-between items-center mb-2">
                     <h2 class="text-lg font-semibold">Riwayat Arus Kas</h2>
-                    <a href="arus_kas.php?action=export_csv" class="bg-green-600 text-white px-3 py-1 rounded text-xs">Export CSV</a>
+                    <a href="arus_kas.php?action=export_csv" class="bg-green-600 text-white px-4 py-2 rounded text-xs">Export CSV</a>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-slate-200 text-xs">
                         <thead class="bg-indigo-900 text-white">
                             <tr>
-                                <th class="px-3 py-2 text-left">#</th>
+                                <th class="px-3 py-2 text-left">No</th>
                                 <th class="px-3 py-2 text-left">Tipe</th>
                                 <th class="px-3 py-2 text-left">Deskripsi</th>
                                 <th class="px-3 py-2 text-right">Jumlah</th>
@@ -211,16 +319,21 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
                             </tr>
                         </thead>
                         <tbody class="bg-white">
-                            <?php $no=1; while ($row = mysqli_fetch_assoc($entries)): ?>
+                            <?php $no = 1;
+                            while ($row = mysqli_fetch_assoc($entries)): ?>
                                 <tr class="hover:bg-indigo-50">
                                     <td class="px-3 py-2"><?= $no++ ?></td>
                                     <td class="px-3 py-2"><?= $row['tipe'] ?></td>
                                     <td class="px-3 py-2"><?= htmlspecialchars($row['deskripsi']) ?></td>
-                                    <td class="px-3 py-2 text-right">Rp <?= number_format($row['jumlah'],0,',','.') ?></td>
+                                    <td class="px-3 py-2 text-right">Rp <?= number_format($row['jumlah'], 0, ',', '.') ?></td>
                                     <td class="px-3 py-2"><?= !empty($row['tanggal']) ? date('d/m/Y', strtotime($row['tanggal'])) : '-' ?></td>
                                     <td class="px-3 py-2">
-                                        <a href="arus_kas.php?action=edit&id=<?= $row['id'] ?>" class="text-indigo-600 mr-3">Edit</a>
-                                        <a href="arus_kas.php?action=delete&id=<?= $row['id'] ?>" class="text-red-600">Hapus</a>
+                                        <a href="arus_kas.php?action=edit&id=<?= $row['id'] ?>">
+                                            <i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i>
+                                        </a>
+                                        <a href="arus_kas.php?action=delete&id=<?= $row['id'] ?>">
+                                            <i class="fa fa-trash text-red-600 hover:text-red-900 mr-3"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>
@@ -229,6 +342,59 @@ if (isset($_GET['action']) && $_GET['action'] === 'export_csv') {
                 </div>
             </div>
         </div>
+        <footer class="text-xs text-indigo-900 text-center mb-0 pb-0 mt-6">© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</footer>
     </main>
+    <script>
+        // Mobile menu toggle dengan perbaikan
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const sidebar = document.getElementById('sidebar');
+
+        mobileMenuButton.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent event bubbling
+            sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('mobile-menu-open');
+        });
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth < 768) { // Only on mobile
+                if (!sidebar.contains(e.target) && !mobileMenuButton.contains(e.target)) {
+                    sidebar.classList.add('-translate-x-full');
+                    sidebar.classList.remove('mobile-menu-open');
+                }
+            }
+        });
+
+        // Submenu toggles
+        const submenuButtons = document.querySelectorAll('.submenu-button');
+
+        submenuButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const submenu = button.nextElementSibling;
+                const arrow = button.querySelector('.submenu-arrow');
+
+                submenu.classList.toggle('hidden');
+                if (arrow) arrow.classList.toggle('rotate-180');
+            });
+        });
+
+        // Profile dropdown
+        const profileButton = document.getElementById('profile-button');
+        const profileDropdown = document.getElementById('profile-dropdown');
+
+        if (profileButton && profileDropdown) {
+            profileButton.addEventListener('click', (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!profileButton.contains(e.target)) {
+                    profileDropdown.classList.add('hidden');
+                }
+            });
+        }
+    </script>
 </body>
+
 </html>

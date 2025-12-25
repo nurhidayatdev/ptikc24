@@ -98,29 +98,29 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
 <body class="bg-slate-100">
 	<!-- Header dengan z-index lebih tinggi -->
 	<header class="bg-indigo-950  fixed w-full top-0 z-50">
-		<div class="flex justify-between items-center px-6 py-2">
-			<div class="flex items-center">
-				<img src="../../img/logo.png" alt="Logo Universitas Negeri Makassar" class="h-10 w-10 mr-3">
-				<span class="text-xl font-bold text-white">Dashboard PTIK C</span>
-			</div>
-			<!-- Mobile Menu Button dengan z-index yang sesuai -->
-			<button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
-				<i class="fa fa-bars w-6 h-5"></i>
-			</button>
-			<div class="hidden lg:flex items-center space-x-4">
-				<div class="relative">
-					<button id="profile-button" class="flex items-center space-x-2">
-						<span class="text-white"><?= htmlspecialchars($nama_lengkap) ?></span>
-						<img src="../img/profile/<?= htmlspecialchars($foto) ?>" alt="Profile" class="w-8 h-8 rounded-full">
-					</button>
-					<div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
-						<a href="profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
-						<a href="../login/login.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Logout</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
+        <div class="flex justify-between items-center px-6 py-2">
+            <div class="flex items-center">
+                <img src="../../img/logo.png" alt="Logo Universitas Negeri Makassar" class="h-10 w-10 mr-3">
+                <span class="text-xl font-bold text-white">Dashboard PTIK C</span>
+            </div>
+            <!-- Mobile Menu Button dengan z-index yang sesuai -->
+            <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
+                <i class="fa fa-bars w-6 h-5"></i>
+            </button>
+            <div class="hidden lg:flex items-center space-x-4">
+                <div class="relative">
+                    <button id="profile-button" class="flex items-center space-x-2">
+                        <span class="text-white"><?= htmlspecialchars($nama_lengkap) ?></span>
+                        <img src="../img/profile/<?= htmlspecialchars($foto) ?>" alt="Profile" class="w-8 h-8 rounded-full">
+                    </button>
+                    <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
+                        <a href="profile.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Profile</a>
+                        <a href="../login/login.php" class="block px-4 py-2 text-sm hover:bg-gray-100">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
 	<!-- Sidebar dengan z-index di bawah header -->
 	<aside id="sidebar"
@@ -209,15 +209,15 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
 			<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
 				<h3 class="text-xl font-bold text-slate-800">Data Tugas</h3>
 				<div class="flex-col sm:flex-row gap-2 w-full sm:w-auto">
-					<form method="GET" class="w-full">
-						<div class="flex flex-row gap-2 items-center">
+                    <form method="GET" class="w-full">
+                        <div class="flex flex-row gap-2 items-center">
 							<input
 								id="searchInput"
 								type="text"
 								name="search"
 								value="<?= htmlspecialchars($_GET['search'] ?? '') ?>"
 								placeholder="Cari Mata Kuliah / Deskripsi..."
-								class="basis-3/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
+								class="basis-4/5 w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-slate-400 text-xs">
 
 							<a href="../crud/tambah.php?tabel=tugas" class="basis-1/5 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-800 text-center text-xs flex items-center justify-center" title="Tambah">
 								<i class="fa fa-plus"></i>
