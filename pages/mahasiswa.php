@@ -1,0 +1,252 @@
+<?php
+include '../koneksi.php';
+
+$result = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
+?>
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#6c27dc" />
+  <link rel="icon" href="img/icon.png" />
+  <title>Kelas PTIK C 2024 - Teknik Informatika dan Komputer</title>
+  <meta name="title" content="PTIK C 24" />
+  <meta name="description" content="© 2024 ProtechnotyClass24" />
+  <meta property="og:type" content="website" />
+  <meta
+    property="og:url"
+    content="https://ptikc24.vercel.app/.html" />
+  <meta
+    property="og:title"
+    content="PTIK C 24" />
+  <meta property="og:description" content="© 2024 ProtechnotyClass24" />
+  <meta property="og:image" content="https://iili.io/FpUOxUb.md.png" />
+
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta
+    property="twitter:url"
+    content="https://ptikc24.vercel.app/.html" />
+  <meta
+    property="twitter:title"
+    content="Jadwal Mata Kuliah Kelas PTIK C" />
+  <meta property="twitter:description" content="© 2024 ProtechnotyClass24" />
+  <meta property="twitter:image" content="https://iili.io/FpUOxUb.md.png" />
+
+  <link href="../frontend/tailwind/src/output.css" rel="stylesheet">
+  <link href="../frontend/tailwind/src/input.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-gray-50">
+  <!-- Header & Navigation -->
+  <header class="bg-indigo-950 text-white shadow-lg relative">
+    <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <img src="../img/logo.png" alt="Logo Universitas Negeri Makassar" class="h-10 w-10 mr-3">
+        <div>
+          <h1 class="text-lg font-bold">PTIK C 2024</h1>
+          <p class="text-xs">Teknik Informatika dan Komputer - FT UNM</p>
+        </div>
+      </div>
+
+      <!-- Hamburger Button -->
+      <button id="menuToggle" class="md:hidden text-2xl focus:outline-none">
+        <i class="fas fa-bars"></i>
+      </button>
+
+      <!-- Menu Desktop -->
+      <nav class="hidden md:block">
+        <ul class="flex space-x-6">
+          <li><a href="#" class="hover:text-indigo-200 transition text-sm">Beranda</a></li>
+          <li><a href="jadwal-matkul/jadwal-matkul.html" class="hover:text-indigo-200 transition text-sm">Jadwal Kuliah</a></li>
+          <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-indigo-200 transition text-sm">Daftar Mahasiswa</a></li>
+          <li><a href="daftar-tugas/daftar-tugas.html" class="hover:text-indigo-200 transition text-sm">Daftar Tugas</a></li>
+          <li><a href="backend/login/login.php" class="hover:text-indigo-200 transition text-sm">Login</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- Menu Mobile (muncul di bawah nav) -->
+    <nav id="mobileMenu" class="hidden md:hidden absolute top-full left-0 w-full bg-indigo-950 shadow-md">
+      <ul class="flex flex-col space-y-4 p-4">
+        <li><a href="#" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-home"></i><span>Beranda</span></a></li>
+        <li><a href="jadwal-matkul/jadwal-matkul.html" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-calendar"></i><span>Jadwal Kuliah</span></a></li>
+        <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-users"></i><span>Daftar Mahasiswa</span></a></li>
+        <li><a href="daftar-tugas/daftar-tugas.html" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Daftar Tugas</span></a></li>
+      </ul>
+    </nav>
+  </header>
+
+
+  <div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-6 text-center">Mahasiswa</h1>
+    <!-- Rest of the content remains the same -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-slate-200">
+        <thead class="bg-indigo-900">
+          <tr>
+            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+              No</th>
+            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+              Foto</th>
+            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+              NIM</th>
+            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+              Nama Lengkap</th>
+            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+              Nama Panggilan</th>
+            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
+              Bio</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-slate-200">
+          <?php
+          $no = 1;
+          $id = 1;
+          while ($row = mysqli_fetch_assoc($result)) : ?>
+            <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
+
+              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
+              <td class="px-3 py-2 whitespace-nowrap text-xs">
+                <?php if (!empty($row['foto'])): ?>
+                  <img src="../backend/img/profile/<?php echo htmlspecialchars($row['foto']); ?>"
+                    class="img-fluid rounded"
+                    style="max-width:25px; height:auto;" />
+                <?php else: ?>
+                  <span class="text-muted">Belum ada gambar</span>
+                <?php endif; ?>
+              </td>
+              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nim']; ?></td>
+              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_lengkap']; ?></td>
+              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_panggilan']; ?></td>
+
+              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['bio']; ?></td>
+
+
+            </tr>
+          <?php endwhile; ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-indigo-950 text-white py-4">
+    <div class="container mx-auto px-4">
+      <div class="grid md:grid-cols-3 gap-8">
+        <div>
+          <h3 class="text-lg font-bold mb-4">PTIK C 2024</h3>
+          <p class="mb-4 text-xs">Jurusan Teknik Informatika dan Komputer</p>
+          <p class="text-xs">Fakultas Teknik</p>
+          <p class="text-xs">Universitas Negeri Makassar</p>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-bold mb-4">Tautan Cepat</h3>
+          <ul class="space-y-1">
+            <li><a href="#" class="hover:text-indigo-200 transition text-xs">Beranda</a></li>
+            <li><a href="jadwal-matkul/jadwal-matkul.html" class="hover:text-indigo-200 transition text-xs">Jadwal Kuliah</a></li>
+            <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-indigo-200 transition text-xs">Daftar Mahasiswa</a></li>
+            <li><a href="daftar-tugas/daftar-tugas.html" class="hover:text-indigo-200 transition text-xs">Daftar Tugas</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-lg font-bold mb-4">Kontak</h3>
+          <p class="mb-2 text-xs"><i class="fas fa-map-marker-alt mr-2 text-sm"></i> Jl. A.P. Pettarani, Makassar</p>
+          <p class="mb-2 text-xs"><i class="fas fa-envelope mr-2 text-sm"></i> ptikc2024@unm.ac.id</p>
+          <div class="flex space-x-4 mt-4 text-xs">
+            <a href="https://www.instagram.com/ptikc_24" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-instagram text-sm"></i></a>
+            <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-facebook text-sm"></i></a>
+            <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-twitter text-sm"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t border-indigo-800 mt-4 pt-4 text-center text-xs">
+        <p>© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const menuIcon = menuToggle.querySelector('i');
+
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      if (mobileMenu.classList.contains('hidden')) {
+        menuIcon.classList.remove('fa-xmark');
+        menuIcon.classList.add('fa-bars');
+      } else {
+        menuIcon.classList.remove('fa-bars');
+        menuIcon.classList.add('fa-xmark');
+      }
+    });
+    // Slider functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const slider = document.getElementById('slider');
+      const slides = document.querySelectorAll('#slider > div');
+      const indicators = document.querySelectorAll('.indicator');
+      const prevBtn = document.getElementById('prev');
+      const nextBtn = document.getElementById('next');
+
+      let currentSlide = 0;
+      const slideCount = slides.length;
+
+      // Update slider position
+      function updateSlider() {
+        slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+        // Update indicators
+        indicators.forEach((indicator, index) => {
+          if (index === currentSlide) {
+            indicator.classList.add('bg-indigo-700');
+            indicator.classList.remove('bg-indigo-300');
+          } else {
+            indicator.classList.remove('bg-indigo-700');
+            indicator.classList.add('bg-indigo-300');
+          }
+        });
+      }
+
+      // Next slide
+      nextBtn.addEventListener('click', function() {
+        currentSlide = (currentSlide + 1) % slideCount;
+        updateSlider();
+      });
+
+      // Previous slide
+      prevBtn.addEventListener('click', function() {
+        currentSlide = (currentSlide - 1 + slideCount) % slideCount;
+        updateSlider();
+      });
+
+      // Auto slide every 5 seconds
+      setInterval(function() {
+        currentSlide = (currentSlide + 1) % slideCount;
+        updateSlider();
+      }, 5000);
+
+      // Click on indicator to go to specific slide
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', function() {
+          currentSlide = index;
+          updateSlider();
+        });
+      });
+
+      // Initialize slider
+      updateSlider();
+    });
+  </script>
+</body>
+
+</html>
