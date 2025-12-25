@@ -168,7 +168,7 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
                                 <a href="db_absensi.php?matkul_id=33&pertemuan=1">
                                     <span class="text-xs">Absensi</span>
                                 </a>
@@ -178,7 +178,7 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
+                                <i class="fa fa-wallet w-5 h-5 mr-4"></i>
                                 <a href="db_kas.php?minggu_ke=1">
                                     <span class="text-xs">Kas Mingguan</span>
                                 </a>
@@ -200,7 +200,7 @@ $result_krs = mysqli_stmt_get_result($stmt_krs);
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-people w-5 h-5 mr-4"></i>
+                                <i class="fa fa-user w-5 h-5 mr-4"></i>
                                 <a href="db_users.php">
                                     <span class="text-xs">Users</span>
                                 </a>

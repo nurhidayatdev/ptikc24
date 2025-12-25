@@ -255,7 +255,6 @@ if (isset($_POST['update'])) {
         </div>
     </header>
 
-    <!-- Sidebar dengan z-index di bawah header -->
     <aside id="sidebar"
         class="fixed left-0 top-0 h-screen w-48 bg-white transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-40">
         <!-- Tambahan padding top agar tidak tertutup header -->
@@ -302,7 +301,7 @@ if (isset($_POST['update'])) {
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
                                 <a href="db_absensi.php?matkul_id=33&pertemuan=1">
                                     <span class="text-xs">Absensi</span>
                                 </a>
@@ -312,7 +311,7 @@ if (isset($_POST['update'])) {
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
+                                <i class="fa fa-wallet w-5 h-5 mr-4"></i>
                                 <a href="db_kas.php?minggu_ke=1">
                                     <span class="text-xs">Kas Mingguan</span>
                                 </a>
@@ -334,7 +333,7 @@ if (isset($_POST['update'])) {
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-people w-5 h-5 mr-4"></i>
+                                <i class="fa fa-user w-5 h-5 mr-4"></i>
                                 <a href="db_users.php">
                                     <span class="text-xs">Users</span>
                                 </a>

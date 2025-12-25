@@ -93,18 +93,23 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
         </div>
     </header>
 
-    <!-- Sidebar -->
-    <aside id="sidebar" class="fixed left-0 top-0 h-screen w-48 bg-white transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-40">
+    <aside id="sidebar"
+        class="fixed left-0 top-0 h-screen w-48 bg-white transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-40">
+        <!-- Tambahan padding top agar tidak tertutup header -->
         <div class="pt-16">
             <nav class="mt-6">
                 <div class="px-4 space-y-2">
-                    <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700 rounded-lg hover:bg-slate-100">
-                        <i class="fa fa-home w-4 h-4 mr-4"></i>
+                    <!-- Dashboard Menu -->
+                    <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
+                                <i class="fa fa-home w-4 h-4 mr-4"></i>
                         <span class="text-xs">Beranda</span>
                     </a>
 
+                    <!-- Components Menu -->
                     <div class="space-y-2">
-                        <button class="submenu-button flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-slate-100 rounded-lg">
+
+                        <button
+                            class="submenu-button flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-slate-100 rounded-lg">
                             <div class="flex items-center">
                                 <i class="fa fa-list w-5 h-5 mr-4"></i>
                                 <span class="text-xs">Akademik</span>
@@ -113,34 +118,66 @@ if (isset($_GET['ajax']) && $_GET['ajax'] == '1') {
                         </button>
 
                         <div class="submenu pl-8 space-y-1 hidden overflow-y-auto max-h-52">
-                            <a href="db_mahasiswa.php" class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
-                            <a href="db_dosen.php" class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
-                            <a href="db_matkul.php" class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mata Kuliah</a>
-                            <a href="db_jadwal.php" class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
-                            <a href="db_tugas.php" class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
-                            <a href="db_users.php" class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Users</a>
+                            <a href="db_mahasiswa.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
+
+                                <a href="db_dosen.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
+
+                            <a href="db_matkul.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mata Kuliah</a>
+
+                            <a href="db_jadwal.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
+
+                                <a href="db_tugas.php"
+                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
+
+                            
                         </div>
 
-                        <button class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
-                            <div class="flex items-center">
-                                <i class="fa fa-user w-5 h-5 mr-4"></i>
-                                <a href="db_absensi.php?matkul_id=33&pertemuan=1"><span class="text-xs">Absensi</span></a>
-                            </div>
-                        </button>
-
-                        <button class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
                                 <i class="fa fa-calendar w-5 h-5 mr-4"></i>
-                                <a href="db_kas.php?minggu_ke=1"><span class="text-xs">Kas Mingguan</span></a>
+                                <a href="db_absensi.php?matkul_id=33&pertemuan=1">
+                                    <span class="text-xs">Absensi</span>
+                                </a>
                             </div>
                         </button>
 
-                        <button class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-users w-5 h-5 mr-4"></i>
-                                <a href="db_kelompok.php"><span class="text-xs">Kelompok</span></a>
+                                <i class="fa fa-wallet w-5 h-5 mr-4"></i>
+                                <a href="db_kas.php?minggu_ke=1">
+                                    <span class="text-xs">Kas Mingguan</span>
+                                </a>
                             </div>
                         </button>
+
+                        
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-users w-5 h-5 mr-4"></i>
+                                <a href="db_kelompok.php">
+                                    <span class="text-xs">Kelompok</span>
+                                </a>
+                            </div>
+                        </button>
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <a href="db_users.php">
+                                    <span class="text-xs">Users</span>
+                                </a>
+                            </div>
+                        </button>
+
                     </div>
                 </div>
             </nav>

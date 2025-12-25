@@ -159,14 +159,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <a href="db_tugas.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
 
-                            <a href="db_users.php"
-                                class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Users</a>
+                            
                         </div>
 
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
                                 <a href="db_absensi.php?matkul_id=33&pertemuan=1">
                                     <span class="text-xs">Absensi</span>
                                 </a>
@@ -176,22 +175,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
                             <div class="flex items-center">
-                                <i class="fa fa-calendar w-5 h-5 mr-4"></i>
+                                <i class="fa fa-wallet w-5 h-5 mr-4"></i>
                                 <a href="db_kas.php?minggu_ke=1">
                                     <span class="text-xs">Kas Mingguan</span>
                                 </a>
                             </div>
                         </button>
 
+                        
+
                         <button
-							class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
-							<div class="flex items-center">
-								<i class="fa fa-users w-5 h-5 mr-4"></i>
-								<a href="db_kelompok.php">
-									<span class="text-xs">Kelompok</span>
-								</a>
-							</div>
-						</button>
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-users w-5 h-5 mr-4"></i>
+                                <a href="db_kelompok.php">
+                                    <span class="text-xs">Kelompok</span>
+                                </a>
+                            </div>
+                        </button>
+
+                        <button
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center">
+                                <i class="fa fa-user w-5 h-5 mr-4"></i>
+                                <a href="db_users.php">
+                                    <span class="text-xs">Users</span>
+                                </a>
+                            </div>
+                        </button>
 
                     </div>
                 </div>
