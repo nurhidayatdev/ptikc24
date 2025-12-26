@@ -397,9 +397,7 @@ if (isset($_POST['update'])) {
                                     </div>
                                     <div class="space-y-2">
                                         <div class="border p-2 rounded" style="width:160px; height:160px; overflow:hidden;">
-                                            <div class="preview-wrapper" style="width:100%; height:100%;">
-                                                <img id="preview" style="width:100%; height:100%; object-fit:cover; display:block;" />
-                                            </div>
+                                            <div class="preview-wrapper" style="width:100%; height:100%;"></div>
                                         </div>
                                         <div class="flex space-x-2">
                                             <button type="button" id="zoom-in" class="px-3 py-1 bg-gray-200 rounded">+</button>

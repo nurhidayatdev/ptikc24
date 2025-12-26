@@ -82,7 +82,7 @@ $_SESSION['foto']          = $data['foto'];
                             class="mt-1 block w-full rounded-md border border-slate-300 py-2 px-3 focus:outline-none focus:ring-1 focus:ring-slate-400">
                     </div>
                     <button type="submit"
-                        class="w-full bg-slate-800 text-white py-2 px-4 rounded-md hover:bg-slate-700">Login</button>
+                        class="w-full bg-indigo-950 text-white py-2 px-4 rounded-md hover:bg-indigo-700">Login</button>
                 </div>
             </form>
             <p class="text-center mt-4 text-sm text-slate-600">

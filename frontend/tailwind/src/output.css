@@ -1518,6 +1518,13 @@
       }
     }
   }
+  .hover\:bg-indigo-700 {
+    &:hover {
+      @media (hover: hover) {
+        background-color: var(--color-indigo-700);
+      }
+    }
+  }
   .hover\:bg-indigo-800 {
     &:hover {
       @media (hover: hover) {
