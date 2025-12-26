@@ -32,7 +32,7 @@ if (isset($_GET['hapus'])) {
             </a>
         </div>
 
-        <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+        <div class="columns-1 sm:columns-2 lg:columns-4 gap-6 space-y-6">
             <?php
             $query = mysqli_query($koneksi, "SELECT * FROM pesan ORDER BY tanggal DESC");
             if (mysqli_num_rows($query) > 0) {

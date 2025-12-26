@@ -2235,6 +2235,11 @@
       columns: 3;
     }
   }
+  .lg\:columns-4 {
+    @media (width >= 64rem) {
+      columns: 4;
+    }
+  }
   .lg\:grid-cols-3 {
     @media (width >= 64rem) {
       grid-template-columns: repeat(3, minmax(0, 1fr));
