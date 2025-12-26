@@ -50,7 +50,7 @@ ORDER BY jm.hari, jm.jam_mulai");
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-h-screen flex flex-col">
   <!-- Header & Navigation -->
   <header class="bg-indigo-950 text-white shadow-lg relative">
     <div class="container mx-auto px-4 py-2 flex justify-between items-center">
@@ -76,7 +76,7 @@ ORDER BY jm.hari, jm.jam_mulai");
                     <li><a href="jadwal.php" class="hover:text-indigo-200 transition text-sm">Jadwal</a></li>
                     <li><a href="akademik.php" class="hover:text-indigo-200 transition text-sm">Akademik</a></li>
                     <li><a href="kegiatan.php" class="hover:text-indigo-200 transition text-sm">Kegiatan</a></li>
-                    <li><a href="backend/login/login.php" class="hover:text-indigo-200 transition text-sm">Login</a></li>
+                    <li><a href="../backend/login/login.php" class="hover:text-indigo-200 transition text-sm">Login</a></li>
                 </ul>
             </nav>
         </div>
@@ -102,19 +102,19 @@ ORDER BY jm.hari, jm.jam_mulai");
       <table class="min-w-full divide-y divide-slate-200">
                     <thead class="bg-indigo-900">
                         <tr>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" >
+                            <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider" >
                                 No</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" >
+                            <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider" >
                                 Hari</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" >
+                            <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider" >
                                 Jam Ke</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" >
+                            <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider" >
                                 Pukul</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" >
+                            <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider" >
                                 Ruangan</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" >
+                            <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider" >
                                 Mata Kuliah</th>
-                            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider" >
+                            <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider" >
                                 SKS</th>
                             <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">
                                 Dosen Pengampu</th>
@@ -150,43 +150,43 @@ ORDER BY jm.hari, jm.jam_mulai");
   </div>
 
   <!-- Footer -->
-  <footer class="bg-indigo-950 text-white py-4">
-    <div class="container mx-auto px-4">
-      <div class="grid md:grid-cols-3 gap-8">
-        <div>
-          <h3 class="text-lg font-bold mb-4">PTIK C 2024</h3>
-          <p class="mb-4 text-xs">Jurusan Teknik Informatika dan Komputer</p>
-          <p class="text-xs">Fakultas Teknik</p>
-          <p class="text-xs">Universitas Negeri Makassar</p>
-        </div>
+  <footer class="bg-indigo-950 text-white py-4 mt-auto">
+		<div class="container mx-auto px-4">
+			<div class="grid md:grid-cols-3 gap-8">
+				<div>
+					<h3 class="text-lg font-bold mb-4">PTIK C 2024</h3>
+					<p class="mb-4 text-xs">Jurusan Teknik Informatika dan Komputer</p>
+					<p class="text-xs">Fakultas Teknik</p>
+					<p class="text-xs">Universitas Negeri Makassar</p>
+				</div>
 
-        <div>
-          <h3 class="text-lg font-bold mb-4">Tautan Cepat</h3>
-          <ul class="space-y-1">
-            <li><a href="#" class="hover:text-indigo-200 transition text-xs">Beranda</a></li>
-            <li><a href="jadwal-matkul/jadwal-matkul.html" class="hover:text-indigo-200 transition text-xs">Jadwal Kuliah</a></li>
-            <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-indigo-200 transition text-xs">Daftar Mahasiswa</a></li>
-            <li><a href="daftar-tugas/daftar-tugas.html" class="hover:text-indigo-200 transition text-xs">Daftar Tugas</a></li>
-          </ul>
-        </div>
+				<div>
+					<h3 class="text-lg font-bold mb-4">Tautan Cepat</h3>
+					<ul class="space-y-1">
+						<li><a href="../index.php" class="hover:text-indigo-200 transition text-xs">Beranda</a></li>
+						<li><a href="../jadwal-matkul/jadwal-matkul.html" class="hover:text-indigo-200 transition text-xs">Jadwal Kuliah</a></li>
+						<li><a href="../daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-indigo-200 transition text-xs">Daftar Mahasiswa</a></li>
+						<li><a href="../daftar-tugas/daftar-tugas.html" class="hover:text-indigo-200 transition text-xs">Daftar Tugas</a></li>
+					</ul>
+				</div>
 
-        <div>
-          <h3 class="text-lg font-bold mb-4">Kontak</h3>
-          <p class="mb-2 text-xs"><i class="fas fa-map-marker-alt mr-2 text-sm"></i> Jl. A.P. Pettarani, Makassar</p>
-          <p class="mb-2 text-xs"><i class="fas fa-envelope mr-2 text-sm"></i> ptikc2024@unm.ac.id</p>
-          <div class="flex space-x-4 mt-4 text-xs">
-            <a href="https://www.instagram.com/ptikc_24" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-instagram text-sm"></i></a>
-            <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-facebook text-sm"></i></a>
-            <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-twitter text-sm"></i></a>
-          </div>
-        </div>
-      </div>
+				<div>
+					<h3 class="text-lg font-bold mb-4">Kontak</h3>
+					<p class="mb-2 text-xs"><i class="fas fa-map-marker-alt mr-2 text-sm"></i> Jl. A.P. Pettarani, Makassar</p>
+					<p class="mb-2 text-xs"><i class="fas fa-envelope mr-2 text-sm"></i> ptikc2024@unm.ac.id</p>
+					<div class="flex space-x-4 mt-4 text-xs">
+						<a href="https://www.instagram.com/ptikc_24" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-instagram text-sm"></i></a>
+						<a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-facebook text-sm"></i></a>
+						<a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-twitter text-sm"></i></a>
+					</div>
+				</div>
+			</div>
 
-      <div class="border-t border-indigo-800 mt-4 pt-4 text-center text-xs">
-        <p>© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+			<div class="border-t border-indigo-800 mt-4 pt-4 text-center text-xs">
+				<p>© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</p>
+			</div>
+		</div>
+	</footer>
 
   <script>
     const menuToggle = document.getElementById('menuToggle');

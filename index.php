@@ -40,7 +40,7 @@ include 'koneksi.php';
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-h-screen flex flex-col">
     <header class="bg-indigo-950 text-white shadow-lg relative">
         <div class="container mx-auto px-4 py-2 flex justify-between items-center">
             <!-- Logo -->
@@ -62,9 +62,8 @@ include 'koneksi.php';
                 <ul class="flex space-x-6">
                     <li><a href="#" class="hover:text-indigo-200 transition text-sm">Beranda</a></li>
                     <li><a href="pages/mahasiswa.php" class="hover:text-indigo-200 transition text-sm">Mahasiswa</a></li>
-                    <li><a href="pages/jadwal.php" class="hover:text-indigo-200 transition text-sm">Jadwal</a></li>
-                    <li><a href="pages/akademik.php" class="hover:text-indigo-200 transition text-sm">Akademik</a></li>
-                    <li><a href="pages/kegiatan.php" class="hover:text-indigo-200 transition text-sm">Kegiatan</a></li>
+                                        <li><a href="pages/akademik.php" class="hover:text-indigo-200 transition text-sm">Akademik</a></li>
+                    <li><a href="pages/galeri.php" class="hover:text-indigo-200 transition text-sm">Galeri</a></li>
                     <li><a href="backend/login/login.php" class="hover:text-indigo-200 transition text-sm">Login</a></li>
                 </ul>
             </nav>
@@ -75,25 +74,32 @@ include 'koneksi.php';
             <ul class="flex flex-col space-y-4 p-4">
                 <li><a href="#" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-home"></i><span>Beranda</span></a></li>
                 <li><a href="pages/mahasiswa.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-users"></i><span>Mahasiswa</span></a></li>
-                <li><a href="pages/jadwal.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-calendar"></i><span>Jadwal</span></a></li>
                 <li><a href="pages/akademik.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Akademik</span></a></li>
-                <li><a href="pages/kegiatan.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Kegiatan</span></a></li>
+                <li><a href="pages/galeri.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Galeri</span></a></li>
                 <li><a href="backend/login/login.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Login</span></a></li>
             </ul>
         </nav>
     </header>
 
 
-    <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-indigo-800 to-indigo-950 text-white py-16">
-        <div class="container mx-auto px-4 text-center">
-            <h2 class="text-4xl font-bold mb-4 fade-in">Selamat Datang di Kelas PTIK C</h2>
-            <p class="text-xl mb-8 max-w-2xl mx-auto fade-in">Angkatan 2024 - Jurusan Teknik Informatika dan Komputer<br>Fakultas Teknik, Universitas Negeri Makassar</p>
-            <button class="bg-white text-indigo-800 px-6 py-3 rounded-lg font-semibold hover:bg-indigo-100 transition">
+    <!-- Hero Section (diperbaiki: tinggi responsif, konten tersentral, overlay) -->
+    <section class="relative text-white overflow-hidden" style="min-height: 100vh;">
+    <div class="absolute inset-0 bg-center bg-cover brightness-50" 
+         style="background-image: url('img/img-1.jpg'); z-index: 0;">
+    </div>
+    
+    <div class="absolute inset-0 bg-black/30" style="z-index: 1;"></div>
+
+    <div class="relative z-10 container mx-auto px-4 flex items-center justify-center" style="min-height: 100vh;">
+        <div class="text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">Selamat Datang di Kelas PTIK C</h2>
+            <p class="text-base md:text-xl mb-6 max-w-2xl mx-auto">Angkatan 2024 - Jurusan Teknik Informatika dan Komputer</p>
+            <button class="bg-white text-indigo-800 px-6 py-3 rounded-lg font-semibold">
                 Jelajahi Lebih Lanjut
             </button>
         </div>
-    </section>
+    </div>
+</section>
 
     <!-- Profil Kelas -->
     <section class="py-16 bg-white">
@@ -131,41 +137,136 @@ include 'koneksi.php';
         </div>
     </section>
 
-    <!-- Struktur Pengurus Kelas -->
-    <section class="py-16 bg-gray-100">
-        <div class="container mx-auto px-4">
-            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Struktur Pengurus Kelas</h2>
+    <!-- Struktur Pengurus Kelas (dinamis dari tabel `users` + `mahasiswa`) -->
+    <section id="team" class="py-16 sm:py-12 bg-slate-50">
+        <div class="container mx-auto px-4 sm:px-6">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12 sm:mb-8">
+                    <h3 class="text-xl sm:text-3xl md:text-md font-bold text-slate-900">Pengurus Kelas PTIK C</h3>
+                </div>
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <?php
+                // helper: path foto
+                function foto_path($file) {
+                    if (!$file) return 'img/image.png';
+                    $p = 'backend/img/profile/' . $file;
+                    return file_exists($p) ? $p : 'img/image.png';
+                }
+
+                // Ambil Ketua (role = 'Ketua')
+                $qKetua = mysqli_query($koneksi, "SELECT u.id, u.email, u.role, m.nama_lengkap, m.foto FROM users u LEFT JOIN mahasiswa m ON m.user_id = u.id WHERE u.role = 'Ketua Tingkat' LIMIT 1");
+                $ketua = mysqli_fetch_assoc($qKetua);
+                ?>
+
                 <!-- Ketua -->
-                <div class="bg-white p-6 rounded-lg shadow text-center">
-                    <img src="img/image.png" alt="Foto Ketua Kelas PTIK C" class="rounded-full mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Shofiyah Rosyadah</h3>
-                    <p class="text-indigo-800 font-medium mb-2">Ketua Kelas</p>
-                    <p class="text-gray-600">Bertanggung jawab atas koordinasi seluruh kegiatan kelas</p>
+                <div class="mb-8 sm:mb-12 max-w-xl mx-auto">
+                    <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 card-3d hover:shadow-2xl transition-all">
+                        <div class="bg-gradient-to-br from-indigo-800 to-indigo-950 h-24 sm:h-20 relative">
+                            <div class="absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2">
+                                <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex items-center justify-center text-white text-2xl sm:text-3xl font-bold shadow-xl border-4 border-white overflow-hidden">
+                                    <?php if ($ketua && !empty($ketua['foto'])): ?>
+                                        <img src="<?php echo htmlspecialchars(foto_path($ketua['foto'])); ?>" alt="<?php echo htmlspecialchars($ketua['nama_lengkap'] ?? ''); ?>" class="w-full h-full object-cover">
+                                    <?php else: ?>
+                                        <span><?php echo isset($ketua['nama_lengkap']) ? strtoupper(substr($ketua['nama_lengkap'],0,2)) : 'KT'; ?></span>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-14 sm:pt-16 pb-6 px-4 sm:px-6 text-center">
+                            <div class="inline-block px-3 py-1 bg-indigo-50 rounded-full mb-2">
+                                <span class="text-xs font-bold text-indigo-700"><?php echo htmlspecialchars($ketua['role'] ?? ''); ?></span>
+                            </div>
+                            <h4 class="text-lg sm:text-sm font-bold text-slate-900 mb-1"><?php echo htmlspecialchars($ketua['nama_lengkap'] ?? ''); ?></h4>
+                            <p class="text-xs sm:text-xs text-slate-600">Memimpin dan mengkoordinasi seluruh kegiatan kelas</p>
+                        </div>
+                    </div>
                 </div>
 
-                <!-- Sekretaris -->
-                <div class="bg-white p-6 rounded-lg shadow text-center">
-                    <img src="img/image.png" alt="Foto Sekretaris Kelas PTIK C" class="rounded-full mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Adelia Magfira Hapati</h3>
-                    <p class="text-indigo-800 font-medium mb-2">Sekretaris</p>
-                    <p class="text-gray-600">Mengelola administrasi dan dokumentasi kelas</p>
-                </div>
+                <?php
+                // Ambil Sekretaris dan Bendahara dari users (join mahasiswa untuk nama & foto)
+                $qSek = mysqli_query($koneksi, "SELECT u.id, u.email, u.role, m.nama_lengkap, m.foto FROM users u LEFT JOIN mahasiswa m ON m.user_id = u.id WHERE u.role = 'Sekretaris' ORDER BY m.nama_lengkap");
+                $qBen = mysqli_query($koneksi, "SELECT u.id, u.email, u.role, m.nama_lengkap, m.foto FROM users u LEFT JOIN mahasiswa m ON m.user_id = u.id WHERE u.role = 'Bendahara' ORDER BY m.nama_lengkap");
+                ?>
 
-                <!-- Bendahara -->
-                <div class="bg-white p-6 rounded-lg shadow text-center">
-                    <img src="img/image.png" alt="Foto Bendahara Kelas PTIK C" class="rounded-full mx-auto mb-4">
-                    <h3 class="text-xl font-semibold mb-2">Islatul Adha</h3>
-                    <p class="text-indigo-800 font-medium mb-2">Bendahara</p>
-                    <p class="text-gray-600">Mengelola keuangan dan anggaran kelas</p>
+                <!-- Sekretaris & Bendahara -->
+                <div class="grid sm:grid-cols-4 gap-6 sm:gap-8">
+                    <?php
+                    // render sekretaris (up to 2 card slots)
+                    $sekCount = 0;
+                    while ($row = mysqli_fetch_assoc($qSek)) {
+                        $sekCount++;
+                        ?>
+                        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 card-3d hover:shadow-2xl transition-all">
+                            <div class="bg-gradient-to-br from-slate-600 to-slate-800 h-24 sm:h-20 relative">
+                                <div class="absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex items-center justify-center text-white text-2xl sm:text-3xl font-bold shadow-xl border-4 border-white overflow-hidden">
+                                        <?php if (!empty($row['foto'])): ?>
+                                            <img src="<?php echo htmlspecialchars(foto_path($row['foto'])); ?>" alt="<?php echo htmlspecialchars($row['nama_lengkap']); ?>" class="w-full h-full object-cover">
+                                        <?php else: ?>
+                                            <span><?php echo strtoupper(substr($row['nama_lengkap'],0,2)); ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-14 sm:pt-16 pb-6 px-4 sm:px-6 text-center">
+                                <div class="inline-block px-3 py-1 bg-slate-50 rounded-full mb-2">
+                                    <span class="text-xs font-bold text-slate-700"><?php echo htmlspecialchars($row['role'] ?? ''); ?></span>
+                                </div>
+                                <h4 class="text-lg sm:text-sm font-bold text-slate-900 mb-1"><?php echo htmlspecialchars($row['nama_lengkap']); ?></h4>
+                                <p class="text-xs sm:text-xs text-slate-600">Dokumentasi & administrasi kelas</p>
+                            </div>
+                        </div>
+                        <?php
+                    }
+
+                    // if less than 2 sekretaris, fill empty slots
+                    for ($i = $sekCount; $i < 2; $i++) {
+                        ?>
+                        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-dashed border-slate-200 flex items-center justify-center p-6 text-slate-400">Kosong</div>
+                        <?php
+                    }
+
+                    // render bendahara (up to 2)
+                    $benCount = 0;
+                    while ($row = mysqli_fetch_assoc($qBen)) {
+                        $benCount++;
+                        ?>
+                        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 card-3d hover:shadow-2xl transition-all">
+                            <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 h-24 sm:h-20 relative">
+                                <div class="absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2">
+                                    <div class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl flex items-center justify-center text-white text-2xl sm:text-3xl font-bold shadow-xl border-4 border-white overflow-hidden">
+                                        <?php if (!empty($row['foto'])): ?>
+                                            <img src="<?php echo htmlspecialchars(foto_path($row['foto'])); ?>" alt="<?php echo htmlspecialchars($row['nama_lengkap']); ?>" class="w-full h-full object-cover">
+                                        <?php else: ?>
+                                            <span><?php echo strtoupper(substr($row['nama_lengkap'],0,2)); ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-14 sm:pt-16 pb-6 px-4 sm:px-6 text-center">
+                                <div class="inline-block px-3 py-1 bg-indigo-50 rounded-full mb-2">
+                                    <span class="text-xs font-bold text-indigo-700"><?php echo htmlspecialchars($row['role'] ?? ''); ?></span>
+                                </div>
+                                <h4 class="text-lg sm:text-sm font-bold text-slate-900 mb-1"><?php echo htmlspecialchars($row['nama_lengkap']); ?></h4>
+                                <p class="text-xs sm:text-xs text-slate-600">Pengelolaan keuangan kelas</p>
+                            </div>
+                        </div>
+                        <?php
+                    }
+
+                    for ($i = $benCount; $i < 2; $i++) {
+                        ?>
+                        <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-dashed border-slate-200 flex items-center justify-center p-6 text-slate-400">Kosong</div>
+                        <?php
+                    }
+                    ?>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Gallery Slider -->
-    <section class="py-16 bg-white">
+    <section class="py-12 bg-white">
         <div class="container mx-auto px-4">
             <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">Galeri Kelas</h2>
 
@@ -214,7 +315,7 @@ include 'koneksi.php';
     </section>
 
     <!-- Footer -->
-    <footer class="bg-indigo-950 text-white py-4">
+    <footer class="bg-indigo-950 text-white py-4 mt-auto">
         <div class="container mx-auto px-4">
             <div class="grid md:grid-cols-3 gap-8">
                 <div>
