@@ -92,7 +92,7 @@ if (!empty($search)) {
         </div>
     </header>
 
-   <aside id="sidebar"
+    <aside id="sidebar"
         class="fixed left-0 top-0 h-screen w-48 bg-white transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out z-40">
         <!-- Tambahan padding top agar tidak tertutup header -->
         <div class="pt-16">
@@ -100,7 +100,7 @@ if (!empty($search)) {
                 <div class="px-4 space-y-2">
                     <!-- Dashboard Menu -->
                     <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
-                                <i class="fa fa-home w-4 h-4 mr-4"></i>
+                        <i class="fa fa-home w-4 h-4 mr-4"></i>
                         <span class="text-xs">Beranda</span>
                     </a>
 
@@ -120,7 +120,7 @@ if (!empty($search)) {
                             <a href="db_mahasiswa.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
 
-                                <a href="db_dosen.php"
+                            <a href="db_dosen.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
 
                             <a href="db_matkul.php"
@@ -129,10 +129,10 @@ if (!empty($search)) {
                             <a href="db_jadwal.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
 
-                                <a href="db_tugas.php"
+                            <a href="db_tugas.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
 
-                            
+
                         </div>
 
                         <button
@@ -155,7 +155,7 @@ if (!empty($search)) {
                             </div>
                         </button>
 
-                        
+
 
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
@@ -191,7 +191,7 @@ if (!empty($search)) {
                 <div class="flex-col sm:flex-row gap-2 w-full sm:w-auto md:w-auto">
                     <form method="GET" class="w-full">
                         <div class="flex flex-row gap-2 items-center">
-                            
+
 
                             <a href="../crud/tambah.php?tabel=mata_kuliah" class="basis-1/5 bg-green-600 text-white px-3 py-2 rounded-lg hover:bg-green-800 text-center text-xs flex items-center justify-center" title="Tambah">
                                 <i class="fa fa-plus"></i>
@@ -202,53 +202,53 @@ if (!empty($search)) {
             </div>
 
             <?php for ($s = 1; $s <= 8; $s++): ?>
-                    <h4 class="text-lg font-semibold mt-4 mb-2">Semester <?= $s ?></h4>
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-slate-200">
-                            <thead class="bg-indigo-900">
-                                <tr>
-                                    <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">No</th>
-                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Kode</th>
-                                    <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Nama Mata Kuliah</th>
-                                    <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">SKS</th>
-                                    <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">
-                                Actions</th>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Semester <?= $s ?></h4>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-indigo-900">
+                            <tr>
+                                <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">No</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Kode</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Nama Mata Kuliah</th>
+                                <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">SKS</th>
+                                <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">
+                                    Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-slate-200">
+                            <?php
+                            $no = 1;
+                            $id = 1;
+                            $found = false;
+                            foreach ($result as $m) {
+                                if ((int)$m['semester'] !== $s) continue;
+                                $found = true;
+                            ?>
+                                <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
+                                    <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= $no++; ?></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['kode_matkul']) ?></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['nama_matkul']) ?></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= htmlspecialchars($m['sks']) ?></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500 text-center">
+                                        <a href="../crud/edit.php?tabel=mata_kuliah&id=<?= $row['id']; ?>" title="Edit">
+                                            <i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i>
+                                        </a>
+
+                                        <a href="../crud/hapus.php?tabel=mata_kuliah&id=<?= $row['id']; ?>" title="Hapus">
+                                            <i class="fa fa-trash text-red-600 hover:text-red-900"></i>
+                                        </a>
+
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-slate-200">
-                                <?php
-                                $no = 1;
-                                $id = 1;
-                                $found = false;
-                                foreach ($result as $m) {
-                                    if ((int)$m['semester'] !== $s) continue;
-                                    $found = true;
-                                ?>
-                                    <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
-                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= $no++; ?></td>
-                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['kode_matkul']) ?></td>
-                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['nama_matkul']) ?></td>
-                                        <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= htmlspecialchars($m['sks']) ?></td>
-                                        <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500 text-center">
-                                    <a href="../crud/edit.php?tabel=mata_kuliah&id=<?= $row['id']; ?>" title="Edit">
-                                        <i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i>
-                                    </a>
-
-                                    <a href="../crud/hapus.php?tabel=mata_kuliah&id=<?= $row['id']; ?>" title="Hapus">
-                                        <i class="fa fa-trash text-red-600 hover:text-red-900"></i>
-                                    </a>
-
-                                </td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php endfor; ?>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endfor; ?>
         </div>
         <footer class="text-xs text-indigo-900 text-center mb-0 pb-0 mt-6">
-      © 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.
-    </footer>
+            © 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.
+        </footer>
     </main>
     <script>
         // Mobile menu toggle dengan perbaikan
@@ -300,8 +300,6 @@ if (!empty($search)) {
                 }
             });
         }
-
-      
     </script>
 </body>
 

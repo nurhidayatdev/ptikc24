@@ -41,44 +41,47 @@ include 'koneksi.php';
 </head>
 
 <body class="bg-gray-50">
-   <header class="bg-indigo-950 text-white shadow-lg relative">
-    <div class="container mx-auto px-4 py-2 flex justify-between items-center">
-      <!-- Logo -->
-      <div class="flex items-center">
-        <img src="img/logo.png" alt="Logo Universitas Negeri Makassar" class="h-10 w-10 mr-3">
-        <div>
-          <h1 class="text-lg font-bold">PTIK C 2024</h1>
-          <p class="text-xs">Teknik Informatika dan Komputer - FT UNM</p>
+    <header class="bg-indigo-950 text-white shadow-lg relative">
+        <div class="container mx-auto px-4 py-2 flex justify-between items-center">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <img src="img/logo.png" alt="Logo Universitas Negeri Makassar" class="h-10 w-10 mr-3">
+                <div>
+                    <h1 class="text-lg font-bold">PTIK C 2024</h1>
+                    <p class="text-xs">Teknik Informatika dan Komputer - FT UNM</p>
+                </div>
+            </div>
+
+            <!-- Hamburger Button -->
+            <button id="menuToggle" class="md:hidden text-2xl focus:outline-none">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Menu Desktop -->
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#" class="hover:text-indigo-200 transition text-sm">Beranda</a></li>
+                    <li><a href="pages/mahasiswa.php" class="hover:text-indigo-200 transition text-sm">Mahasiswa</a></li>
+                    <li><a href="pages/jadwal.php" class="hover:text-indigo-200 transition text-sm">Jadwal</a></li>
+                    <li><a href="pages/akademik.php" class="hover:text-indigo-200 transition text-sm">Akademik</a></li>
+                    <li><a href="pages/kegiatan.php" class="hover:text-indigo-200 transition text-sm">Kegiatan</a></li>
+                    <li><a href="backend/login/login.php" class="hover:text-indigo-200 transition text-sm">Login</a></li>
+                </ul>
+            </nav>
         </div>
-      </div>
 
-      <!-- Hamburger Button -->
-      <button id="menuToggle" class="md:hidden text-2xl focus:outline-none">
-        <i class="fas fa-bars"></i>
-      </button>
-
-      <!-- Menu Desktop -->
-      <nav class="hidden md:block">
-        <ul class="flex space-x-6">
-          <li><a href="#" class="hover:text-indigo-200 transition text-sm">Beranda</a></li>
-          <li><a href="jadwal-matkul/jadwal-matkul.html" class="hover:text-indigo-200 transition text-sm">Jadwal Kuliah</a></li>
-          <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-indigo-200 transition text-sm">Daftar Mahasiswa</a></li>
-          <li><a href="daftar-tugas/daftar-tugas.html" class="hover:text-indigo-200 transition text-sm">Daftar Tugas</a></li>
-          <li><a href="backend/login/login.php" class="hover:text-indigo-200 transition text-sm">Login</a></li>
-        </ul>
-      </nav>
-    </div>
-
-    <!-- Menu Mobile (muncul di bawah nav) -->
-    <nav id="mobileMenu" class="hidden md:hidden absolute top-full left-0 w-full bg-indigo-950 shadow-md">
-      <ul class="flex flex-col space-y-4 p-4">
-        <li><a href="#" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-home"></i><span>Beranda</span></a></li>
-        <li><a href="jadwal-matkul/jadwal-matkul.html" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-calendar"></i><span>Jadwal Kuliah</span></a></li>
-        <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-users"></i><span>Daftar Mahasiswa</span></a></li>
-        <li><a href="daftar-tugas/daftar-tugas.html" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Daftar Tugas</span></a></li>
-      </ul>
-    </nav>
-  </header>
+        <!-- Menu Mobile (muncul di bawah nav) -->
+        <nav id="mobileMenu" class="hidden md:hidden absolute top-full left-0 w-full bg-indigo-950 shadow-md">
+            <ul class="flex flex-col space-y-4 p-4">
+                <li><a href="#" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-home"></i><span>Beranda</span></a></li>
+                <li><a href="pages/mahasiswa.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-users"></i><span>Mahasiswa</span></a></li>
+                <li><a href="pages/jadwal.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-calendar"></i><span>Jadwal</span></a></li>
+                <li><a href="pages/akademik.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Akademik</span></a></li>
+                <li><a href="pages/kegiatan.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Kegiatan</span></a></li>
+                <li><a href="backend/login/login.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Login</span></a></li>
+            </ul>
+        </nav>
+    </header>
 
 
     <!-- Hero Section -->

@@ -1,7 +1,7 @@
 <?php
 include '../koneksi.php';
 
-$result = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
+$result = mysqli_query($koneksi, "SELECT * FROM mata_kuliah ORDER BY semester ASC");
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -88,54 +88,41 @@ $result = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
 
 
   <div class="container mx-auto p-6">
-    <h1 class="text-2xl font-bold mb-6 text-center text-indigo-950">Mahasiswa</h1>
+    <h1 class="text-2xl font-bold mb-6 text-center text-indigo-950">Matakuliah PTIK</h1>
     <!-- Rest of the content remains the same -->
     <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-slate-200">
-        <thead class="bg-indigo-900">
-          <tr>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              No</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              Foto</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              NIM</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              Nama Lengkap</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              Nama Panggilan</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              Bio</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-slate-200">
-          <?php
-          $no = 1;
-          $id = 1;
-          while ($row = mysqli_fetch_assoc($result)) : ?>
-            <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
-
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
-              <td class="px-3 py-2 whitespace-nowrap text-xs">
-                <?php if (!empty($row['foto'])): ?>
-                  <img src="../backend/img/profile/<?php echo htmlspecialchars($row['foto']); ?>"
-                    class="img-fluid rounded"
-                    style="max-width:25px; height:auto;" />
-                <?php else: ?>
-                  <span class="text-muted">Belum ada gambar</span>
-                <?php endif; ?>
-              </td>
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nim']; ?></td>
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_lengkap']; ?></td>
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_panggilan']; ?></td>
-
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['bio']; ?></td>
-
-
-            </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
+      <?php for ($s = 1; $s <= 8; $s++): ?>
+                <h4 class="text-lg font-semibold mt-4 mb-2">Semester <?= $s ?></h4>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-slate-200">
+                        <thead class="bg-indigo-900">
+                            <tr>
+                                <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">No</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Kode</th>
+                                <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Nama Mata Kuliah</th>
+                                <th class="px-3 py-3 text-center text-xs font-bold text-white uppercase tracking-wider">SKS</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-slate-200">
+                            <?php
+                            $no = 1;
+                            $id = 1;
+                            $found = false;
+                            foreach ($result as $m) {
+                                if ((int)$m['semester'] !== $s) continue;
+                                $found = true;
+                            ?>
+                                <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
+                                    <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= $no++; ?></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['kode_matkul']) ?></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['nama_matkul']) ?></td>
+                                    <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= htmlspecialchars($m['sks']) ?></td>
+                                </tr>
+                            <?php } ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php endfor; ?>
     </div>
   </div>
 
@@ -193,7 +180,6 @@ $result = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
         menuIcon.classList.add('fa-xmark');
       }
     });
-  
   </script>
 </body>
 

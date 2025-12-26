@@ -1,7 +1,7 @@
 <?php
 include '../koneksi.php';
 
-$result = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
+$result = mysqli_query($koneksi, "SELECT * FROM dosen ORDER BY nama_dosen ASC");
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -94,18 +94,8 @@ $result = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
       <table class="min-w-full divide-y divide-slate-200">
         <thead class="bg-indigo-900">
           <tr>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              No</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              Foto</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              NIM</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              Nama Lengkap</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              Nama Panggilan</th>
-            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">
-              Bio</th>
+            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">No</th>
+            <th class="px-3 py-3 text-left text-xs font-bold text-white uppercase tracking-wider">Nama Dosen</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-slate-200">
@@ -114,87 +104,71 @@ $result = mysqli_query($koneksi, "SELECT * FROM mahasiswa ORDER BY nim ASC");
           $id = 1;
           while ($row = mysqli_fetch_assoc($result)) : ?>
             <tr class="<?= ($id++ % 2 == 0) ? 'bg-slate-100' : 'bg-white' ?> hover:bg-indigo-100">
-
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $no++; ?></td>
-              <td class="px-3 py-2 whitespace-nowrap text-xs">
-                <?php if (!empty($row['foto'])): ?>
-                  <img src="../backend/img/profile/<?php echo htmlspecialchars($row['foto']); ?>"
-                    class="img-fluid rounded"
-                    style="max-width:25px; height:auto;" />
-                <?php else: ?>
-                  <span class="text-muted">Belum ada gambar</span>
-                <?php endif; ?>
-              </td>
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nim']; ?></td>
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_lengkap']; ?></td>
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['nama_panggilan']; ?></td>
-
-              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= $row['bio']; ?></td>
-
+              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?php echo $no++; ?></td>
+              <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?php echo htmlspecialchars($row['nama_dosen']); ?></td>
 
             </tr>
           <?php endwhile; ?>
         </tbody>
       </table>
     </div>
-  </div>
+    </div>
 
-  <!-- Footer -->
-  <footer class="bg-indigo-950 text-white py-4">
-    <div class="container mx-auto px-4">
-      <div class="grid md:grid-cols-3 gap-8">
-        <div>
-          <h3 class="text-lg font-bold mb-4">PTIK C 2024</h3>
-          <p class="mb-4 text-xs">Jurusan Teknik Informatika dan Komputer</p>
-          <p class="text-xs">Fakultas Teknik</p>
-          <p class="text-xs">Universitas Negeri Makassar</p>
-        </div>
+    <!-- Footer -->
+    <footer class="bg-indigo-950 text-white py-4">
+      <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-3 gap-8">
+          <div>
+            <h3 class="text-lg font-bold mb-4">PTIK C 2024</h3>
+            <p class="mb-4 text-xs">Jurusan Teknik Informatika dan Komputer</p>
+            <p class="text-xs">Fakultas Teknik</p>
+            <p class="text-xs">Universitas Negeri Makassar</p>
+          </div>
 
-        <div>
-          <h3 class="text-lg font-bold mb-4">Tautan Cepat</h3>
-          <ul class="space-y-1">
-            <li><a href="#" class="hover:text-indigo-200 transition text-xs">Beranda</a></li>
-            <li><a href="jadwal-matkul/jadwal-matkul.html" class="hover:text-indigo-200 transition text-xs">Jadwal Kuliah</a></li>
-            <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-indigo-200 transition text-xs">Daftar Mahasiswa</a></li>
-            <li><a href="daftar-tugas/daftar-tugas.html" class="hover:text-indigo-200 transition text-xs">Daftar Tugas</a></li>
-          </ul>
-        </div>
+          <div>
+            <h3 class="text-lg font-bold mb-4">Tautan Cepat</h3>
+            <ul class="space-y-1">
+              <li><a href="#" class="hover:text-indigo-200 transition text-xs">Beranda</a></li>
+              <li><a href="jadwal-matkul/jadwal-matkul.html" class="hover:text-indigo-200 transition text-xs">Jadwal Kuliah</a></li>
+              <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-indigo-200 transition text-xs">Daftar Mahasiswa</a></li>
+              <li><a href="daftar-tugas/daftar-tugas.html" class="hover:text-indigo-200 transition text-xs">Daftar Tugas</a></li>
+            </ul>
+          </div>
 
-        <div>
-          <h3 class="text-lg font-bold mb-4">Kontak</h3>
-          <p class="mb-2 text-xs"><i class="fas fa-map-marker-alt mr-2 text-sm"></i> Jl. A.P. Pettarani, Makassar</p>
-          <p class="mb-2 text-xs"><i class="fas fa-envelope mr-2 text-sm"></i> ptikc2024@unm.ac.id</p>
-          <div class="flex space-x-4 mt-4 text-xs">
-            <a href="https://www.instagram.com/ptikc_24" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-instagram text-sm"></i></a>
-            <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-facebook text-sm"></i></a>
-            <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-twitter text-sm"></i></a>
+          <div>
+            <h3 class="text-lg font-bold mb-4">Kontak</h3>
+            <p class="mb-2 text-xs"><i class="fas fa-map-marker-alt mr-2 text-sm"></i> Jl. A.P. Pettarani, Makassar</p>
+            <p class="mb-2 text-xs"><i class="fas fa-envelope mr-2 text-sm"></i> ptikc2024@unm.ac.id</p>
+            <div class="flex space-x-4 mt-4 text-xs">
+              <a href="https://www.instagram.com/ptikc_24" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-instagram text-sm"></i></a>
+              <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-facebook text-sm"></i></a>
+              <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-twitter text-sm"></i></a>
+            </div>
           </div>
         </div>
+
+        <div class="border-t border-indigo-800 mt-4 pt-4 text-center text-xs">
+          <p>© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</p>
+        </div>
       </div>
+    </footer>
 
-      <div class="border-t border-indigo-800 mt-4 pt-4 text-center text-xs">
-        <p>© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
+    <script>
+      const menuToggle = document.getElementById('menuToggle');
+      const mobileMenu = document.getElementById('mobileMenu');
+      const menuIcon = menuToggle.querySelector('i');
 
-  <script>
-    const menuToggle = document.getElementById('menuToggle');
-    const mobileMenu = document.getElementById('mobileMenu');
-    const menuIcon = menuToggle.querySelector('i');
-
-    menuToggle.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
-      if (mobileMenu.classList.contains('hidden')) {
-        menuIcon.classList.remove('fa-xmark');
-        menuIcon.classList.add('fa-bars');
-      } else {
-        menuIcon.classList.remove('fa-bars');
-        menuIcon.classList.add('fa-xmark');
-      }
-    });
-  
-  </script>
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        if (mobileMenu.classList.contains('hidden')) {
+          menuIcon.classList.remove('fa-xmark');
+          menuIcon.classList.add('fa-bars');
+        } else {
+          menuIcon.classList.remove('fa-bars');
+          menuIcon.classList.add('fa-xmark');
+        }
+      });
+    </script>
 </body>
 
 </html>
