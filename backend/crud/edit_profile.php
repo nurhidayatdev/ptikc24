@@ -2,6 +2,7 @@
 session_start();
 include '../../koneksi.php';
 
+$nama_panggilan = $_SESSION['nama_panggilan'];
 $nama_lengkap = $_SESSION['nama_lengkap'];
 $user_id = $_SESSION['user_id'];
 $foto = $_SESSION['foto'];
@@ -213,7 +214,7 @@ if (isset($_POST['update'])) {
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         .rotate-180 {
@@ -228,7 +229,7 @@ if (isset($_POST['update'])) {
     </style>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-slate-100">
     <!-- Header dengan z-index lebih tinggi -->
     <header class="bg-indigo-950  fixed w-full top-0 z-50">
         <div class="flex justify-between items-center px-6 py-2">
@@ -237,7 +238,7 @@ if (isset($_POST['update'])) {
                 <span class="text-xl font-bold text-white">Dashboard PTIK C</span>
             </div>
             <!-- Mobile Menu Button dengan z-index yang sesuai -->
-            <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-gray-100">
+            <button id="mobile-menu-button" class="text-slate-100 hover:text-indigo-950 lg:hidden p-2 rounded-lg hover:bg-indigo-100">
                 <i class="fa fa-bars w-6 h-5"></i>
             </button>
             <div class="hidden lg:flex items-center space-x-4">
@@ -247,8 +248,8 @@ if (isset($_POST['update'])) {
                         <img src="../img/profile/<?= htmlspecialchars($foto) ?>" alt="Profile" class="w-8 h-8 rounded-full">
                     </button>
                     <div id="profile-dropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
-                        <a href="profile.php" class="block px-4 py-2 text-xs hover:bg-gray-100">Profile</a>
-                        <a href="../login/login.php" class="block px-4 py-2 text-xs hover:bg-gray-100">Logout</a>
+                        <a href="profile.php" class="block px-4 py-2 text-xs hover:bg-indigo-100">Profile</a>
+                        <a href="../login/login.php" class="block px-4 py-2 text-xs hover:bg-indigo-100">Logout</a>
                     </div>
                 </div>
             </div>
@@ -262,7 +263,7 @@ if (isset($_POST['update'])) {
             <nav class="mt-6">
                 <div class="px-4 space-y-2">
                     <!-- Dashboard Menu -->
-                    <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
+                    <a href="../dashboard/dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
                                 <i class="fa fa-home w-4 h-4 mr-4"></i>
                         <span class="text-xs">Beranda</span>
                     </a>
@@ -280,39 +281,39 @@ if (isset($_POST['update'])) {
                         </button>
 
                         <div class="submenu pl-8 space-y-1 hidden overflow-y-auto max-h-52">
-                            <a href="db_mahasiswa.php"
+                            <a href="../dashboard/db_mahasiswa.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
 
                                 <a href="db_dosen.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
 
-                            <a href="db_matkul.php"
+                            <a href="../dashboard/db_matkul.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mata Kuliah</a>
 
-                            <a href="db_jadwal.php"
+                            <a href="../dashboard/db_jadwal.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
 
-                                <a href="db_tugas.php"
+                                <a href="../dashboard/db_tugas.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
 
                             
                         </div>
 
                         <button
-                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-indigo-100 rounded-lg">
                             <div class="flex items-center">
                                 <i class="fa fa-calendar w-5 h-5 mr-4"></i>
-                                <a href="db_absensi.php?matkul_id=33&pertemuan=1">
+                                <a href="../dashboard/db_absensi.php?matkul_id=33&pertemuan=1">
                                     <span class="text-xs">Absensi</span>
                                 </a>
                             </div>
                         </button>
 
                         <button
-                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-indigo-100 rounded-lg">
                             <div class="flex items-center">
                                 <i class="fa fa-wallet w-5 h-5 mr-4"></i>
-                                <a href="db_kas.php?minggu_ke=1">
+                                <a href="../dashboard/db_kas.php?minggu_ke=1">
                                     <span class="text-xs">Kas Mingguan</span>
                                 </a>
                             </div>
@@ -321,20 +322,20 @@ if (isset($_POST['update'])) {
                         
 
                         <button
-                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-indigo-100 rounded-lg">
                             <div class="flex items-center">
                                 <i class="fa fa-users w-5 h-5 mr-4"></i>
-                                <a href="db_kelompok.php">
+                                <a href="../dashboard/db_kelompok.php">
                                     <span class="text-xs">Kelompok</span>
                                 </a>
                             </div>
                         </button>
 
                         <button
-                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
+                            class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-indigo-100 rounded-lg">
                             <div class="flex items-center">
                                 <i class="fa fa-user w-5 h-5 mr-4"></i>
-                                <a href="db_users.php">
+                                <a href="../dashboard/db_users.php">
                                     <span class="text-xs">Users</span>
                                 </a>
                             </div>
@@ -346,7 +347,7 @@ if (isset($_POST['update'])) {
         </div>
     </aside>
 
-    <main class="ml-0 lg:ml-48 pt-20 p-6">
+    <main class="ml-0 md:ml-48 pt-20 p-6">
         <div class="bg-white rounded-lg border border-gray-200 p-6">
 
             <form class="space-y-6" method="POST" enctype="multipart/form-data">
@@ -385,29 +386,31 @@ if (isset($_POST['update'])) {
                             <div class="flex items-center space-x-4">
                                 <img id="current-preview" src="../img/profile/<?php echo htmlspecialchars($data['foto']); ?>" class="img-fluid rounded" style="width:120px; height:120px; object-fit:cover;" />
                                 <div>
-                                    <button type="button" id="open-cropper" class="px-3 py-1 bg-gray-200 rounded text-xs hidden">Buka Cropper</button>
+                                    <button type="button" id="open-cropper" class="px-3 py-1 bg-indigo-200 rounded text-xs hidden">Buka Cropper</button>
                                 </div>
                             </div>
 
                             <!-- Cropper modal-ish area -->
                             <div id="cropper-area" class="mt-4 hidden">
-                                <div class="flex space-x-4">
-                                    <div style="width:320px; height:320px; background:#f3f4f6; display:flex; align-items:center; justify-content:center;">
+                                <div class="grid sm:grid-cols-2 gap-4 space-x-4">
+                                    <div class="w-full flex align-center justify-center bg-slate-200">
                                         <img id="crop-image" style="max-width:100%; display:block;" />
                                     </div>
                                     <div class="space-y-2">
                                         <div class="border p-2 rounded" style="width:160px; height:160px; overflow:hidden;">
-                                            <div class="preview-wrapper" style="width:100%; height:100%;"></div>
+                                            <div class="preview-wrapper" style="width:100%; height:100%;">
+                                                <img id="preview" style="width:100%; height:100%; object-fit:cover; display:block;" />
+                                            </div>
                                         </div>
                                         <div class="flex space-x-2">
-                                            <button type="button" id="zoom-in" class="px-3 py-1 bg-gray-200 rounded">+</button>
-                                            <button type="button" id="zoom-out" class="px-3 py-1 bg-gray-200 rounded">-</button>
-                                            <button type="button" id="rotate-left" class="px-3 py-1 bg-gray-200 rounded">⟲</button>
-                                            <button type="button" id="rotate-right" class="px-3 py-1 bg-gray-200 rounded">⟳</button>
+                                            <button type="button" id="zoom-in" class="px-3 py-1 bg-indigo-200 rounded">+</button>
+                                            <button type="button" id="zoom-out" class="px-3 py-1 bg-indigo-200 rounded">-</button>
+                                            <button type="button" id="rotate-left" class="px-3 py-1 bg-indigo-200 rounded">⟲</button>
+                                            <button type="button" id="rotate-right" class="px-3 py-1 bg-indigo-200 rounded">⟳</button>
                                         </div>
                                         <div>
-                                            <button type="button" id="apply-crop" class="mt-2 px-3 py-1 bg-indigo-700 text-white rounded">Gunakan Foto</button>
-                                            <button type="button" id="cancel-crop" class="mt-2 ml-2 px-3 py-1 bg-gray-200 rounded">Batal</button>
+                                            <button type="button" id="apply-crop" class="mt-2 px-3 py-1 bg-indigo-700 text-white rounded text-sm">Gunakan Foto</button>
+                                            <button type="button" id="cancel-crop" class="mt-2 ml-2 px-3 py-1 bg-indigo-200 rounded text-sm">Batal</button>
                                         </div>
                                     </div>
                                 </div>
@@ -421,9 +424,9 @@ if (isset($_POST['update'])) {
 
                 <div class="flex justify-end space-x-4">
                     <button type="button"
-                        class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-xs">Kembali</button>
+                        class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-indigo-50 text-sm">Cancel</button>
                     <button type="submit" name="update"
-                        class="px-6 py-2 bg-indigo-800 text-white rounded-lg hover:bg-indigo-950 text-xs">Submit</button>
+                        class="px-6 py-2 bg-indigo-800 text-white rounded-lg hover:bg-indigo-700 text-sm">Submit</button>
                 </div>
             </form>
         </div>
