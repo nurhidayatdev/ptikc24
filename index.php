@@ -41,7 +41,7 @@ include 'koneksi.php';
 </head>
 
 <body class="bg-gray-50 min-h-screen flex flex-col">
-    <header class="bg-indigo-950 text-white shadow-lg relative">
+    <header class="bg-indigo-950 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-4 py-2 flex justify-between items-center">
             <!-- Logo -->
             <div class="flex items-center">
@@ -57,49 +57,89 @@ include 'koneksi.php';
                 <i class="fas fa-bars"></i>
             </button>
 
-            <!-- Menu Desktop -->
             <nav class="hidden md:block">
                 <ul class="flex space-x-6">
-                    <li><a href="#" class="hover:text-indigo-200 transition text-sm">Beranda</a></li>
-                    <li><a href="pages/mahasiswa.php" class="hover:text-indigo-200 transition text-sm">Mahasiswa</a></li>
-                                        <li><a href="pages/akademik.php" class="hover:text-indigo-200 transition text-sm">Akademik</a></li>
-                    <li><a href="pages/galeri.php" class="hover:text-indigo-200 transition text-sm">Galeri</a></li>
-                    <li><a href="backend/login/login.php" class="hover:text-indigo-200 transition text-sm">Login</a></li>
+                    <li>
+                        <a href="#" class="flex items-center hover:text-indigo-200 transition text-sm">
+                            <i class="fas fa-home mr-2"></i>Beranda
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pages/mahasiswa.php" class="flex items-center hover:text-indigo-200 transition text-sm">
+                            <i class="fas fa-user-graduate mr-2"></i>Mahasiswa
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pages/akademik.php" class="flex items-center hover:text-indigo-200 transition text-sm">
+                            <i class="fas fa-graduation-cap mr-2"></i>Akademik
+                        </a>
+                    </li>
+                    <li>
+                        <a href="pages/galeri.php" class="flex items-center hover:text-indigo-200 transition text-sm">
+                            <i class="fas fa-images mr-2"></i>Galeri
+                        </a>
+                    </li>
+                    <li>
+                        <a href="backend/login/login.php" class="flex items-center hover:text-indigo-200 transition text-sm">
+                            <i class="fas fa-sign-in-alt mr-2"></i>Login
+                        </a>
+                    </li>
                 </ul>
             </nav>
         </div>
 
-        <!-- Menu Mobile (muncul di bawah nav) -->
-        <nav id="mobileMenu" class="hidden md:hidden absolute top-full left-0 w-full bg-indigo-950 shadow-md">
-            <ul class="flex flex-col space-y-4 p-4">
-                <li><a href="#" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-home"></i><span>Beranda</span></a></li>
-                <li><a href="pages/mahasiswa.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-users"></i><span>Mahasiswa</span></a></li>
-                <li><a href="pages/akademik.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Akademik</span></a></li>
-                <li><a href="pages/galeri.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Galeri</span></a></li>
-                <li><a href="backend/login/login.php" class="flex items-center space-x-2 hover:text-indigo-200 transition text-sm"><i class="fas fa-tasks"></i><span>Login</span></a></li>
+        <nav id="mobileMenu" class="hidden md:hidden absolute top-full left-0 w-full bg-indigo-950 shadow-md z-50">
+            <ul class="flex flex-col space-y-2 p-4">
+                <li>
+                    <a href="#" class="flex items-center space-x-3 hover:text-indigo-200 transition text-sm py-2">
+                        <i class="fas fa-home w-5"></i><span>Beranda</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="pages/mahasiswa.php" class="flex items-center space-x-3 hover:text-indigo-200 transition text-sm py-2">
+                        <i class="fas fa-user-graduate w-5"></i><span>Mahasiswa</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="pages/akademik.php" class="flex items-center space-x-3 hover:text-indigo-200 transition text-sm py-2">
+                        <i class="fas fa-graduation-cap w-5"></i><span>Akademik</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="pages/galeri.php" class="flex items-center space-x-3 hover:text-indigo-200 transition text-sm py-2">
+                        <i class="fas fa-images w-5"></i><span>Galeri</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="backend/login/login.php" class="flex items-center space-x-3 hover:text-indigo-200 transition text-sm py-2">
+                        <i class="fas fa-sign-in-alt w-5"></i><span>Login</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     </header>
 
+    <!-- spacer to avoid content hidden under fixed header -->
+    <div class="h-14"></div>
 
     <!-- Hero Section (diperbaiki: tinggi responsif, konten tersentral, overlay) -->
     <section class="relative text-white overflow-hidden" style="min-height: 100vh;">
-    <div class="absolute inset-0 bg-center bg-cover brightness-50" 
-         style="background-image: url('img/img-1.jpg'); z-index: 0;">
-    </div>
-    
-    <div class="absolute inset-0 bg-black/30" style="z-index: 1;"></div>
-
-    <div class="relative z-10 container mx-auto px-4 flex items-center justify-center" style="min-height: 100vh;">
-        <div class="text-center">
-            <h2 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">Selamat Datang di Kelas PTIK C</h2>
-            <p class="text-base md:text-xl mb-6 max-w-2xl mx-auto">Angkatan 2024 - Jurusan Teknik Informatika dan Komputer</p>
-            <button class="bg-white text-indigo-800 px-6 py-3 rounded-lg font-semibold">
-                Jelajahi Lebih Lanjut
-            </button>
+        <div class="absolute inset-0 bg-center bg-cover brightness-50"
+            style="background-image: url('img/img-1.jpg'); z-index: 0;">
         </div>
-    </div>
-</section>
+
+        <div class="absolute inset-0 bg-black/30" style="z-index: 1;"></div>
+
+        <div class="relative z-10 container mx-auto px-4 flex items-center justify-center" style="min-height: 100vh;">
+            <div class="text-center">
+                <h2 class="text-3xl md:text-5xl font-bold mb-4 leading-tight">Selamat Datang di Kelas PTIK C</h2>
+                <p class="text-base md:text-xl mb-6 max-w-2xl mx-auto">Angkatan 2024 - Jurusan Teknik Informatika dan Komputer</p>
+                <button class="bg-white text-indigo-800 px-6 py-3 rounded-lg font-semibold">
+                    Jelajahi Lebih Lanjut
+                </button>
+            </div>
+        </div>
+    </section>
 
     <!-- Profil Kelas -->
     <section class="py-16 bg-white">
@@ -147,7 +187,8 @@ include 'koneksi.php';
 
                 <?php
                 // helper: path foto
-                function foto_path($file) {
+                function foto_path($file)
+                {
                     if (!$file) return 'img/image.png';
                     $p = 'backend/img/profile/' . $file;
                     return file_exists($p) ? $p : 'img/image.png';
@@ -167,7 +208,7 @@ include 'koneksi.php';
                                     <?php if ($ketua && !empty($ketua['foto'])): ?>
                                         <img src="<?php echo htmlspecialchars(foto_path($ketua['foto'])); ?>" alt="<?php echo htmlspecialchars($ketua['nama_lengkap'] ?? ''); ?>" class="w-full h-full object-cover">
                                     <?php else: ?>
-                                        <span><?php echo isset($ketua['nama_lengkap']) ? strtoupper(substr($ketua['nama_lengkap'],0,2)) : 'KT'; ?></span>
+                                        <span><?php echo isset($ketua['nama_lengkap']) ? strtoupper(substr($ketua['nama_lengkap'], 0, 2)) : 'KT'; ?></span>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -195,7 +236,7 @@ include 'koneksi.php';
                     $sekCount = 0;
                     while ($row = mysqli_fetch_assoc($qSek)) {
                         $sekCount++;
-                        ?>
+                    ?>
                         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 card-3d hover:shadow-2xl transition-all">
                             <div class="bg-gradient-to-br from-slate-600 to-slate-800 h-24 sm:h-20 relative">
                                 <div class="absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2">
@@ -203,7 +244,7 @@ include 'koneksi.php';
                                         <?php if (!empty($row['foto'])): ?>
                                             <img src="<?php echo htmlspecialchars(foto_path($row['foto'])); ?>" alt="<?php echo htmlspecialchars($row['nama_lengkap']); ?>" class="w-full h-full object-cover">
                                         <?php else: ?>
-                                            <span><?php echo strtoupper(substr($row['nama_lengkap'],0,2)); ?></span>
+                                            <span><?php echo strtoupper(substr($row['nama_lengkap'], 0, 2)); ?></span>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -216,21 +257,21 @@ include 'koneksi.php';
                                 <p class="text-xs sm:text-xs text-slate-600">Dokumentasi & administrasi kelas</p>
                             </div>
                         </div>
-                        <?php
+                    <?php
                     }
 
                     // if less than 2 sekretaris, fill empty slots
                     for ($i = $sekCount; $i < 2; $i++) {
-                        ?>
+                    ?>
                         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-dashed border-slate-200 flex items-center justify-center p-6 text-slate-400">Kosong</div>
-                        <?php
+                    <?php
                     }
 
                     // render bendahara (up to 2)
                     $benCount = 0;
                     while ($row = mysqli_fetch_assoc($qBen)) {
                         $benCount++;
-                        ?>
+                    ?>
                         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-slate-200 card-3d hover:shadow-2xl transition-all">
                             <div class="bg-gradient-to-br from-indigo-600 to-indigo-800 h-24 sm:h-20 relative">
                                 <div class="absolute -bottom-10 sm:-bottom-12 left-1/2 -translate-x-1/2">
@@ -238,7 +279,7 @@ include 'koneksi.php';
                                         <?php if (!empty($row['foto'])): ?>
                                             <img src="<?php echo htmlspecialchars(foto_path($row['foto'])); ?>" alt="<?php echo htmlspecialchars($row['nama_lengkap']); ?>" class="w-full h-full object-cover">
                                         <?php else: ?>
-                                            <span><?php echo strtoupper(substr($row['nama_lengkap'],0,2)); ?></span>
+                                            <span><?php echo strtoupper(substr($row['nama_lengkap'], 0, 2)); ?></span>
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -251,13 +292,13 @@ include 'koneksi.php';
                                 <p class="text-xs sm:text-xs text-slate-600">Pengelolaan keuangan kelas</p>
                             </div>
                         </div>
-                        <?php
+                    <?php
                     }
 
                     for ($i = $benCount; $i < 2; $i++) {
-                        ?>
+                    ?>
                         <div class="bg-white rounded-3xl shadow-xl overflow-hidden border border-dashed border-slate-200 flex items-center justify-center p-6 text-slate-400">Kosong</div>
-                        <?php
+                    <?php
                     }
                     ?>
                 </div>
@@ -316,42 +357,77 @@ include 'koneksi.php';
 
     <!-- Footer -->
     <footer class="bg-indigo-950 text-white py-4 mt-auto">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-lg font-bold mb-4">PTIK C 2024</h3>
-                    <p class="mb-4 text-xs">Jurusan Teknik Informatika dan Komputer</p>
-                    <p class="text-xs">Fakultas Teknik</p>
-                    <p class="text-xs">Universitas Negeri Makassar</p>
-                </div>
+		<div class="container mx-auto px-4">
+			<div class="grid md:grid-cols-4 gap-8">
+				<div>
+					<h3 class="text-lg font-bold mb-4">PTIK C 2024</h3>
+					<p class="mb-4 text-xs">Jurusan Teknik Informatika dan Komputer</p>
+					<p class="text-xs">Fakultas Teknik</p>
+					<p class="text-xs">Universitas Negeri Makassar</p>
+				</div>
 
-                <div>
-                    <h3 class="text-lg font-bold mb-4">Tautan Cepat</h3>
-                    <ul class="space-y-1">
-                        <li><a href="#" class="hover:text-indigo-200 transition text-xs">Beranda</a></li>
-                        <li><a href="jadwal-matkul/jadwal-matkul.html" class="hover:text-indigo-200 transition text-xs">Jadwal Kuliah</a></li>
-                        <li><a href="daftar-mahasiswa/daftar-mahasiswa.html" class="hover:text-indigo-200 transition text-xs">Daftar Mahasiswa</a></li>
-                        <li><a href="daftar-tugas/daftar-tugas.html" class="hover:text-indigo-200 transition text-xs">Daftar Tugas</a></li>
-                    </ul>
-                </div>
+				<div>
+					<h3 class="text-lg font-bold mb-4">Tautan Cepat</h3>
+					<ul class="space-y-1">
+						<li><a href="#" class="hover:text-indigo-200 transition text-xs">Beranda</a></li>
+						<li><a href="pages/mahasiswa.php" class="hover:text-indigo-200 transition text-xs">Mahasiswa</a></li>
+						<li><a href="pages/akademik.php" class="hover:text-indigo-200 transition text-xs">Akademik</a></li>
+						<li><a href="pages/galeri.php" class="hover:text-indigo-200 transition text-xs">Galeri</a></li>
+					</ul>
+				</div>
 
+				<div>
+					<h3 class="text-lg font-bold mb-4">Kontak</h3>
+					<p class="mb-2 text-xs"><i class="fas fa-map-marker-alt mr-2 text-sm"></i> Jl. A.P. Pettarani, Makassar</p>
+					<p class="mb-2 text-xs"><i class="fas fa-envelope mr-2 text-sm"></i> ptikc2024@unm.ac.id</p>
+					<div class="flex space-x-4 mt-4 text-xs">
+						<a href="https://www.instagram.com/ptikc_24" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-instagram text-sm"></i></a>
+						<a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-facebook text-sm"></i></a>
+						<a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-twitter text-sm"></i></a>
+					</div>
+				</div>
                 <div>
-                    <h3 class="text-lg font-bold mb-4">Kontak</h3>
-                    <p class="mb-2 text-xs"><i class="fas fa-map-marker-alt mr-2 text-sm"></i> Jl. A.P. Pettarani, Makassar</p>
-                    <p class="mb-2 text-xs"><i class="fas fa-envelope mr-2 text-sm"></i> ptikc2024@unm.ac.id</p>
-                    <div class="flex space-x-4 mt-4 text-xs">
-                        <a href="https://www.instagram.com/ptikc_24" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-instagram text-sm"></i></a>
-                        <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-facebook text-sm"></i></a>
-                        <a href="#" class="hover:text-indigo-200 transition text-xs"><i class="fab fa-twitter text-sm"></i></a>
-                    </div>
-                </div>
-            </div>
+                <h3 class="text-lg font-bold mb-4">Kirim Pesan Anonim</h3>
+                
+                <form action="" method="POST" class="space-y-2">
+                    <textarea 
+                        name="pesan_anonim" 
+                        rows="3" 
+                        maxlength="300"
+                        class="w-full p-3 rounded-lg bg-indigo-900/50 border border-indigo-800 text-white text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 placeholder-indigo-300/50"
+                        placeholder="Tulis pesan rahasia atau saran di sini..."
+                        required></textarea>
+                    <button 
+                        type="submit" 
+                        name="kirim_pesan"
+                        class="w-full bg-indigo-600 hover:bg-indigo-500 text-white py-2 rounded-lg text-xs font-semibold transition flex items-center justify-center space-x-2">
+                        <i class="fas fa-paper-plane text-xs"></i>
+                        <span>Kirim Sekarang</span>
+                    </button>
+                </form>
 
-            <div class="border-t border-indigo-800 mt-4 pt-4 text-center text-xs">
-                <p>© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</p>
+                <?php
+                // Logika PHP untuk simpan pesan ke database
+                if (isset($_POST['kirim_pesan'])) {
+                    $pesan = mysqli_real_escape_string($koneksi, $_POST['pesan_anonim']);
+                    if (!empty($pesan)) {
+                        $query_pesan = "INSERT INTO pesan (isi_pesan) VALUES ('$pesan')";
+                        if (mysqli_query($koneksi, $query_pesan)) {
+                            echo "<p class='text-[10px] text-green-400 mt-2'><i class='fas fa-check-circle mr-1'></i> Pesan berhasil dikirim secara anonim!</p>";
+                        }
+                    }
+                }
+                ?>
             </div>
         </div>
-    </footer>
+				</div>
+			</div>
+
+			<div class="border-t border-indigo-800 mt-4 pt-4 text-center text-xs">
+				<p>© 2025 Kelas PTIK C - Teknik Informatika dan Komputer FT UNM. All rights reserved.</p>
+			</div>
+		</div>
+	</footer>
 
     <script>
         const menuToggle = document.getElementById('menuToggle');
