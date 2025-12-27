@@ -25,25 +25,24 @@ if (isset($_POST['update'])) {
     switch ($tabel) {
 
         case 'mahasiswa':
-$foto_baru = $data['foto']; // default foto lama
+            $foto_baru = $data['foto']; // default foto lama
 
-if (!empty($_FILES['foto']['name'])) {
+            if (!empty($_FILES['foto']['name'])) {
 
-    $nama_file = $_FILES['foto']['name'];
-    $tmp_file  = $_FILES['foto']['tmp_name'];
-    $ext       = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
+                $nama_file = $_FILES['foto']['name'];
+                $tmp_file  = $_FILES['foto']['tmp_name'];
+                $ext       = strtolower(pathinfo($nama_file, PATHINFO_EXTENSION));
 
-    $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+                $allowed = ['jpg', 'jpeg', 'png', 'webp'];
 
-    if (in_array($ext, $allowed)) {
+                if (in_array($ext, $allowed)) {
 
-        $foto_baru = $nama_panggilan . '.' . $ext;
-        move_uploaded_file($tmp_file, "../img/profile/" . $foto_baru);
-
-    } else {
-        die("Format foto tidak valid!");
-    }
-}
+                    $foto_baru = $nama_panggilan . '.' . $ext;
+                    move_uploaded_file($tmp_file, "../img/profile/" . $foto_baru);
+                } else {
+                    die("Format foto tidak valid!");
+                }
+            }
 
             mysqli_query($koneksi, "UPDATE mahasiswa SET 
                     nama_lengkap='{$_POST['nama_lengkap']}',
@@ -52,29 +51,61 @@ if (!empty($_FILES['foto']['name'])) {
                     bio='{$_POST['bio']}',
                     foto='$foto_baru'
                     WHERE id='$id'");
-      $redirect = "../dashboard/db_mahasiswa.php";
+            $redirect = "../dashboard/db_mahasiswa.php";
             break;
 
-            case 'mata_kuliah':
+        case 'mata_kuliah':
             mysqli_query($koneksi, "UPDATE mata_kuliah SET 
                     kode_matkul='{$_POST['kode_matkul']}',
                     nama_matkul='{$_POST['nama_matkul']}',
                     semester='{$_POST['semester']}',
                     sks='{$_POST['sks']}'
                     WHERE id='$id'");
-      $redirect = "../dashboard/db_matkul.php";
+            $redirect = "../dashboard/db_matkul.php";
             break;
 
-            case 'users':
+        case 'users':
             mysqli_query($koneksi, "UPDATE users SET 
                     email='{$_POST['email']}',
                     password='{$_POST['password']}',
                     role='{$_POST['role']}'
                     WHERE id='$id'");
-      $redirect = "../dashboard/db_users.php";
+            $redirect = "../dashboard/db_users.php";
             break;
 
-        
+        case 'dosen':
+            mysqli_query($koneksi, "UPDATE dosen SET 
+                    nama_dosen='{$_POST['nama_dosen']}',
+                    no_hp='{$_POST['no_hp']}'
+                    WHERE id='$id'");
+            $redirect = "../dashboard/db_dosen.php";
+            break;
+
+        case 'tugas':
+            mysqli_query($koneksi, "UPDATE tugas SET 
+                    matkul_id='{$_POST['matkul_id']}',
+                    deadline_tanggal='{$_POST['deadline_tanggal']}',
+                    deadline_pukul='{$_POST['deadline_pukul']}',
+                    deskripsi='{$_POST['deskripsi']}',
+                    file_tugas='{$_POST['file_tugas']}',
+                    link_kirim='{$_POST['link_kirim']}'
+                    WHERE id='$id'");
+            $redirect = "../dashboard/db_tugas.php";
+            break;
+
+            case 'jadwal_matkul':
+            mysqli_query($koneksi, "UPDATE jadwal_matkul SET 
+                    matkul_id='{$_POST['matkul_id']}',
+                    hari='{$_POST['hari']}',
+                    jam_ke='{$_POST['jam_ke']}',
+                    jam_mulai='{$_POST['jam_mulai']}',
+                    jam_selesai='{$_POST['jam_selesai']}',
+                    ruangan='{$_POST['ruangan']}',
+                    dosen_pengampu_id='{$_POST['dosen_pengampu_id']}',
+                    dosen_mitra_id='{$_POST['dosen_mitra_id']}'
+                    WHERE id='$id'");
+            $redirect = "../dashboard/db_jadwal.php";
+            break;
     }
 
     echo "
@@ -111,7 +142,7 @@ if (!empty($_FILES['foto']['name'])) {
     </html>";
     exit;
 }
-  
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -177,7 +208,7 @@ if (!empty($_FILES['foto']['name'])) {
                 <div class="px-4 space-y-2">
                     <!-- Dashboard Menu -->
                     <a href="dashboard.php" class="flex items-center px-4 py-2 text-slate-700  rounded-lg hover:bg-slate-100">
-                                <i class="fa fa-home w-4 h-4 mr-4"></i>
+                        <i class="fa fa-home w-4 h-4 mr-4"></i>
                         <span class="text-xs">Beranda</span>
                     </a>
 
@@ -197,7 +228,7 @@ if (!empty($_FILES['foto']['name'])) {
                             <a href="db_mahasiswa.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Mahasiswa</a>
 
-                                <a href="db_dosen.php"
+                            <a href="db_dosen.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Dosen</a>
 
                             <a href="db_matkul.php"
@@ -206,10 +237,10 @@ if (!empty($_FILES['foto']['name'])) {
                             <a href="db_jadwal.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Jadwal</a>
 
-                                <a href="db_tugas.php"
+                            <a href="db_tugas.php"
                                 class="block px-4 py-2 text-xs text-slate-800 hover:bg-slate-100 rounded-lg">Tugas</a>
 
-                            
+
                         </div>
 
                         <button
@@ -232,7 +263,7 @@ if (!empty($_FILES['foto']['name'])) {
                             </div>
                         </button>
 
-                        
+
 
                         <button
                             class="flex items-center justify-between w-full px-4 py-2 text-slate-800 hover:bg-gray-100 rounded-lg">
@@ -267,96 +298,233 @@ if (!empty($_FILES['foto']['name'])) {
                 <div class="border-b border-gray-200 pb-6">
                     <?php if ($tabel === 'mahasiswa'): ?>
                         <h3 class="text-xl font-bold mb-6">Edit Mahasiswa</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Nama Lengkap</label>
-                            <input type="text" name="nama_lengkap" value="<?= $data['nama_lengkap']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                                <input type="text" name="nama_lengkap" value="<?= $data['nama_lengkap']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Nama Panggilan</label>
+                                <input type="text" name="nama_panggilan" value="<?= $data['nama_panggilan']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">NIM</label>
+                                <input type="number" name="nim" value="<?= $data['nim']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div class="space-y-4">
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Bio</label>
+                                <input name="bio" value="<?= $data['bio']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs"></input>
+                            </div>
+                            <div class="space-y-4">
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Foto</label>
+                                <input type="file" name="foto" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                                <input type="hidden" name="foto" value="<?= $data['foto']; ?>">
+                                <br>
+                                <img src="../img/profile/<?php echo htmlspecialchars($data['foto']); ?>"
+                                    class="img-fluid rounded"
+                                    style="max-width:150px; height:auto;" />
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Nama Panggilan</label>
-                            <input type="text" name="nama_panggilan" value="<?= $data['nama_panggilan']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">NIM</label>
-                            <input type="number" name="nim" value="<?= $data['nim']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
-                        </div>
-                        <div class="space-y-4">
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Bio</label>
-                            <input name="bio" value="<?= $data['bio']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm"></input>
-                        </div>
-                        <div class="space-y-4">
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Foto</label>
-                            <input type="file" name="foto" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
-                            <input type="hidden" name="foto" value="<?= $data['foto']; ?>">
-                            <br>
-                            <img src="../img/profile/<?php echo htmlspecialchars($data['foto']); ?>"
-                                class="img-fluid rounded"
-                                style="max-width:150px; height:auto;" />
-                        </div>
-                    </div>
 
                     <?php elseif ($tabel === 'mata_kuliah'): ?>
                         <h3 class="text-xl font-bold mb-6">Edit Mata Kuliah</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Kode Mata Kuliah</label>
-                            <input type="text" name="kode_matkul" value="<?= $data['kode_matkul']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Kode Mata Kuliah</label>
+                                <input type="text" name="kode_matkul" value="<?= $data['kode_matkul']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Nama Mata Kuliah</label>
+                                <input type="text" name="nama_matkul" value="<?= $data['nama_matkul']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Semester</label>
+                                <input type="number" name="semester" value="<?= $data['semester']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">SKS</label>
+                                <input type="number" name="sks" value="<?= $data['sks']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
                         </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Nama Mata Kuliah</label>
-                            <input type="text" name="nama_matkul" value="<?= $data['nama_matkul']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Semester</label>
-                            <input type="number" name="semester" value="<?= $data['semester']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">SKS</label>
-                            <input type="number" name="sks" value="<?= $data['sks']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
-                        </div>
-                    </div>
 
                     <?php elseif ($tabel === 'users'): ?>
                         <h3 class="text-xl font-bold mb-6">Edit Users</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Email</label>
-                            <input type="text" name="email" value="<?= $data['email']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Password</label>
-                            <input type="text" name="password" value="<?= $data['password']; ?>"
-                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-sm">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Role</label>
-                            <select name="role" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm" required>
-                <option value="<?= $data['role']; ?>">-- Pilih Role/Peran --</option>
-                <option value="administrator utama">Administrator Utama</option>
-                <option value="ketua tingkat">Ketua Tingkat</option>
-                <option value="sekretaris">Sekretaris</option>
-                <option value="Bendahara">Bendahara</option>
-              </select>
-                    
-                    </div>
-                    <?php endif; ?>
-                </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Email</label>
+                                <input type="text" name="email" value="<?= $data['email']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Password</label>
+                                <input type="text" name="password" value="<?= $data['password']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Role</label>
+                                <select name="role" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs" required>
+                                    <option value="<?= $data['role']; ?>">-- Pilih Role/Peran --</option>
+                                    <option value="administrator utama">Administrator Utama</option>
+                                    <option value="ketua tingkat">Ketua Tingkat</option>
+                                    <option value="sekretaris">Sekretaris</option>
+                                    <option value="Bendahara">Bendahara</option>
+                                </select>
 
-                <div class="flex justify-end space-x-4">
-                    <button type="button"
-                        class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-xs">Kembali</button>
-                    <button type="submit" name="update"
-                        class="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 text-xs">Submit</button>
-                </div>
+                            </div>
+                            <?php elseif ($tabel === 'dosen'): ?>
+                        <h3 class="text-xl font-bold mb-6">Edit Dosen</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Nama Dosen</label>
+                                <input type="text" name="nama_dosen" value="<?= $data['nama_dosen']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">No HP</label>
+                                <input type="text" name="no_hp" value="<?= $data['no_hp']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                        </div>
+                        <?php elseif ($tabel === 'tugas'): ?>
+                        <h3 class="text-xl font-bold mb-6">Edit Tugas</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Mata Kuliah</label>
+                                <select name="matkul_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400" required>
+                                    <option value="">-- Pilih Mata Kuliah --</option>
+                                    <?php
+                                    $query_mk = mysqli_query($koneksi, "SELECT DISTINCT
+                                        mk.id AS matkul_id,
+                                        mk.nama_matkul
+                                        FROM krs k
+                                        JOIN mata_kuliah mk ON k.matkul_id = mk.id
+                                        ORDER BY mk.nama_matkul ASC");
+                                    while ($mk = mysqli_fetch_assoc($query_mk)) {
+                                        echo "<option value='{$mk['matkul_id']}'>{$mk['nama_matkul']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Deadline Tanggal</label>
+                                <input type="date" name="deadline_tanggal" value="<?= $data['deadline_tanggal']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Deadline Pukul</label>
+                                <input type="time" name="deadline_pukul" value="<?= $data['deadline_pukul']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Deskripsi</label>
+                                <input type="text" name="deskripsi" value="<?= $data['deskripsi']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">File Tugas</label>
+                                <input type="file" name="file_tugas" value="<?= $data['file_tugas']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Link Kirim</label>
+                                <input type="text" name="link_kirim" value="<?= $data['link_kirim']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                        </div>
+                        <?php elseif ($tabel === 'jadwal_matkul'): ?>
+                        <h3 class="text-xl font-bold mb-6">Jadwal Mata Kuliah</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Mata Kuliah</label>
+                                <select name="matkul_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs" required>
+                                    <option value="<?= $data['matkul_id']; ?>">-- Pilih Mata Kuliah --</option>
+                                    <?php
+                                    $query_mk = mysqli_query($koneksi, "SELECT DISTINCT
+                                        mk.id AS matkul_id,
+                                        mk.nama_matkul
+                                        FROM krs k
+                                        JOIN mata_kuliah mk ON k.matkul_id = mk.id
+                                        ORDER BY mk.nama_matkul ASC");
+                                    while ($mk = mysqli_fetch_assoc($query_mk)) {
+                                        echo "<option value='{$mk['matkul_id']}'>{$mk['nama_matkul']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Hari</label>
+                                <select name="hari" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs" required>
+                                    <option value="<?= $data['hari']; ?>">-- Pilih Hari --</option>
+                                    <option value="Senin">Senin</option>
+                                    <option value="Selasa">Selasa</option>
+                                    <option value="Rabu">Rabu</option>
+                                    <option value="Kamis">Kamis</option>
+                                    <option value="Jumat">Jumat</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Ruangan</label>
+                                <input type="text" name="ruangan" value="<?= $data['ruangan']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Jam Ke</label>
+                                <input type="text" name="jam_ke" value="<?= $data['jam_ke']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Jam Mulai</label>
+                                <input type="time" name="jam_mulai" value="<?= $data['jam_mulai']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Jam Selesai</label>
+                                <input type="time" name="jam_selesai" value="<?= $data['jam_selesai']; ?>"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Dosen Pengampu</label>
+                                <select name="dosen_pengampu_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs" required>
+                                    <option value="<?= $data['dosen_pengampu_id']; ?>">-- Pilih Dosen Pengampu --</option>
+                                    <?php
+                                    $query_dp = mysqli_query($koneksi, "SELECT * FROM dosen ORDER BY nama_dosen ASC");
+                                    while ($dp = mysqli_fetch_assoc($query_dp)) {
+                                        echo "<option value='{$dp['id']}'>{$dp['nama_dosen']}</option>";
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-medium text-gray-700 mb-1">Dosen Mitra</label>
+                                <select name="dosen_mitra_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-gray-400 text-xs" required>
+                                    <option value="<?= $data['dosen_mitra_id']; ?>">-- Pilih Dosen Mitra --</option>
+                                    <?php
+                                    $query_dm = mysqli_query($koneksi, "SELECT * FROM dosen ORDER BY nama_dosen ASC");
+                                    while ($dm = mysqli_fetch_assoc($query_dm)) {
+                                        echo "<option value='{$dm['id']}'>{$dm['nama_dosen']}</option>";
+                                    }
+                                    ?>
+                                    </select>
+                            </div>
+                        </div>
+                        <?php endif; ?>
+                        </div>
+
+                        <div class="flex justify-end space-x-4">
+                            <button type="button"
+                                class="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-xs">Kembali</button>
+                            <button type="submit" name="update"
+                                class="px-6 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 text-xs">Submit</button>
+                        </div>
             </form>
         </div>
     </main>

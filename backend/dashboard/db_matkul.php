@@ -230,11 +230,11 @@ if (!empty($search)) {
                                     <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800"><?= htmlspecialchars($m['nama_matkul']) ?></td>
                                     <td class="px-3 py-2 whitespace-nowrap text-xs text-slate-800 text-center"><?= htmlspecialchars($m['sks']) ?></td>
                                     <td class="px-3 py-2 whitespace-nowrap text-sm text-slate-500 text-center">
-                                        <a href="../crud/edit.php?tabel=mata_kuliah&id=<?= $row['id']; ?>" title="Edit">
+                                        <a href="../crud/edit.php?tabel=mata_kuliah&id=<?= $m['id']; ?>" title="Edit">
                                             <i class="fa fa-edit text-blue-600 hover:text-blue-900 mr-3"></i>
                                         </a>
 
-                                        <a href="../crud/hapus.php?tabel=mata_kuliah&id=<?= $row['id']; ?>" title="Hapus">
+                                        <a href="../crud/hapus.php?tabel=mata_kuliah&id=<?= $m['id']; ?>" title="Hapus">
                                             <i class="fa fa-trash text-red-600 hover:text-red-900"></i>
                                         </a>
 
